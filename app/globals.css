@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+/*
+  LaterUp design tokens (from CLAUDE.md, "Design system").
+  Each colour becomes Tailwind classes, for example:
+    bg-background, bg-surface, text-accent, bg-primary,
+    border-gentle, text-text, text-text-muted
+*/
+@theme inline {
+  /* Colours */
+  --color-background: #faf5ee; /* warm cream, page background */
+  --color-surface: #f1e7da; /* soft sand, cards, text boxes, chips */
+  --color-accent: #c2673f; /* terracotta, wordmark, card titles, icons */
+  --color-primary: #1f5c5a; /* deep teal, main buttons, selected, active tab */
+  --color-gentle: #d49a89; /* clay rose, "see a doctor soon" and emergency borders */
+  --color-text: #2e2a26; /* warm charcoal, main text */
+  --color-text-muted: #6b625a; /* muted brown-grey, helper text, notes */
+
+  /* Fonts: DM Sans for everything, Noto Sans Devanagari for Hindi */
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  --font-hindi: var(--font-noto-devanagari), var(--font-dm-sans), system-ui,
+    sans-serif;
+
+  /*
+    Text sizes. Body is 18px. Helper text is 15px minimum, so the two
+    smallest Tailwind sizes are raised to 15px: nothing can end up smaller.
+  */
+  --text-xs: 0.9375rem; /* 15px */
+  --text-xs--line-height: 1.5;
+  --text-sm: 0.9375rem; /* 15px */
+  --text-sm--line-height: 1.5;
+  --text-helper: 0.9375rem; /* 15px, use as text-helper */
+  --text-helper--line-height: 1.5;
+  --text-base: 1.125rem; /* 18px */
+  --text-base--line-height: 1.6;
+  --text-body: 1.125rem; /* 18px, use as text-body */
+  --text-body--line-height: 1.6;
+
+  /* Tap targets: every button and option at least 48px tall (min-h-tap) */
+  --spacing-tap: 3rem; /* 48px */
+
+  /* Rounded corners: 12px (rounded-card-sm) to 16px (rounded-card) */
+  --radius-card-sm: 0.75rem;
+  --radius-card: 1rem;
+}
+
+@layer base {
+  html {
+    background-color: var(--color-background);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Any text marked as Hindi uses the Devanagari font automatically */
+  :lang(hi) {
+    font-family: var(--font-hindi);
+  }
+
+  /* Safety net: buttons and form fields are always easy to tap */
+  button,
+  select,
+  textarea,
+  input:not([type="checkbox"]):not([type="radio"]) {
+    min-height: var(--spacing-tap);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+
+  /* Clear, visible focus ring for keyboard users */
+  :focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Respect "reduce motion" on her phone */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
