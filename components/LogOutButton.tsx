@@ -3,12 +3,14 @@
 // Signs her out and returns to Welcome. Reused later in Settings.
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { clearSession } from "@/lib/local";
 
 export default function LogOutButton({ className = "" }: { className?: string }) {
   const router = useRouter();
 
   async function handleLogOut() {
     await createClient().auth.signOut();
+    clearSession(); // no drafts left behind on a shared phone
     router.replace("/");
     router.refresh();
   }

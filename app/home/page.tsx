@@ -1,10 +1,9 @@
-// TEMPORARY placeholder. Replaced by Page 2 (Home).
+// Page 2: Home (docs/pages/02-home.md)
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import Wordmark from "@/components/Wordmark";
-import LogOutButton from "@/components/LogOutButton";
+import HomeView from "./HomeView";
 
-export default async function HomePlaceholder() {
+export default async function HomePage() {
   const supabase = await createClient();
   const {
     data: { user },
@@ -13,21 +12,47 @@ export default async function HomePlaceholder() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("name, intake_completed")
+    .select("name, top_symptoms, intake_completed")
     .eq("id", user.id)
     .single();
 
   // Not finished Page 1 yet: back to where she left off
   if (!profile?.intake_completed) redirect("/");
 
+  const [checkIns, conversations, trying] = await Promise.all([
+    supabase.from("check_ins").select("date, feeling, bothering").order("date", { ascending: false }).limit(3),
+    supabase.from("conversations").select("id").limit(1),
+    supabase
+      .from("trying")
+      .select("id, action, for_symptom, started_date")
+      .eq("active", true)
+      .order("created_at", { ascending: false }),
+  ]);
+
+  const tryingIds = (trying.data ?? []).map((t) => t.id);
+  const feedback = tryingIds.length
+    ? await supabase
+        .from("trying_feedback")
+        .select("trying_id, date, answer")
+        .in("trying_id", tryingIds)
+        .order("date", { ascending: false })
+        .limit(20)
+    : { data: [] };
+
+  const hasHistory =
+    (checkIns.data?.length ?? 0) > 0 ||
+    (conversations.data?.length ?? 0) > 0 ||
+    (trying.data?.length ?? 0) > 0;
+
   return (
-    <main className="mx-auto w-full max-w-md flex-1 px-5 py-8">
-      <Wordmark />
-      <h1 className="mt-10 text-3xl font-semibold">
-        {profile.name ? `Hello, ${profile.name}` : "Hello"}
-      </h1>
-      <p className="mt-2 text-text-muted">Home is being built next.</p>
-      <LogOutButton className="mt-8 rounded-card border-2 border-primary px-6 font-semibold text-primary" />
-    </main>
+    <HomeView
+      userId={user.id}
+      name={profile.name}
+      topSymptoms={profile.top_symptoms ?? []}
+      checkIns={checkIns.data ?? []}
+      hasHistory={hasHistory}
+      trying={trying.data ?? []}
+      feedback={feedback.data ?? []}
+    />
   );
 }

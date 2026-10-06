@@ -60,10 +60,21 @@ function isAnswered(q: Question, a: Answers) {
   return a[q.id].length > 0;
 }
 
-export default function IntakeFlow({ profile }: { profile: Profile }) {
+// mode "intake": first time, from Page 1. mode "edit": "Edit my answers" in Settings,
+// starts at Question 1, never touches intake progress, and calls onExit when done.
+export default function IntakeFlow({
+  profile,
+  mode = "intake",
+  onExit,
+}: {
+  profile: Profile;
+  mode?: "intake" | "edit";
+  onExit?: (saved: boolean) => void;
+}) {
   const router = useRouter();
+  const editing = mode === "edit";
   const [step, setStep] = useState(() =>
-    !profile.consent_given ? 0 : Math.min(Math.max(profile.intake_step, 1), TOTAL + 1)
+    editing ? 1 : !profile.consent_given ? 0 : Math.min(Math.max(profile.intake_step, 1), TOTAL + 1)
   );
   const [consent, setConsent] = useState(profile.consent_given);
   const [answers, setAnswers] = useState<Answers>({
@@ -91,23 +102,30 @@ export default function IntakeFlow({ profile }: { profile: Profile }) {
   }, [step]);
 
   async function save(fields: Record<string, unknown>, nextStep: number) {
-    setSaving(true);
     setError("");
-    const { error } = await createClient()
-      .from("profiles")
-      .update({ ...fields, intake_step: nextStep, ...(nextStep > TOTAL ? { intake_completed: true } : {}) })
-      .eq("id", profile.id);
-    setSaving(false);
-    if (error) {
-      setError(SAVE_ERROR);
-      return;
+    const progress = editing
+      ? {}
+      : { intake_step: nextStep, ...(nextStep > TOTAL ? { intake_completed: true } : {}) };
+    const update = { ...fields, ...progress };
+
+    if (Object.keys(update).length > 0) {
+      setSaving(true);
+      const { error } = await createClient().from("profiles").update(update).eq("id", profile.id);
+      setSaving(false);
+      if (error) {
+        setError(SAVE_ERROR);
+        return;
+      }
     }
-    setStep(nextStep);
+
+    if (editing && nextStep > TOTAL) onExit?.(true);
+    else setStep(nextStep);
   }
 
   function goBack() {
     setError("");
-    setStep(step - 1);
+    if (editing && step === 1) onExit?.(false);
+    else setStep(step - 1);
   }
 
   // ---------------- Step 2: Promises ----------------
