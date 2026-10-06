@@ -123,7 +123,7 @@ const PREWRITTEN: Record<string, Prewritten> = {
     symptomTags: ["brain_fog"],
     hearYou: "Walking into a room and forgetting why can be frustrating, and even a little worrying{, name}.",
     whatsHappening:
-      "Many women notice forgetfulness or \"brain fog\" in midlife. Shifting oestrogen levels can affect memory and focus for a while, and poor sleep and stress often make it worse. For most women, this kind of forgetfulness is common and not a sign of something serious.",
+      "Many women notice forgetfulness or \"brain fog\" in midlife. Shifting oestrogen levels can affect memory and focus for a while, and poor sleep and stress often make it worse. It's very common at this stage, and you're far from alone in noticing it.",
     tryThis: {
       main: "Keep one small notebook or a note on your phone for the day's to-dos, and put your keys and glasses in the same spot every time. Notice whether your days feel a little lighter.",
       more: [
@@ -393,9 +393,24 @@ const MEDICINES = [
   "melatonin", "zolpidem", "alprazolam", "clonazepam", "diazepam", "ashwagandha", "shatavari", "black cohosh",
   "evening primrose", "isoflavone", "biotin", "folic acid", "antidepressant", "sleeping pill", "painkiller",
 ];
-const DOSE = /\b\d+(\.\d+)?\s?(mg|mcg|µg|iu|ml|g)\b|\b(tablets?|capsules?|dose|dosage|pills?|supplements?)\b/i;
-const DIAGNOSIS =
-  /\byou (have|are suffering from|are in|have got) (peri ?menopause|menopause|post ?menopause|depression|anaemia|anemia|pcos|thyroid|cancer|a disorder|a disease)\b|\byou(?:'re| are) (peri ?menopausal|menopausal|post ?menopausal|depressed|anaemic)\b|\b(caused by|because of) (the )?menopause\b|\bmenopause (is causing|causes)\b|\b(this|it) will (cure|fix|treat|improve|stop)\b|\bcures?\b/i;
+// Amounts and pill words. ("dose" alone is allowed, so a gentle "I can't suggest
+// a dose, that's for your doctor" isn't blocked.)
+const DOSE = /\b\d+(\.\d+)?\s?(mg|mcg|µg|iu|ml|g)\b|\b(tablets?|capsules?|pills?)\b/i;
+const DIAGNOSIS = new RegExp(
+  [
+    // Telling her she has something, or which stage she is in
+    String.raw`\byou (have|are suffering from|are in|have got) (peri ?menopause|menopause|post ?menopause|depression|anaemia|anemia|pcos|thyroid|cancer|a disorder|a disease)\b`,
+    String.raw`\byou(?:'re| are) (peri ?menopausal|menopausal|post ?menopausal|depressed|anaemic)\b`,
+    String.raw`\b(in|during) (your )?peri ?menopause\b|\byour (peri ?menopause|menopause)\b|\byou(?:'re| are) (approaching|nearing|going through) (the )?(peri ?menopause|menopause)\b`,
+    // Saying menopause causes it
+    String.raw`\b(caused by|because of) (the )?menopause\b|\bmenopause (is causing|causes)\b`,
+    // Ruling a serious illness in or out
+    String.raw`\bnot (a sign of )?(something|anything) serious\b|\bnothing serious\b|\bnot (a sign of )?cancer\b|\b(isn't|is not|it's not) cancer\b|\beasy to treat\b|\brather than (a |any )?serious\b|\b(probably|likely) (not|nothing) (serious|cancer)\b`,
+    // Promises and cures
+    String.raw`\b(this|it) will (cure|fix|treat|improve|stop)\b|\bcures?\b|\b(will(n't| not)|won'?t) get worse\b`,
+  ].join("|"),
+  "i"
+);
 
 export function answerProblems(a: Answer): string[] {
   const text = [a.hearYou, a.whatsHappening, a.tryThis.main, ...a.tryThis.more, ...a.seeDoctorIf, a.closingLine].join(" ");
@@ -413,4 +428,62 @@ export function answerProblems(a: Answer): string[] {
 // Fill gaps safely (e.g. empty doctor list)
 export function withDefaults(a: Answer): Answer {
   return { ...a, seeDoctorIf: a.seeDoctorIf.length ? a.seeDoctorIf : DEFAULT_DOCTOR_LIST };
+}
+
+// Warning sign: the doctor section must say to book a visit soon
+export function withSoonLine(a: Answer, seeDoctorSoon: boolean): Answer {
+  if (!seeDoctorSoon || a.seeDoctorIf.some((s) => /\bsoon\b/i.test(s))) return a;
+  return { ...a, seeDoctorIf: [SOON_LINE, ...a.seeDoctorIf] };
+}
+
+// A short reply only (off-topic redirect, "hi"): no cards, no actions
+export function isSimpleReply(a: Answer): boolean {
+  return !a.whatsHappening && !a.tryThis.main;
+}
+
+// ---------------- Reading the AI's reply ----------------
+const KNOWN_TAGS = [
+  "hot_flashes", "poor_sleep", "mood_swings", "anxiety_low", "brain_fog", "tiredness", "body_aches",
+  "weight_changes", "periods", "headaches", "hair_skin", "intimacy", "something_else",
+];
+
+const str = (v: unknown, max = 600) =>
+  typeof v === "string" ? v.replace(/\{,? ?name\}/g, "").replace(/\s+/g, " ").trim().slice(0, max) : "";
+const strList = (v: unknown, n: number, max = 300) =>
+  Array.isArray(v) ? v.map((x) => str(x, max)).filter(Boolean).slice(0, n) : [];
+
+// Returns a clean Answer, or null if the reply isn't usable
+export function parseModelAnswer(raw: string): Answer | null {
+  const start = raw.indexOf("{");
+  const end = raw.lastIndexOf("}");
+  if (start === -1 || end <= start) return null;
+  let data: Record<string, unknown>;
+  try {
+    data = JSON.parse(raw.slice(start, end + 1));
+  } catch {
+    return null;
+  }
+  const tryThis = (data.tryThis ?? {}) as Record<string, unknown>;
+  const answer: Answer = {
+    hearYou: str(data.hearYou, 300),
+    whatsHappening: str(data.whatsHappening),
+    tryThis: { main: str(tryThis.main, 400), more: strList(tryThis.more, 2) },
+    seeDoctorIf: strList(data.seeDoctorIf, 4),
+    closingLine: str(data.closingLine, 300),
+    followUps: strList(data.followUps, 3, 120),
+    symptomTags: strList(data.symptomTags, 5, 30).filter((t) => KNOWN_TAGS.includes(t)),
+  };
+  if (!answer.hearYou) return null;
+  // A full answer needs all of its parts
+  if (!isSimpleReply(answer) && (!answer.whatsHappening || !answer.tryThis.main)) return null;
+  return answer;
+}
+
+// Her name is added on the device, never sent to the AI.
+// Placed after the first phrase: "...is exhausting, Meena, and no..."
+export function addNameToAnswer(a: Answer, name: string | null): Answer {
+  if (!name || a.hearYou.includes(name)) return a;
+  const i = a.hearYou.search(/[,.!?;]/);
+  const hearYou = i === -1 ? `${a.hearYou}, ${name}.` : `${a.hearYou.slice(0, i)}, ${name}${a.hearYou.slice(i)}`;
+  return { ...a, hearYou };
 }

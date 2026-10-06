@@ -13,7 +13,7 @@ import {
   emergencyCheck, seeDoctorSoonCheck, isOffTopic, isTooShort, type Emergency,
 } from "@/lib/safety";
 import {
-  findPrewritten, personalisePrewritten, withDefaults,
+  findPrewritten, personalisePrewritten, withDefaults, addNameToAnswer,
   FALLBACK_INTRO, FALLBACK_DOCTOR_LIST, type Answer,
 } from "@/lib/answers";
 import AnswerView, { type TryResult } from "@/components/talk/AnswerView";
@@ -38,6 +38,13 @@ type Item =
   | { id: string; kind: "answer"; answer: Answer; seeDoctorSoon: boolean; herWords: string; fresh: boolean }
   | { id: string; kind: "simple"; text: string }
   | { id: string; kind: "fallback"; retry: string };
+
+type Result =
+  | { kind: "answer"; answer: Answer; seeDoctorSoon: boolean }
+  | { kind: "simple"; text: string }
+  | { kind: "emergency"; emergency: "physical" | "self_harm" }
+  | { kind: "notice"; text: string }
+  | { kind: "fallback" };
 
 const MAX_TRYING = 5;
 const newId = () => crypto.randomUUID();
@@ -128,24 +135,86 @@ function TalkContent({ userId, profile, recent: initialRecent }: { userId: strin
 
     // 4. The answer
     setLoading(true);
-    const seeDoctorSoon = seeDoctorSoonCheck(text, profile);
-    const answer = await getAnswer(text, seeDoctorSoon);
+    const result = await getAnswer(text, historyForApi(items));
     setLoading(false);
 
-    if (!answer) {
-      setItems((prev) => [...prev, { id: newId(), kind: "fallback", retry: text }]);
-      return;
+    const dropMine = () => setItems((prev) => prev.filter((i) => i.id !== userItem.id));
+    switch (result.kind) {
+      case "answer":
+        setItems((prev) => [...prev, { id: newId(), kind: "answer", answer: result.answer, seeDoctorSoon: result.seeDoctorSoon, herWords: text, fresh: true }]);
+        void saveExchange(text, result.answer, result.seeDoctorSoon);
+        return;
+      case "simple":
+        setItems((prev) => [...prev, { id: newId(), kind: "simple", text: result.text }]);
+        return;
+      case "emergency": // caught by the server: same help, nothing saved
+        dropMine();
+        setEmergency(result.emergency);
+        window.scrollTo(0, 0);
+        return;
+      case "notice":
+        dropMine();
+        setNotice(result.text);
+        return;
+      default:
+        setItems((prev) => [...prev, { id: newId(), kind: "fallback", retry: text }]);
     }
-    setItems((prev) => [...prev, { id: newId(), kind: "answer", answer, seeDoctorSoon, herWords: text, fresh: true }]);
-    void saveExchange(text, answer, seeDoctorSoon);
   }
 
-  // Part 1: pre-written answers for the 15 suggested questions.
-  // (Part 2 adds the AI through /api/understand, with these as the backup.)
-  async function getAnswer(text: string, seeDoctorSoon: boolean): Promise<Answer | null> {
+  // The last 6 turns, for follow-ups. Her name is never included.
+  function historyForApi(list: Item[]) {
+    return list
+      .flatMap((i) => {
+        if (i.kind === "user") return [{ role: "user", content: i.text }];
+        if (i.kind === "simple") return [{ role: "assistant", content: i.text }];
+        if (i.kind === "answer") {
+          const { whatsHappening, tryThis, seeDoctorIf } = i.answer;
+          return [{ role: "assistant", content: JSON.stringify({ whatsHappening, tryThis: { main: tryThis.main }, seeDoctorIf }) }];
+        }
+        return [];
+      })
+      .slice(-6);
+  }
+
+  // AI first (/api/understand). If it fails, is slow (15 s) or unsafe:
+  // the pre-written answer for the 15 suggested questions, else the gentle fallback.
+  // Pre-written answers never count against her daily cap.
+  async function getAnswer(text: string, history: { role: string; content: string }[]): Promise<Result> {
+    const deviceSoon = seeDoctorSoonCheck(text, profile);
     const pre = findPrewritten(text);
-    await new Promise((r) => setTimeout(r, 700)); // a brief, calm pause before the answer
-    return pre ? withDefaults(personalisePrewritten(pre, profile, seeDoctorSoon)) : null;
+    const backup = (): Result =>
+      pre
+        ? { kind: "answer", answer: withDefaults(personalisePrewritten(pre, profile, deviceSoon)), seeDoctorSoon: deviceSoon }
+        : { kind: "fallback" };
+
+    try {
+      const res = await fetch("/api/understand", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text, history }),
+        signal: AbortSignal.timeout(15_000),
+      });
+      if (!res.ok) return backup();
+      const data = await res.json();
+      switch (data.type) {
+        case "answer":
+          return { kind: "answer", answer: addNameToAnswer(data.answer as Answer, profile.name), seeDoctorSoon: !!data.seeDoctorSoon };
+        case "simple":
+          return { kind: "simple", text: String(data.text) };
+        case "redirect":
+          return { kind: "simple", text: OFF_TOPIC_MESSAGE };
+        case "emergency":
+          return { kind: "emergency", emergency: data.kind === "self_harm" ? "self_harm" : "physical" };
+        case "length":
+          return { kind: "notice", text: LENGTH_MESSAGE };
+        case "limit":
+          return pre ? backup() : { kind: "simple", text: String(data.message) };
+        default:
+          return backup();
+      }
+    } catch {
+      return backup(); // offline, slow or unreachable
+    }
   }
 
   function retry(item: Extract<Item, { kind: "fallback" }>) {

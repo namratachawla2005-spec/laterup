@@ -18,6 +18,7 @@ export type AskModelInput = {
   messages: ChatMessage[];
   maxTokens?: number; // hard wall on answer length
   timeoutMs?: number; // give up after this long
+  json?: boolean; // ask for a JSON-only reply (Ollama supports this directly)
 };
 
 export type AskModelResult = {
@@ -81,6 +82,7 @@ async function askOllama(
       messages: [{ role: "system", content: input.system }, ...input.messages],
       stream: false,
       think: false, // skip the visible "Thinking..." step
+      ...(input.json ? { format: "json" } : {}),
       options: { num_predict: maxTokens },
     }),
   });

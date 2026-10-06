@@ -81,8 +81,10 @@ export function seeDoctorSoonCheck(text: string, profile: ProfileBits): boolean 
     /\b(hopeless|depressed|empty|sad|low|teary|crying)\b/.test(t) &&
     /\b(weeks?|months?|every day|most days|all the time|for days)\b/.test(t)
   ) return true;
+  // Fear of a serious illness: answer gently, doctor card first
+  if (/\b(cancer|tumou?r)\b/.test(t)) return true;
   // Very heavy or very long periods
-  if (/\bvery heavy\b|\bheavy bleeding\b|\bflooding\b|\bperiods? (lasting|lasts|last|going on) (more than|over|for) (a week|\d+|two|three)/.test(t)) return true;
+  if (/\b(very|so|really|too|extremely) heavy\b|\bheavier than (ever|usual|before)\b|\bheavy bleeding\b|\bflooding\b|\bperiods? (lasting|lasts|last|going on) (more than|over|for) (a week|\d+|two|three)/.test(t)) return true;
   // Under 40 with periods stopping
   if (
     profile.age_group === "under_40" &&
