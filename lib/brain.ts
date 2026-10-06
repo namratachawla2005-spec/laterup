@@ -82,6 +82,7 @@ async function askOllama(
       messages: [{ role: "system", content: input.system }, ...input.messages],
       stream: false,
       think: false, // skip the visible "Thinking..." step
+      keep_alive: "60m", // stay loaded between questions (reloading takes ~20 s)
       ...(input.json ? { format: "json" } : {}),
       options: { num_predict: maxTokens },
     }),

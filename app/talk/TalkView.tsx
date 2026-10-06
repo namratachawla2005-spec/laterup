@@ -121,7 +121,7 @@ function TalkContent({ userId, profile, recent: initialRecent }: { userId: strin
 
     setInput("");
     const userItem: Item = { id: newId(), kind: "user", text, at: new Date().toISOString() };
-    setItems((prev) => [...prev.filter((i) => i.kind !== "fallback"), userItem]);
+    setItems((prev) => [...prev, userItem]); // every message keeps its reply
 
     // 3. Off-topic or just "hi": a warm reply, nothing else
     if (isOffTopic(text)) {
@@ -358,7 +358,8 @@ function TalkContent({ userId, profile, recent: initialRecent }: { userId: strin
               return <p key={item.id} className="text-[1.25rem] leading-relaxed">{item.text}</p>;
             }
             if (item.kind === "fallback") {
-              return <Fallback key={item.id} onRetry={() => retry(item)} />;
+              const isLatest = item.id === items[items.length - 1]?.id;
+              return <Fallback key={item.id} onRetry={isLatest && !loading ? () => retry(item) : undefined} />;
             }
             return (
               <AnswerView
@@ -510,7 +511,8 @@ function Loading() {
   );
 }
 
-function Fallback({ onRetry }: { onRetry: () => void }) {
+// "Try again" only on the latest one
+function Fallback({ onRetry }: { onRetry?: () => void }) {
   return (
     <div className="space-y-4">
       <p className="text-[1.25rem] leading-relaxed">{FALLBACK_INTRO}</p>
@@ -525,9 +527,11 @@ function Fallback({ onRetry }: { onRetry: () => void }) {
           ))}
         </ul>
       </section>
-      <button type="button" onClick={onRetry} className="rounded-card border-2 border-primary px-6 font-semibold text-primary">
-        Try again
-      </button>
+      {onRetry && (
+        <button type="button" onClick={onRetry} className="rounded-card border-2 border-primary px-6 font-semibold text-primary">
+          Try again
+        </button>
+      )}
     </div>
   );
 }
