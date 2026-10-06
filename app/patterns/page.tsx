@@ -20,7 +20,7 @@ export default async function PatternsPage() {
     .slice(0, 10);
 
   const [checkIns, conversations, trying, feedback] = await Promise.all([
-    supabase.from("check_ins").select("date, feeling, bothering").gte("date", since).order("date"),
+    supabase.from("check_ins").select("date, feeling, bothering, sleep, energy").gte("date", since).order("date"),
     supabase.from("conversations").select("started_at, symptom_tags").gte("started_at", since),
     supabase.from("trying").select("id, action, for_symptom, started_date, active").order("created_at", { ascending: false }),
     supabase.from("trying_feedback").select("trying_id, date, answer").order("date"),

@@ -97,7 +97,9 @@ FOLLOW-UP QUESTIONS
 WHAT YOU RECEIVE
 Her message comes as JSON with: "message" (her words), "profile" (ageGroup,
 stage, topSymptoms, diet, lifeContext, doctorStatus), "seeDoctorSoon" and
-"recentCheckins" (her last few days: good, okay or tough). Earlier turns of the
+"recentCheckins" (her last few days: "day" is good, okay or tough; "sleep" is
+well, on_off or barely; "energy" is low, okay or good; any may be null). Earlier
+turns of the
 conversation come before it.
 
 OUTPUT

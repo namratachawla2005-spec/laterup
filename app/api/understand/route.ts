@@ -63,7 +63,7 @@ export async function POST(request: Request) {
       .select("age_group, stage, top_symptoms, diet, life_context, doctor_status")
       .eq("id", user.id)
       .single(),
-    supabase.from("check_ins").select("feeling").order("date", { ascending: false }).limit(3),
+    supabase.from("check_ins").select("feeling, sleep, energy").order("date", { ascending: false }).limit(3),
   ]);
   const seeDoctorSoon = seeDoctorSoonCheck(message, profile ?? {});
 
@@ -83,7 +83,7 @@ export async function POST(request: Request) {
       doctorStatus: profile?.doctor_status ?? null,
     },
     seeDoctorSoon,
-    recentCheckins: (checkIns ?? []).map((c) => c.feeling),
+    recentCheckins: (checkIns ?? []).map((c) => ({ day: c.feeling, sleep: c.sleep ?? null, energy: c.energy ?? null })),
   });
 
   let result;

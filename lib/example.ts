@@ -9,22 +9,22 @@ import { addDays, type PatternsData, type Feeling } from "./patterns";
 
 export const EXAMPLE_NAME = "Meena";
 
-// Last 14 days, oldest first: [feeling, bothering]
-const RECENT: [Feeling, string[]][] = [
-  ["tough", ["poor_sleep", "mood_swings"]],
-  ["tough", ["poor_sleep"]],
-  ["okay", ["mood_swings"]],
-  ["tough", ["poor_sleep"]],
-  ["tough", ["poor_sleep", "mood_swings"]],
-  ["okay", []],
-  ["okay", ["poor_sleep"]],
-  ["good", []],
-  ["tough", ["poor_sleep"]],
-  ["good", []],
-  ["tough", ["mood_swings"]],
-  ["okay", []],
-  ["good", []],
-  ["good", []],
+// Last 14 days, oldest first: [feeling, bothering, sleep last night, energy]
+const RECENT: [Feeling, string[], string, string][] = [
+  ["tough", ["poor_sleep", "mood_swings"], "barely", "low"],
+  ["tough", ["poor_sleep"], "barely", "low"],
+  ["okay", ["mood_swings"], "well", "low"],
+  ["tough", ["poor_sleep"], "on_off", "low"],
+  ["tough", ["poor_sleep", "mood_swings"], "barely", "okay"],
+  ["okay", [], "well", "okay"],
+  ["okay", ["poor_sleep"], "on_off", "okay"],
+  ["good", [], "well", "good"],
+  ["tough", ["poor_sleep"], "on_off", "low"],
+  ["good", [], "well", "good"],
+  ["tough", ["mood_swings"], "well", "okay"],
+  ["okay", [], "well", "okay"],
+  ["good", [], "well", "good"],
+  ["good", [], "well", "good"],
 ];
 
 // The 14 days before that: harder, with a few missed days (null)
@@ -38,7 +38,7 @@ const EARLIER: ([Feeling, string[]] | null)[] = [
 export function examplePatterns(today: string): PatternsData {
   const checkIns = [
     ...EARLIER.map((e, i) => (e ? { date: addDays(today, i - 27), feeling: e[0], bothering: e[1] } : null)),
-    ...RECENT.map((r, i) => ({ date: addDays(today, i - 13), feeling: r[0], bothering: r[1] })),
+    ...RECENT.map((r, i) => ({ date: addDays(today, i - 13), feeling: r[0], bothering: r[1], sleep: r[2], energy: r[3] })),
   ].filter((c): c is NonNullable<typeof c> => c !== null);
 
   return {

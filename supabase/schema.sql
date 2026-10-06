@@ -39,6 +39,8 @@ create table if not exists public.check_ins (
   date date not null,
   feeling text not null check (feeling in ('good', 'okay', 'tough')),
   bothering text[] not null default '{}',
+  sleep text check (sleep in ('well', 'on_off', 'barely')),   -- added in 002
+  energy text check (energy in ('low', 'okay', 'good')),     -- added in 002
   created_at timestamptz not null default now(),
   unique (user_id, date)
 );

@@ -7,10 +7,11 @@ import { createClient } from "@/lib/supabase/client";
 import { localDate, useIsBrowser, writeSession, HANDOVER_KEY } from "@/lib/local";
 import {
   buildDays, lastNDates, summarySentence, symptomDays, topSymptoms, insights, tryingResult, tryingFor,
-  needsSupport, symptomName, symptomLower, addDays,
+  needsSupport, symptomName, symptomLower, addDays, sleepEnergyLines,
   type Day, type PatternsData, type TryingItem, type TryLabel,
 } from "@/lib/patterns";
 import { examplePatterns } from "@/lib/example";
+import { sleepWord, energyWord } from "@/lib/checkin";
 import BottomNav from "@/components/BottomNav";
 import WellnessNote from "@/components/WellnessNote";
 
@@ -112,6 +113,9 @@ function PatternsContent({ data: realData }: { data: PatternsData }) {
             <h2 id="days-heading" className="text-xl font-semibold">How your days have been</h2>
             <DotGrid days={current} showLetters={range === 14} />
             <p className="mt-4">{summarySentence(current, previous)}</p>
+            {sleepEnergyLines(current).map((line) => (
+              <p key={line} className="mt-1 text-text-muted">{line}</p>
+            ))}
           </section>
 
           {/* Section 2 */}
@@ -233,6 +237,8 @@ function DotGrid({ days, showLetters }: { days: Day[]; showLetters: boolean }) {
       <p aria-live="polite" className="mt-2 min-h-[1.6em] text-helper">
         {pickedDay &&
           `${shortDate(pickedDay.date)}: ${pickedDay.checkIn ? FEELING_WORD[pickedDay.checkIn.feeling] : "No check-in"}.` +
+            (pickedDay.checkIn?.sleep ? ` Slept: ${sleepWord(pickedDay.checkIn.sleep)}.` : "") +
+            (pickedDay.checkIn?.energy ? ` Energy: ${energyWord(pickedDay.checkIn.energy)}.` : "") +
             (pickedDay.checkIn?.bothering.length
               ? ` Bothered by: ${pickedDay.checkIn.bothering.map(symptomLower).join(", ")}.`
               : "")}

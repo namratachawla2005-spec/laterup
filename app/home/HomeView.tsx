@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { SYMPTOMS, labelFor } from "@/lib/intake";
+import { SLEEP_OPTIONS, ENERGY_OPTIONS } from "@/lib/checkin";
 import { suggestedQuestions } from "@/lib/questions";
 import {
   localDate, daysBetween, useIsBrowser,
@@ -17,7 +18,7 @@ import { FormMessage } from "@/components/AuthFields";
 import { GearIcon, LockIcon, SunIcon, PartSunIcon, CloudIcon } from "@/components/icons";
 
 type Feeling = "good" | "okay" | "tough";
-type CheckIn = { date: string; feeling: Feeling; bothering: string[] };
+type CheckIn = { date: string; feeling: Feeling; bothering: string[]; sleep?: string | null; energy?: string | null };
 type TryingItem = { id: string; action: string; for_symptom: string | null; started_date: string };
 type Feedback = { trying_id: string; date: string; answer: string };
 
@@ -237,33 +238,36 @@ function CheckInSection({
   onTalk: () => void;
 }) {
   const [feeling, setFeeling] = useState<Feeling | null>(existing?.feeling ?? null);
+  const [sleep, setSleep] = useState<string | null>(existing?.sleep ?? null);
+  const [energy, setEnergy] = useState<string | null>(existing?.energy ?? null);
   const [bothering, setBothering] = useState<string[]>(existing?.bothering ?? []);
   const [stage, setStage] = useState<"pick" | "follow" | "done">(existing ? "done" : "pick");
   const [error, setError] = useState("");
 
-  // Her top symptoms (up to 3) plus "Something else"
-  const chipOptions = [
-    ...topSymptoms.filter((s) => s !== "something_else").slice(0, 3),
-    "something_else",
-  ];
+  // Her top symptoms first, then "More" reveals all of them
+  const mine = topSymptoms.filter((s) => s !== "something_else").slice(0, 3);
+  const others = SYMPTOMS.map((s) => s.value).filter((s) => !mine.includes(s) && s !== "something_else");
+  const [showAll, setShowAll] = useState(() => bothering.some((b) => others.includes(b)));
+  const chipOptions = [...mine, ...(showAll ? others : []), "something_else"];
 
   // One check-in per day: saving again updates today's
-  async function saveCheckIn(f: Feeling, b: string[]) {
+  async function saveCheckIn(f: Feeling) {
     setError("");
     const { error } = await supabase
       .from("check_ins")
-      .upsert({ user_id: userId, date: today, feeling: f, bothering: b }, { onConflict: "user_id,date" });
+      .upsert({ user_id: userId, date: today, feeling: f, bothering, sleep, energy }, { onConflict: "user_id,date" });
     if (error) setError(SAVE_ERROR);
     return !error;
   }
 
+  // The feeling alone is saved straight away, so one tap is a full check-in
   async function pickFeeling(f: Feeling) {
     setFeeling(f);
-    if (await saveCheckIn(f, bothering)) setStage("follow");
+    if (await saveCheckIn(f)) setStage("follow");
   }
 
   async function done() {
-    if (feeling && (await saveCheckIn(feeling, bothering))) setStage("done");
+    if (feeling && (await saveCheckIn(feeling))) setStage("done");
   }
 
   return (
@@ -314,7 +318,22 @@ function CheckInSection({
           </div>
 
           {stage === "follow" && (
-            <div className="mt-5">
+            <div className="mt-5 space-y-6">
+              <ChoiceRow
+                id="sleep-label"
+                question="How did you sleep last night?"
+                options={SLEEP_OPTIONS}
+                value={sleep}
+                onChange={setSleep}
+              />
+              <ChoiceRow
+                id="energy-label"
+                question="Energy today?"
+                options={ENERGY_OPTIONS}
+                value={energy}
+                onChange={setEnergy}
+              />
+              <div>
               <p id="bothering-label">Anything bothering you today? Tap any.</p>
               <div role="group" aria-labelledby="bothering-label" className="mt-3 flex flex-wrap gap-2">
                 {chipOptions.map((s) => {
@@ -334,11 +353,21 @@ function CheckInSection({
                     </button>
                   );
                 })}
+                {!showAll && (
+                  <button
+                    type="button"
+                    onClick={() => setShowAll(true)}
+                    className="inline-flex items-center rounded-card-sm px-3 font-medium text-primary underline underline-offset-4"
+                  >
+                    + More
+                  </button>
+                )}
+              </div>
               </div>
               <button
                 type="button"
                 onClick={done}
-                className="mt-4 rounded-card border-2 border-primary px-8 font-semibold text-primary"
+                className="rounded-card border-2 border-primary px-8 font-semibold text-primary"
               >
                 Done
               </button>
@@ -349,6 +378,40 @@ function CheckInSection({
 
       {error && <div className="mt-3"><FormMessage text={error} /></div>}
     </section>
+  );
+}
+
+// One quick single-choice question (tap again to clear)
+function ChoiceRow({
+  id, question, options, value, onChange,
+}: {
+  id: string;
+  question: string;
+  options: { value: string; label: string }[];
+  value: string | null;
+  onChange: (v: string | null) => void;
+}) {
+  return (
+    <div>
+      <p id={id}>{question}</p>
+      <div role="group" aria-labelledby={id} className="mt-3 grid grid-cols-3 gap-2">
+        {options.map((o) => {
+          const on = value === o.value;
+          return (
+            <button
+              key={o.value}
+              type="button"
+              aria-pressed={on}
+              onClick={() => onChange(on ? null : o.value)}
+              className={`inline-flex items-center justify-center gap-1.5 rounded-card-sm px-2 py-2 ${on ? "bg-primary text-white" : "bg-surface text-text"}`}
+            >
+              {on && <span aria-hidden="true">✓</span>}
+              {o.label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
