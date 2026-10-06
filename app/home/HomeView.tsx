@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -88,6 +88,11 @@ function HomeContent({ userId, name, topSymptoms, checkIns, hasHistory, trying, 
   const [items, setItems] = useState(trying);
   const [text, setText] = useState(() => readSession(DRAFT_KEY));
   const textRef = useRef<HTMLTextAreaElement>(null);
+
+  // "Check in now" on Patterns links to /home#checkin
+  useEffect(() => {
+    if (window.location.hash === "#checkin") document.getElementById("checkin")?.scrollIntoView({ block: "start" });
+  }, []);
 
   const yesterdayTough = checkIns.some((c) => c.date === yesterday && c.feeling === "tough");
   const secondLine = secondLineFor({
@@ -262,7 +267,7 @@ function CheckInSection({
   }
 
   return (
-    <section className="mt-10" aria-labelledby="checkin-heading">
+    <section id="checkin" className="mt-10 scroll-mt-6" aria-labelledby="checkin-heading">
       <h2 id="checkin-heading" className="text-xl font-semibold">
         How&apos;s today?
       </h2>
