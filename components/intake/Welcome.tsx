@@ -8,7 +8,7 @@ import LeafBackground from "@/components/LeafBackground";
 
 export default function Welcome() {
   return (
-    <LeafBackground>
+    <LeafBackground motif="rangoli">
       <main className="mx-auto flex w-full max-w-md flex-1 flex-col items-center px-5 pt-8 pb-10 text-center">
         <Wordmark />
   

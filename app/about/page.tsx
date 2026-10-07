@@ -41,7 +41,8 @@ export default function AboutPage() {
           </p>
           <p>
             It is not a doctor. It does not diagnose, and it never suggests medicines. It is made for Indian women,
-            by a 20-year-old girl who sees her mother struggle.
+            by a 20-year-old who has watched her mother and countless other women live with pain, and wishes
+            to see them more energetic and happy.
           </p>
         </section>
 
