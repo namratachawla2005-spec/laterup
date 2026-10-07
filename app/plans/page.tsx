@@ -35,7 +35,7 @@ const PLANS: Plan[] = [
     price: "₹299",
     priceNote: "per month, or ₹2,499 per year",
     features: [
-      "Many more questions on Talk each day",
+      "A higher daily limit for questions on Talk",
       "4-week programmes for sleep, hot flashes and mood, built around your day",
       "Guided yoga, breathing and sleep sessions",
       "Monthly live Q&A sessions with gynaecologists",
