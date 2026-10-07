@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // Helpers for the Talk page: send a message the way she would, wait for
 // whatever comes back, and read the 4 parts of an answer.
 import { expect, type Locator, type Page, type Request } from "@playwright/test";

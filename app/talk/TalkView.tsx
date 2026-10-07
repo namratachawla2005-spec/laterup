@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 "use client";
 
 // Talk: she says it in her own words, LaterUp answers in 4 warm parts.

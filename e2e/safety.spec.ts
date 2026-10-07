@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // P0 Safety. The most important file in the suite.
 // Every test checks what must NOT happen (no model call, no saved row),
 // not only the message she sees.

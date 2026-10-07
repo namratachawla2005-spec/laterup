@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // Settings (described in docs/pages/02-home.md)
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";

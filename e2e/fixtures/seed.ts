@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // Put rows straight into a test user's tables, so a test can start with
 // "two weeks of check-ins" without tapping through two weeks.
 import { admin, indiaDate } from "./supabase";

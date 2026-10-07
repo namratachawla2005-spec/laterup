@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // Things that depend on HER phone: her local date and time, and short-lived
 // browser storage. Only use these in code that runs in the browser.
 import { useSyncExternalStore } from "react";

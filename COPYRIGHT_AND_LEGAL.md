@@ -3,7 +3,7 @@
 **Developer:** Namrata Chawla
 **Application:** LaterUp, a private wellness companion for women in the years before, during and after menopause
 **Live site:** https://laterup.vercel.app
-**Repository:** private GitHub repository, shared on request
+**Repository:** private GitHub repository, shared on request (see README.md)
 **Status:** Original work, shared confidentially for evaluation
 **Last updated:** 7 October 2026
 
@@ -81,3 +81,10 @@ LaterUp is built with Next.js, React and Tailwind CSS, uses Supabase (authentica
 ## Contact
 
 For questions about usage rights or the project, contact Namrata Chawla at namrata.chawla.2005@gmail.com.
+
+## Where the notice appears
+
+- **Every page of the app:** "© 2026 Namrata Chawla. All rights reserved." in the footer, next to "LaterUp is a wellness guide, not medical advice."
+- **Help page:** a "Copyright and terms of use" section with the contact above.
+- **Source code:** every source file starts with a copyright header.
+- **README.md:** a "License and legal" section linking to this file.

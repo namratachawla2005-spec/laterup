@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // Help: a public page (no login needed): what LaterUp is, how each page works, tips.
 // Emergency numbers live on the SOS page (/sos), linked at the top.
 import type { Metadata } from "next";
@@ -132,6 +137,24 @@ export default function HelpPage() {
               </li>
             ))}
           </ul>
+        </section>
+
+        {/* Copyright and terms of use for this evaluation build */}
+        <section className="mt-10" aria-labelledby="terms-heading">
+          <h2 id="terms-heading" className={sectionHeading}>Copyright and terms of use</h2>
+          <p className="mt-3">
+            LaterUp is the original work of Namrata Chawla, shared for evaluation as part of a campus placement and
+            portfolio. You are welcome to try it and share feedback.
+          </p>
+          <p className="mt-3">
+            Please don&apos;t copy, reuse or share its design, content or code without written permission.
+          </p>
+          <p className="mt-3">
+            Questions about use or licensing:{" "}
+            <a href="mailto:namrata.chawla.2005@gmail.com" className="font-medium text-primary underline underline-offset-4 [overflow-wrap:anywhere]">
+              namrata.chawla.2005@gmail.com
+            </a>
+          </p>
         </section>
 
         <div className="mt-auto pt-12">

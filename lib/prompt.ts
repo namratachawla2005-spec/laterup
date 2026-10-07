@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // The instructions given to the AI for Talk.
 // Text from docs/pages/03-talk.md (Section 7), plus BUILD-SPEC section 9.4.
 // Server only. Her name is never sent.

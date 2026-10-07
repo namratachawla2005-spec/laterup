@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // Settings the tests need, read from .env.local (the same file the app uses).
 // The service role key is used ONLY here, in Node, to create and delete
 // throwaway test accounts and to check rows. It never reaches a browser.

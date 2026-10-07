@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // /api/understand (BUILD-SPEC section 3.2). The only place the AI is called.
 // Never logs message content. Records only token counts in `usage`.
 import { NextResponse } from "next/server";

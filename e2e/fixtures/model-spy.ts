@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // Talks to the model spy (e2e/model-spy/server.mjs) and records what this run
 // can test. The spy only exists when the test server uses the local model.
 import fs from "node:fs";

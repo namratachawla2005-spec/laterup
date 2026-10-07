@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // P0 Privacy: Row Level Security between two real accounts, "Delete my data",
 // and no health details in URLs or tab titles.
 import { test, expect } from "./fixtures/test";

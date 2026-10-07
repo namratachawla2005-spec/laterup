@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // P1 Functional: Talk, the hero. These call the real AI model (@model), so
 // they run at most 2 at a time. They check the answer CONTRACT (4 parts,
 // nothing unsafe, bounded length), never exact wording.

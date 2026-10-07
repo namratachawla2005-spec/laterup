@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // "Text size" in Settings: Standard or Larger. Saved on her phone (a per-device
 // convenience, like the phone's own text size). Larger makes everything ~12% bigger.
 export const TEXT_SIZE_KEY = "laterup:text-size";

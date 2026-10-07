@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // Page 1 intake: the 7 questions, their options, and the thank-you reflection.
 // Exact copy from docs/pages/01-welcome-intake.md. Saved values are short keys;
 // other pages (Home, Talk, Patterns, Doctor Prep) read the same keys and labels.

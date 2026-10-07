@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // Emergency Card (docs/pages/03-talk.md, Section 5, Level 1).
 // Shown INSTEAD of an answer. The message is never sent to the AI and never saved.
 // Calm design: clay rose border, cream background, no flashing red.

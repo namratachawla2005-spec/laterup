@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // P1 Functional: Patterns. Honest observations from her own check-ins.
 // Never invented, never a cause, and the example never mixes with her data.
 import { test, expect } from "./fixtures/test";

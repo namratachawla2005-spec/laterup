@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // The LaterUp logo: a sun rising over the horizon (Later + Up, "a new chapter").
 // Decorative next to the name, so hidden from screen readers.
 export default function Logo({ className = "h-8 w-8" }: { className?: string }) {

@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // Throwaway accounts used only by tests.
 // Each test creates its own account and deletes it afterwards, so no test
 // depends on another and real signup slots are never used up.

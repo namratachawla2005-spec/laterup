@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // SOS: emergency numbers and government websites, nothing else, so it's instant in a crisis.
 // Public page (no login needed). Numbers and websites checked 7 Oct 2026 against
 // official / reliable sources (112.gov.in, telemanas.mohfw.gov.in, myscheme.gov.in, mea.gov.in, Vikaspedia).

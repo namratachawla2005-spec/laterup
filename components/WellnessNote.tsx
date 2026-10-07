@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // Shown on every page (CLAUDE.md safety rules), with the copyright line.
 // Under each Talk answer it appears without the copyright (once per page is enough).
 export default function WellnessNote({ withEmergency = false, copyright = true }: { withEmergency?: boolean; copyright?: boolean }) {

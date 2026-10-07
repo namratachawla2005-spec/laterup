@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // The finished summary a doctor sees: in "Show to doctor" (large) and on paper (print).
 // White background, charcoal text, one thin terracotta line under the title.
 import type { Summary } from "@/lib/doctor";

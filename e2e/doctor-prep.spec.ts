@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // P1 Functional: Doctor Prep. Example mode, a real prep sheet, and the
 // Hindi conversation starter.
 import { test, expect } from "./fixtures/test";

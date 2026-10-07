@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // Database helpers for tests (Node only).
 // - admin(): the service role client. Used to create/delete test accounts,
 //   seed rows, and check what was (or was NOT) written.

@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // LaterUp end-to-end tests. Run with: npm run test:e2e
 // See e2e/README.md for what is covered and how to run against the live site.
 import { defineConfig, devices } from "@playwright/test";

@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // Patterns: the plain rules behind Page 4 (docs/pages/04-patterns.md, Sections 6 and 9).
 // No AI. Everything is counted from her own check-ins on her device.
 // Always counts ("5 of 6"), never percentages. Observations, never causes.

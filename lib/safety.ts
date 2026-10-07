@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // Safety checks for the Talk page (docs/pages/03-talk.md, Section 5; BUILD-SPEC 9).
 // Runs on her device BEFORE anything else, and again in /api/understand.
 // Plain word matching: instant, private, and works even if the AI is down.

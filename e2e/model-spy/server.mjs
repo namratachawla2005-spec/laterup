@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // The model spy: a tiny stand-in for Ollama, used only by the E2E tests.
 //
 //   test copy of LaterUp  ->  model spy (port 11500)  ->  real Ollama

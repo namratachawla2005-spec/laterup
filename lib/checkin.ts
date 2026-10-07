@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // Daily check-in answers (Home, Section 4). Used by Home, Patterns, Talk and Doctor Prep.
 import type { Option } from "./intake";
 

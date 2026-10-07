@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // The answer contract. AI answers differ every time, so tests check the
 // shape and the forbidden content, never exact sentences.
 // These lists are written independently of the app's own checker in

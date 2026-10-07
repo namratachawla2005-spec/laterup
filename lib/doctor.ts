@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // Doctor Prep: the plain rules behind Page 5 (docs/pages/05-doctor-prep.md).
 // No AI. Everything is assembled from her own data with fixed templates.
 // Her stage is always shown in her own words, never as a medical label.

@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // Runs once before the suite.
 // 1. The signup cap (5) would stop tests creating their throwaway accounts, so
 //    it is raised for the run. The real value is saved and put back by

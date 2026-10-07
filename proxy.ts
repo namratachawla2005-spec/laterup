@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // Runs before every page. Two jobs:
 // 1. Keeps her login fresh (Supabase login cookies).
 // 2. The login gate: logged-out visitors can't open the app pages.

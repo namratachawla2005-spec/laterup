@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // "Delete my data" (Settings). Deletes her login account; every row she owns
 // is removed with it ("on delete cascade" in supabase/schema.sql).
 import { NextResponse } from "next/server";

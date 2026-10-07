@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // The 15 suggested questions (docs/pages/02-home.md, Section 3).
 // Home shows 3 of them; Talk has a pre-written answer for every one.
 

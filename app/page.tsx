@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // Page 1: Welcome and Intake (docs/pages/01-welcome-intake.md)
 // Logged out -> Welcome. Logged in -> promises and questions, resuming where she stopped.
 // Intake already finished -> straight to Home.

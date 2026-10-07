@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // P1 Functional: the signup cap (BUILD-SPEC 5.3).
 // Runs LAST, on its own: for a moment it closes signups completely, which
 // would stop other tests creating accounts. The cap is then put back.

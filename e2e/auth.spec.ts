@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // P1 Functional: Auth. Sign up, log in, log out, and the login gate.
 // (The signup cap is tested in signup-cap.spec.ts, which runs last.)
 import type { Page } from "@playwright/test";

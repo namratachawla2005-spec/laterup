@@ -1,3 +1,8 @@
+/**
+ * Copyright © 2026 Namrata Chawla. All rights reserved.
+ * LaterUp: confidential and proprietary, shared for evaluation only.
+ * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
+ */
 // Faint thin-line decorations behind a page, kept to the edges so the text stays easy to read.
 // "leaves" (Sign up, Log in, About, Plans), "rangoli" corners plus wide-screen waves (Welcome), teal "waves" (Home, Talk, Patterns,
 // Doctor Prep, Settings, Help, SOS; on phones these pages show small HeadingWaves beside a heading instead). Decorative only.
