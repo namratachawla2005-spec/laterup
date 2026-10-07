@@ -20,7 +20,7 @@ import AnswerView, { type TryResult } from "@/components/talk/AnswerView";
 import EmergencyCard from "@/components/talk/EmergencyCard";
 import BottomNav from "@/components/BottomNav";
 import WellnessNote from "@/components/WellnessNote";
-import { BackIcon } from "@/components/icons";
+import { BackIcon, ClockIcon, TalkIcon } from "@/components/icons";
 
 export type RecentConversation = { id: string; startedAt: string; firstLine: string };
 
@@ -409,7 +409,7 @@ function TalkContent({ userId, profile, recent: initialRecent }: { userId: strin
               type="submit"
               aria-label="Send"
               disabled={!input.trim() || loading}
-              className="flex h-tap w-tap shrink-0 items-center justify-center rounded-full bg-primary text-white disabled:bg-surface disabled:text-text-muted"
+              className="flex h-tap w-tap shrink-0 items-center justify-center rounded-full border-2 border-primary bg-primary text-white disabled:bg-transparent disabled:text-primary"
             >
               <svg viewBox="0 0 20 20" aria-hidden="true" className="h-5 w-5">
                 <path d="M10 16V4M5 9l5-5 5 5" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
@@ -442,14 +442,22 @@ function EmptyState({
 
   return (
     <div className="mb-8">
+      <span aria-hidden="true" className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white">
+        <TalkIcon className="h-7 w-7" />
+      </span>
       <h2 className="text-[1.75rem] font-semibold leading-tight">What&apos;s on your mind?</h2>
       <p className="mt-1 text-text-muted">Say it in your own words.</p>
 
       <ul className="mt-5 space-y-2">
         {suggestedQuestions(topSymptoms).map((q) => (
           <li key={q}>
-            <button type="button" onClick={() => onAsk(q)} className="w-full rounded-card-sm border-2 border-surface px-4 py-2 text-left">
+            <button
+              type="button"
+              onClick={() => onAsk(q)}
+              className="flex w-full items-center justify-between gap-3 rounded-card-sm border-2 border-primary/30 px-4 py-2 text-left"
+            >
               {q}
+              <BackIcon className="h-5 w-5 shrink-0 rotate-180 text-primary" />
             </button>
           </li>
         ))}
@@ -457,7 +465,10 @@ function EmptyState({
 
       {recent.length > 0 && (
         <section className="mt-10" aria-labelledby="recent-heading">
-          <h2 id="recent-heading" className="font-semibold">Recent</h2>
+          <h2 id="recent-heading" className="flex items-center gap-2 font-semibold">
+            <ClockIcon className="h-5 w-5 text-primary" />
+            Recent
+          </h2>
           <ul className="mt-3 divide-y divide-text/10">
             {recent.map((c) => (
               <li key={c.id} className="py-2">
@@ -469,10 +480,13 @@ function EmptyState({
                   </div>
                 ) : (
                   <div className="flex items-center gap-2">
-                    <button type="button" onClick={() => onOpen(c.id)} className="min-w-0 flex-1 rounded-card-sm py-1 text-left">
-                      <span className="block truncate">{c.firstLine}</span>
-                      <span className="block text-helper text-text-muted">
-                        {new Date(c.startedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
+                    <button type="button" onClick={() => onOpen(c.id)} className="flex min-w-0 flex-1 items-start gap-3 rounded-card-sm py-1 text-left">
+                      <TalkIcon className="mt-1 h-5 w-5 shrink-0 text-primary" />
+                      <span className="min-w-0">
+                        <span className="block truncate">{c.firstLine}</span>
+                        <span className="block text-helper text-text-muted">
+                          {new Date(c.startedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
+                        </span>
                       </span>
                     </button>
                     <button
