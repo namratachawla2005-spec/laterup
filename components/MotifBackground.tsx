@@ -1,6 +1,6 @@
 // Faint thin-line decorations behind a page, kept to the edges so the text stays easy to read.
-// "leaves" (Sign up, Log in, About, Plans), "rangoli" corners (Welcome), teal "waves" (Home; on phones Home shows
-// small waves beside its headings instead). Decorative only.
+// "leaves" (Sign up, Log in, About, Plans), "rangoli" corners (Welcome), teal "waves" (Home, Talk, Patterns,
+// Doctor Prep, Settings, Help, SOS; on phones these pages show small HeadingWaves beside a heading instead). Decorative only.
 export default function MotifBackground({
   motif = "leaves",
   children,
@@ -27,10 +27,10 @@ export default function MotifBackground({
       {motif === "waves" && (
         <>
           {/* Only on wide screens, where the side margins are wide enough to keep them clear of the content */}
-          <Waves className="absolute top-[13%] left-[4%] -z-10 hidden w-40 lg:block" />
-          <Waves className="absolute top-[36%] right-[4%] -z-10 hidden w-40 lg:block" />
-          <Waves className="absolute top-[60%] left-[5%] -z-10 hidden w-40 lg:block" />
-          <Waves className="absolute top-[84%] right-[5%] -z-10 hidden w-40 lg:block" />
+          <Waves className="absolute top-[13%] left-[4%] -z-10 hidden w-40 lg:block print:hidden" />
+          <Waves className="absolute top-[36%] right-[4%] -z-10 hidden w-40 lg:block print:hidden" />
+          <Waves className="absolute top-[60%] left-[5%] -z-10 hidden w-40 lg:block print:hidden" />
+          <Waves className="absolute top-[84%] right-[5%] -z-10 hidden w-40 lg:block print:hidden" />
         </>
       )}
       {children}
@@ -121,3 +121,9 @@ export function Waves({ className = "" }: { className?: string }) {
   );
 }
 
+
+// Small teal waves beside a heading on phones and tablets, kept clear of the words
+// (on wide screens the waves sit in the side margins instead)
+export function HeadingWaves() {
+  return <Waves className="ml-auto h-6 w-20 shrink-0 lg:hidden" />;
+}

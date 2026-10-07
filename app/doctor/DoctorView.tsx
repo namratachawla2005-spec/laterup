@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { createClient } from "@/lib/supabase/client";
 import { localDate, useIsBrowser } from "@/lib/local";
 import { addDays, type PatternsData } from "@/lib/patterns";
@@ -15,6 +16,7 @@ import BottomNav from "@/components/BottomNav";
 import WellnessNote from "@/components/WellnessNote";
 import HealthSummary from "@/components/doctor/HealthSummary";
 import HomeWoman from "@/components/HomeWoman";
+import MotifBackground, { HeadingWaves } from "@/components/MotifBackground";
 
 type Props = {
   userId: string;
@@ -30,7 +32,9 @@ export default function DoctorView(props: Props) {
   const isBrowser = useIsBrowser();
   return (
     <>
-      {isBrowser ? <DoctorContent {...props} /> : <main className="flex-1" />}
+      <MotifBackground motif="waves">
+        {isBrowser ? <DoctorContent {...props} /> : <main className="flex-1" />}
+      </MotifBackground>
       <BottomNav />
     </>
   );
@@ -615,7 +619,10 @@ function TakeItWithYou({ example, plainText, onShow }: { example: boolean; plain
 
   return (
     <section className="mt-10" aria-labelledby="take-heading">
-      <h2 id="take-heading" className={h2Class}>Take it with you</h2>
+      <div className="flex items-center gap-6">
+        <h2 id="take-heading" className={h2Class}>Take it with you</h2>
+        <HeadingWaves />
+      </div>
       <div className="mt-4 flex flex-col gap-3">
         <button type="button" onClick={onShow} className="rounded-card bg-primary px-5 font-semibold text-white">
           Show to doctor
@@ -687,7 +694,8 @@ function ShowToDoctor({ summary, onClose }: { summary: Summary; onClose: () => v
     };
   }, [onClose]);
 
-  return (
+  // Drawn at the top level of the page, so nothing (bottom bar, SOS / Help buttons) shows on top
+  return createPortal(
     <div role="dialog" aria-modal="true" aria-label="Health summary" className="fixed inset-0 z-50 overflow-y-auto bg-white print:hidden">
       <div className="sticky top-0 flex justify-end bg-white/95 p-2">
         <button ref={closeRef} type="button" onClick={onClose} aria-label="Close" className="flex h-tap w-tap items-center justify-center rounded-card-sm text-text">
@@ -697,7 +705,8 @@ function ShowToDoctor({ summary, onClose }: { summary: Summary; onClose: () => v
       <div className="mx-auto max-w-2xl px-6 pb-12">
         <HealthSummary summary={summary} />
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 

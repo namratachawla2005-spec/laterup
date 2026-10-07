@@ -4,6 +4,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import WellnessNote from "@/components/WellnessNote";
+import MotifBackground, { HeadingWaves } from "@/components/MotifBackground";
 import { BackIcon } from "@/components/icons";
 import { AlertIcon } from "@/components/FloatingButtons";
 
@@ -27,47 +28,52 @@ const WEBSITES = [
 
 export default function SosPage() {
   return (
-    <main className="mx-auto flex w-full max-w-xl flex-1 flex-col px-5 pt-4 pb-10">
-      <Link href="/" className="-ml-2 inline-flex min-h-tap items-center gap-1 self-start rounded-card-sm px-2 font-medium text-text-muted">
-        <BackIcon /> Back
-      </Link>
+    <MotifBackground motif="waves">
+      <main className="mx-auto flex w-full max-w-xl flex-1 flex-col px-5 pt-4 pb-10">
+        <Link href="/" className="-ml-2 inline-flex min-h-tap items-center gap-1 self-start rounded-card-sm px-2 font-medium text-text-muted">
+          <BackIcon /> Back
+        </Link>
 
-      <h1 className="mt-4 flex items-center gap-2 text-[1.75rem] font-semibold">
-        <AlertIcon className="h-8 w-8 text-accent" />
-        Need help right now?
-      </h1>
-      <p className="mt-1 text-text-muted">Tap a number to call. You don&apos;t have to go through this alone.</p>
+        <h1 className="mt-4 flex items-center gap-2 text-[1.75rem] font-semibold">
+          <AlertIcon className="h-8 w-8 text-accent" />
+          Need help right now?
+        </h1>
+        <p className="mt-1 text-text-muted">Tap a number to call. You don&apos;t have to go through this alone.</p>
 
-      <ul className="mt-6 space-y-3">
-        {PHONES.map((p) => (
-          <li key={p.number}>
-            <a href={`tel:${p.call}`} className="block rounded-card border-l-4 border-accent bg-surface p-4">
-              <span className="block font-semibold">{p.name}</span>
-              <span className="block text-2xl font-semibold text-accent">{p.number}</span>
-              <span className="block text-helper text-text-muted">{p.detail}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
-
-      <section className="mt-10" aria-labelledby="sites-heading">
-        <h2 id="sites-heading" className="text-xl font-semibold text-accent">Government websites</h2>
-        <ul className="mt-3 space-y-2">
-          {WEBSITES.map((w) => (
-            <li key={w.href}>
-              <a href={w.href} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-tap flex-col justify-center">
-                <span className="font-medium text-primary underline underline-offset-4">{w.name}</span>
-                <span className="text-helper text-text-muted">{w.detail}</span>
+        <ul className="mt-6 space-y-3">
+          {PHONES.map((p) => (
+            <li key={p.number}>
+              <a href={`tel:${p.call}`} className="block rounded-card border-l-4 border-accent bg-surface p-4">
+                <span className="block font-semibold">{p.name}</span>
+                <span className="block text-2xl font-semibold text-accent">{p.number}</span>
+                <span className="block text-helper text-text-muted">{p.detail}</span>
               </a>
             </li>
           ))}
         </ul>
-        <p className="mt-4 text-helper text-text-muted">These are services run by the Government of India. LaterUp is not connected to them.</p>
-      </section>
 
-      <div className="mt-auto pt-12">
-        <WellnessNote withEmergency />
-      </div>
-    </main>
+        <section className="mt-10" aria-labelledby="sites-heading">
+          <div className="flex items-center gap-6">
+            <h2 id="sites-heading" className="text-xl font-semibold text-accent">Government websites</h2>
+            <HeadingWaves />
+          </div>
+          <ul className="mt-3 space-y-2">
+            {WEBSITES.map((w) => (
+              <li key={w.href}>
+                <a href={w.href} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-tap flex-col justify-center">
+                  <span className="font-medium text-primary underline underline-offset-4">{w.name}</span>
+                  <span className="text-helper text-text-muted">{w.detail}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 text-helper text-text-muted">These are services run by the Government of India. LaterUp is not connected to them.</p>
+        </section>
+
+        <div className="mt-auto pt-12">
+          <WellnessNote withEmergency />
+        </div>
+      </main>
+    </MotifBackground>
   );
 }

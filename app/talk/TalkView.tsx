@@ -22,6 +22,7 @@ import BottomNav from "@/components/BottomNav";
 import WellnessNote from "@/components/WellnessNote";
 import { BackIcon, ClockIcon, TalkIcon } from "@/components/icons";
 import HomeWoman from "@/components/HomeWoman";
+import MotifBackground, { Waves } from "@/components/MotifBackground";
 import { AlertIcon, HelpIcon } from "@/components/FloatingButtons";
 
 export type RecentConversation = { id: string; startedAt: string; firstLine: string };
@@ -328,65 +329,67 @@ function TalkContent({ userId, profile, recent: initialRecent }: { userId: strin
 
   return (
     <>
-      <header className="mx-auto flex w-full max-w-md items-center gap-2 px-5 pt-4">
-        <Link href="/home" aria-label="Back to Home" className="-ml-3 flex h-tap w-tap items-center justify-center rounded-card-sm text-text-muted">
-          <BackIcon className="h-6 w-6" />
-        </Link>
-        <h1 className="text-xl font-semibold">Talk</h1>
-        <Link href="/sos" aria-label="SOS: emergency numbers" className="ml-auto inline-flex min-h-tap items-center gap-1 rounded-card-sm px-2 font-bold text-accent">
-          <AlertIcon className="h-6 w-6" />
-          SOS
-        </Link>
-        <Link href="/help" className="-mr-2 inline-flex min-h-tap items-center gap-1.5 rounded-card-sm px-2 font-medium text-primary">
-          <HelpIcon className="h-6 w-6" />
-          Help
-        </Link>
-      </header>
+      <MotifBackground motif="waves">
+        <header className="mx-auto flex w-full max-w-md items-center gap-2 px-5 pt-4">
+          <Link href="/home" aria-label="Back to Home" className="-ml-3 flex h-tap w-tap items-center justify-center rounded-card-sm text-text-muted">
+            <BackIcon className="h-6 w-6" />
+          </Link>
+          <h1 className="text-xl font-semibold">Talk</h1>
+          <Link href="/sos" aria-label="SOS: emergency numbers" className="ml-auto inline-flex min-h-tap items-center gap-1 rounded-card-sm px-2 font-bold text-accent">
+            <AlertIcon className="h-6 w-6" />
+            SOS
+          </Link>
+          <Link href="/help" className="-mr-2 inline-flex min-h-tap items-center gap-1.5 rounded-card-sm px-2 font-medium text-primary">
+            <HelpIcon className="h-6 w-6" />
+            Help
+          </Link>
+        </header>
 
-      <main className="mx-auto w-full max-w-md flex-1 px-5 pt-4 pb-56">
-        {empty && (
-          <EmptyState
-            topSymptoms={profile.top_symptoms}
-            recent={recent}
-            onAsk={send}
-            onOpen={reopen}
-            onDelete={removeConversation}
-          />
-        )}
+        <main className="mx-auto w-full max-w-md flex-1 px-5 pt-4 pb-56">
+          {empty && (
+            <EmptyState
+              topSymptoms={profile.top_symptoms}
+              recent={recent}
+              onAsk={send}
+              onOpen={reopen}
+              onDelete={removeConversation}
+            />
+          )}
 
-        <div className="space-y-6">
-          {items.map((item) => {
-            if (item.kind === "user") {
+          <div className="space-y-6">
+            {items.map((item) => {
+              if (item.kind === "user") {
+                return (
+                  <div key={item.id} ref={item.id === lastUserId ? lastUserRef : undefined} className="flex scroll-mt-4 flex-col items-end">
+                    <p className="max-w-[85%] whitespace-pre-wrap rounded-card rounded-br-sm bg-surface px-4 py-3">{item.text}</p>
+                    <p className="mt-1 text-helper text-text-muted">{timeLabel(item.at)}</p>
+                  </div>
+                );
+              }
+              if (item.kind === "simple") {
+                return <p key={item.id} className="text-[1.25rem] leading-relaxed">{item.text}</p>;
+              }
+              if (item.kind === "fallback") {
+                const isLatest = item.id === items[items.length - 1]?.id;
+                return <Fallback key={item.id} onRetry={isLatest && !loading ? () => retry(item) : undefined} />;
+              }
               return (
-                <div key={item.id} ref={item.id === lastUserId ? lastUserRef : undefined} className="flex scroll-mt-4 flex-col items-end">
-                  <p className="max-w-[85%] whitespace-pre-wrap rounded-card rounded-br-sm bg-surface px-4 py-3">{item.text}</p>
-                  <p className="mt-1 text-helper text-text-muted">{timeLabel(item.at)}</p>
-                </div>
+                <AnswerView
+                  key={item.id}
+                  answer={item.answer}
+                  seeDoctorSoon={item.seeDoctorSoon}
+                  animate={item.fresh}
+                  onTry={(action) => tryThis(action, item.answer.symptomTags[0] ?? null)}
+                  onSaveNote={() => saveNote(item)}
+                  onHelpful={rateHelpful}
+                  onFollowUp={send}
+                />
               );
-            }
-            if (item.kind === "simple") {
-              return <p key={item.id} className="text-[1.25rem] leading-relaxed">{item.text}</p>;
-            }
-            if (item.kind === "fallback") {
-              const isLatest = item.id === items[items.length - 1]?.id;
-              return <Fallback key={item.id} onRetry={isLatest && !loading ? () => retry(item) : undefined} />;
-            }
-            return (
-              <AnswerView
-                key={item.id}
-                answer={item.answer}
-                seeDoctorSoon={item.seeDoctorSoon}
-                animate={item.fresh}
-                onTry={(action) => tryThis(action, item.answer.symptomTags[0] ?? null)}
-                onSaveNote={() => saveNote(item)}
-                onHelpful={rateHelpful}
-                onFollowUp={send}
-              />
-            );
-          })}
-          {loading && <Loading />}
-        </div>
-      </main>
+            })}
+            {loading && <Loading />}
+          </div>
+        </main>
+      </MotifBackground>
 
       {/* Text box fixed at the bottom, above the navigation bar */}
       <form
@@ -452,7 +455,11 @@ function EmptyState({
 
   return (
     <div className="mb-8">
-      <HomeWoman scene="thinking" className="mb-3 h-[130px] w-40" />
+      <div className="mb-3 flex items-center">
+        <HomeWoman scene="thinking" className="h-[130px] w-40 shrink-0" />
+        {/* a wave in the space beside her, on phones (wide screens have them in the margins) */}
+        <Waves className="mx-auto h-8 w-24 lg:hidden" />
+      </div>
       <h2 className="text-[1.75rem] font-semibold leading-tight">What&apos;s on your mind?</h2>
       <p className="mt-1 text-text-muted">No question is too small. Only you can see this.</p>
 

@@ -15,6 +15,7 @@ import { sleepWord, energyWord } from "@/lib/checkin";
 import BottomNav from "@/components/BottomNav";
 import WellnessNote from "@/components/WellnessNote";
 import HomeWoman from "@/components/HomeWoman";
+import MotifBackground, { HeadingWaves } from "@/components/MotifBackground";
 
 const RANGE_KEY = "laterup:patterns-range"; // her choice of 2 weeks / 30 days (no health data)
 const SUPPORT_KEY = "laterup:support-dismissed"; // date she closed the support card
@@ -26,7 +27,9 @@ export default function PatternsView(props: { data: PatternsData }) {
   const isBrowser = useIsBrowser();
   return (
     <>
-      {isBrowser ? <PatternsContent {...props} /> : <main className="flex-1" />}
+      <MotifBackground motif="waves">
+        {isBrowser ? <PatternsContent {...props} /> : <main className="flex-1" />}
+      </MotifBackground>
       <BottomNav />
     </>
   );
@@ -315,7 +318,10 @@ function HelpingSection({
 
   return (
     <section className="mt-10" aria-labelledby="helping-heading">
-      <h2 id="helping-heading" className="text-xl font-semibold">What&apos;s helping you</h2>
+      <div className="flex items-center gap-6">
+        <h2 id="helping-heading" className="text-xl font-semibold">What&apos;s helping you</h2>
+        <HeadingWaves />
+      </div>
 
       {active.length === 0 && (
         <div className="mt-3">

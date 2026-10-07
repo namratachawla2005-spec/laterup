@@ -13,7 +13,7 @@ import {
 } from "@/lib/local";
 import Wordmark from "@/components/Wordmark";
 import HomeWoman, { sceneFor } from "@/components/HomeWoman";
-import MotifBackground, { Waves } from "@/components/MotifBackground";
+import MotifBackground, { HeadingWaves } from "@/components/MotifBackground";
 import WellnessNote from "@/components/WellnessNote";
 import BottomNav from "@/components/BottomNav";
 import { FormMessage } from "@/components/AuthFields";
@@ -65,11 +65,6 @@ function TopBar() {
       </Link>
     </header>
   );
-}
-
-// Small teal waves beside a heading, kept clear of the words (on wide screens the waves sit in the side margins instead)
-function HeadingWaves() {
-  return <Waves className="ml-auto h-6 w-20 shrink-0 lg:hidden" />;
 }
 
 // ---------------- Greeting (Section 1) ----------------
