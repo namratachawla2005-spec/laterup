@@ -4,7 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { clearSession } from "@/lib/local";
+import { clearSession, useIsBrowser } from "@/lib/local";
+import { readTextSize, saveTextSize, type TextSize } from "@/lib/textSize";
 import type { Profile } from "@/lib/intake";
 import IntakeFlow from "@/components/intake/IntakeFlow";
 import ProtectPanel from "@/components/intake/ProtectPanel";
@@ -80,6 +81,8 @@ export default function SettingsView({ profile }: { profile: Profile }) {
         </button>
         <ChangePassword onChanged={() => setNotice("Your password has been changed.")} />
       </div>
+
+      <TextSizeChoice />
 
       <div className="mt-6">
         <ProtectPanel />
@@ -197,5 +200,38 @@ function ChangePassword({ onChanged }: { onChanged: () => void }) {
         Cancel
       </button>
     </form>
+  );
+}
+
+// "Text size": Standard or Larger, remembered on this device
+function TextSizeChoice() {
+  const isBrowser = useIsBrowser();
+  return isBrowser ? <TextSizeButtons /> : null;
+}
+
+function TextSizeButtons() {
+  const [size, setSize] = useState<TextSize>(readTextSize);
+  const choose = (s: TextSize) => {
+    setSize(s);
+    saveTextSize(s);
+  };
+  return (
+    <section className="mt-8" aria-labelledby="text-size-heading">
+      <h2 id="text-size-heading" className="font-semibold">Text size</h2>
+      <div role="group" aria-labelledby="text-size-heading" className="mt-3 inline-flex rounded-card bg-surface p-1">
+        {(["standard", "larger"] as const).map((s) => (
+          <button
+            key={s}
+            type="button"
+            aria-pressed={size === s}
+            onClick={() => choose(s)}
+            className={`rounded-card-sm px-5 font-medium ${size === s ? "bg-primary text-white" : "text-text"}`}
+          >
+            {s === "standard" ? "Standard" : "Larger"}
+          </button>
+        ))}
+      </div>
+      <p className="mt-2 text-helper text-text-muted">Saved on this device.</p>
+    </section>
   );
 }

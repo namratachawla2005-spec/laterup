@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Sans, Noto_Sans_Devanagari } from "next/font/google";
 import "./globals.css";
+import { TEXT_SIZE_SCRIPT } from "@/lib/textSize";
 
 // Main font for the whole app
 const dmSans = DM_Sans({
@@ -32,7 +33,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       className={`${dmSans.variable} ${notoDevanagari.variable} h-full`}
+      suppressHydrationWarning // the text size script below may set data-text-size first
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: TEXT_SIZE_SCRIPT }} />
+      </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
