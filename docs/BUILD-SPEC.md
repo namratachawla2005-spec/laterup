@@ -111,7 +111,7 @@ Inside it, two small adapters:
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | browser + server | public-safe |
 | `SUPABASE_SERVICE_ROLE_KEY` | **server only** | never in browser code, never prefixed `NEXT_PUBLIC_` |
 | `AI_PROVIDER` | server | `ollama` locally, `anthropic` on Vercel |
-| `OLLAMA_BASE_URL` | server | `http://192.168.1.6:11434` |
+| `OLLAMA_BASE_URL` | server | `http://192.168.1.4:11434` |
 | `OLLAMA_MODEL` | server | `qwen3.8-q5-65k:latest` |
 | `ANTHROPIC_API_KEY` | **server only** | from Anthropic console |
 | `ANTHROPIC_MODEL` | server | `claude-haiku-4-5-20251001` |
@@ -549,11 +549,11 @@ The full, expanded version of this section, plus the VS Code and Claude Code set
 
 | Item | Value |
 |---|---|
-| Desktop home-wifi address | `192.168.1.6` |
+| Desktop home-wifi address | `192.168.1.4` |
 | WSL internal address (changes on reboot) | `172.17.164.243` at time of setup |
 | Ollama port | `11434` |
 | Model | `qwen3.8-q5-65k:latest` |
-| Address the app uses | `http://192.168.1.6:11434` |
+| Address the app uses | `http://192.168.1.4:11434` |
 
 ### Step 1: Ollama settings (permanent, in WSL)
 
@@ -592,7 +592,7 @@ wsl hostname -I
 ### Step 3: forward Windows traffic into WSL (PowerShell as Administrator)
 
 ```powershell
-netsh interface portproxy add v4tov4 listenaddress=192.168.1.6 listenport=11434 connectaddress=172.17.164.243 connectport=11434
+netsh interface portproxy add v4tov4 listenaddress=192.168.1.4 listenport=11434 connectaddress=172.17.164.243 connectport=11434
 ```
 
 ### Step 4: allow it through the firewall (PowerShell as Administrator)
@@ -605,7 +605,7 @@ New-NetFirewallRule -DisplayName "Ollama 11434" -Direction Inbound -LocalPort 11
 
 ```powershell
 netsh interface portproxy show all
-curl.exe http://192.168.1.6:11434
+curl.exe http://192.168.1.4:11434
 ```
 
 Expect "Ollama is running", then the same in the laptop's browser.
@@ -614,7 +614,7 @@ Expect "Ollama is running", then the same in the laptop's browser.
 
 - **WSL address changes after a reboot.** Rerun Step 2, then:
   ```powershell
-  netsh interface portproxy delete v4tov4 listenaddress=192.168.1.6 listenport=11434
+  netsh interface portproxy delete v4tov4 listenaddress=192.168.1.4 listenport=11434
   ```
   and redo Step 3 with the new address.
 - **"address already in use" on `ollama serve`** means the service is already running. Use `systemctl` as in Step 1 instead of `ollama serve`.

@@ -1,6 +1,6 @@
 # LaterUp: build progress
 
-Last updated: **6 October 2026, end of Day 1**. Deadline: **8 October 2026**.
+Last updated: **7 October 2026, Day 2 (afternoon)**. Deadline: **8 October 2026**.
 Read this with `CLAUDE.md` and `docs/BUILD-SPEC.md` before continuing.
 
 ## Where things are
@@ -17,25 +17,30 @@ Read this with `CLAUDE.md` and `docs/BUILD-SPEC.md` before continuing.
 | Page 4: Patterns (with example mode) | Done | `app/patterns`, `lib/patterns.ts`, `lib/example.ts` |
 | Richer check-in (sleep, energy, all symptoms) | Done (user request) | Home + Patterns + Talk |
 | Page 5: Doctor Prep (with example mode) | Done, 56 browser checks passed | `app/doctor`, `lib/doctor.ts`, `components/doctor/`, `lib/example.ts` |
+| About LaterUp (public) | Done (user request) | `app/about/page.tsx` |
+| Plans (public, pricing only, no payments) | Done (user request) | `app/plans/page.tsx` |
+| Logo, motifs, illustrations | Done (user request) | `components/Logo.tsx`, `app/icon.svg`, `components/MotifBackground.tsx`, `components/HomeWoman.tsx` |
 | Live site | Deployed, auto-deploys from `main` | https://laterup.vercel.app |
 
-GitHub: `namratachawla2005-spec/laterup` (private). Last commit: "Richer daily check-in: sleep, energy and all symptoms".
+GitHub: `namratachawla2005-spec/laterup` (private).
 
-## Day 2 plan (7 October)
+## Still to do (Day 2 evening / 8 Oct)
 
-1. **Page 5: Doctor Prep.** Reassurance line, "Please mention these first", summary with include/exclude toggles (About me, last 30 days incl. sleep and energy, own words, what I've tried, anything else), questions (3 general + up to 3 by symptom, max 8, add own), English / हिंदी conversation starter, which doctor to see, Show to doctor, Save as PDF / Print, WhatsApp + Copy with privacy reminder, after-visit notes, example mode (sharing disabled). Reuse `lib/example.ts` (Meena) and add example doctor notes there.
-2. **Switch the live site to Claude Haiku:** user adds `ANTHROPIC_API_KEY` in Vercel, and changes `MAX_ANSWER_TOKENS` to `500` there (currently 300), then redeploy.
-3. **Haiku quality pass:** run the 12 quality questions (script approach below) against Haiku and read every answer. Check especially: no stage naming, no "since you are seeing a doctor" style profile echo, follow-ups in her voice, cancer/HRT handling.
-4. Optional: add 2 weeks of sample history so the user can see her own Patterns (user hasn't chosen: her account or a separate demo account; ask).
-5. Phone test on the live link. Clear test accounts (Supabase → Authentication → Users) so reviewers have signup slots (cap is 5).
-6. Submission note (BUILD-SPEC section 14). No new features after 6 pm.
+1. **Switch the live site to Claude Haiku** (user, in Vercel): add `ANTHROPIC_API_KEY`, set `MAX_ANSWER_TOKENS` = `500`, Redeploy. Set a monthly spend limit in the Anthropic console.
+2. **Haiku quality pass:** run the quality questions against the live site and read every answer. Check especially: no stage naming, no profile echo, follow-ups in her voice, cancer/HRT handling, emergency path.
+3. **Phone test on the live link**, every page.
+4. **Submission note** (BUILD-SPEC section 14), including About, Plans, pricing, illustrations.
+5. Native Hindi speaker checks the Doctor Prep Hindi starter.
+6. No new features after 6 pm.
+
+Open small decisions: WhatsApp share (wa.me link vs phone share menu); About page is 157 words (user's limit was 150).
 
 ## Things the user must do (Claude can't)
 
 - [ ] Vercel → Settings → Environment Variables: `MAX_ANSWER_TOKENS` = `500`, add `ANTHROPIC_API_KEY`, then Redeploy.
 - [ ] Anthropic console: set a monthly spend limit.
 - [ ] Have a native Hindi speaker check the Doctor Prep Hindi text.
-- [ ] Before submitting: delete test accounts in Supabase.
+- [x] Signup slots for reviewers: `max_signups` raised from 5 to **7** in `app_config` (7 Oct). Only the user's own account exists, so 6 slots are free. Delete any new test accounts before submitting.
 
 ## Decisions made (and why)
 
@@ -53,20 +58,7 @@ GitHub: `namratachawla2005-spec/laterup` (private). Last commit: "Richer daily c
 | Patterns insight 3 copy: "That's a real change worth noticing." (brief: "Whatever you're doing, it's working") | Patterns must never claim a cause. |
 | Richer check-in: sleep (Well / On and off / Barely), energy (Low / Okay / Good), all 12 symptoms via "+ More" | User request. Wording is Claude's; the brief has none. One tap on Good/Okay/Tough still saves the day. |
 | "What were you hoping for?" text (Talk, after "No") is not stored | No column for it; keeps her writing out of storage. Only helpful yes/no is saved. |
-| `allowedDevOrigins: ["192.168.1.8"]` in `next.config.ts` | Lets a phone on home wifi open the dev server. Update if the laptop's IP changes. |
-
-## How to run and test
-
-- `npm run dev` → http://localhost:3000. The user reviews in VS Code's **Simple Browser** (right side): after each change, tell her which URL to open and what to look at.
-- Local AI: `AI_PROVIDER=ollama` in `.env.local` (Qwen on the desktop at `192.168.1.6:11434`, home wifi only). Vercel uses `anthropic`.
-- Phone: use the live site (https). The dev server over LAN shows "Not secure".
-- Testing approach used today: headless Edge driven over the DevTools protocol from small Node scripts in the session scratchpad (throwaway accounts created with the service role key, deleted afterwards). Pure rules (`lib/patterns.ts`, `lib/answers.ts`, `lib/safety.ts`) were tested by copying `lib/*.ts` to a scratch folder with `.ts` import suffixes and running with Node's type stripping. No Python on this laptop.
-
-## Known limitations
-
-- First Talk question after a long break may show the fallback locally (Qwen waking up). Tap Try again. Not an issue on Haiku.
-- Talk "Recent" shows the last 5 conversations only.
-- Off-topic detection on the device is a short word list; the model handles the rest.
+| `allowedDevOrigins: ["192.168.1.5"]` in `next.config.ts` | Lets a phone on home wifi open the dev server. Update if the laptop's IP changes (was .8 on Day 1). |
 
 ## Day 2 decisions
 
@@ -78,3 +70,24 @@ GitHub: `namratachawla2005-spec/laterup` (private). Last commit: "Richer daily c
 | Print fits one A4 page by dropping the oldest "own words" notes first | Brief section 8; mention-first and questions always kept. |
 | "Remove" on a doctor note deletes it (inline confirm); the toggle only hides it from the summary | Brief gives both a toggle and Remove. |
 | WhatsApp uses a wa.me link (summary in WhatsApp's link, only after "Share anyway") | Brief behaviour. Alternative: phone share menu. User to choose. |
+| **No emojis anywhere** in the app (removed 👀, 📅, 🌿; check-in thanks is "Thanks for checking in!") | User request. |
+| Logo: thin-line sunrise (terracotta sun, teal horizon) beside the wordmark; bolder version as the tab icon (`app/icon.svg`) | User chose sunrise from 4 options. |
+| Welcome sub line adds "For women in the years before, during and after menopause." | User request; brief updated to match. |
+| Page motifs (`MotifBackground`): rangoli corners on Welcome; teal leaves on Sign up, Log in, About, Plans; teal waves on Home (beside headings on phones, side margins on wide screens). Talk: none (user's choice) | User request. Decorations must never come near text: leaves only in the top-right corner on phones, other sprigs only where margins are empty; measured at 5 widths. |
+| One illustrated woman (`HomeWoman`): sari, bindi, bun, teal pallu. Home scene follows the time of day (chai, reading, music, asleep); Talk: thinking with a "?" bubble; Patterns: teal butterflies; Doctor Prep: talking with a doctor | User request. Yoga and garland tried and rejected. Not in print view. |
+| More teal: Help me understand / Send buttons show a teal outline when empty; suggested-question cards have teal borders and arrows; lock icon teal | User felt the page lacked teal. |
+| About page: sunrise over title, two jaali dividers, faint leaves; founder line "by a 20-year-old who has watched her mother and countless other women live with pain, and wishes to see them more energetic and happy" | User wording. 157 words vs the user's 150 target; user to decide. |
+| Plans: Free (Patterns, Doctor Prep, try-and-track, Hindi starter); Plus **₹299/month or ₹2,499/year** ("A higher daily limit for questions on Talk", 4-week programmes, yoga/breathing/sleep, gynaecologist Q&A, coach chat, partner gynaecologist visits); workplaces and clinics. No payments; "Coming soon" / "Contact us" labels | User request. "Seems to help" wording kept (patterns are observations). Pricing from cost analysis: Haiku ≈ ₹0.40 per question; ₹149 ran at a loss once GST, fees and coaching were counted. |
+
+## How to run and test
+
+- `npm run dev` → http://localhost:3000. The user reviews in VS Code's **Simple Browser** (right side): after each change, tell her which URL to open and what to look at.
+- Local AI: `AI_PROVIDER=ollama` in `.env.local` (Qwen on the desktop at `192.168.1.4:11434`, home wifi only; was .6 on Day 1). Vercel uses `anthropic`.
+- Phone: use the live site (https). The dev server over LAN shows "Not secure".
+- Testing approach: headless Edge driven over the DevTools protocol from small Node scripts in the session scratchpad (throwaway accounts created with the service role key, deleted afterwards). Pure rules (`lib/patterns.ts`, `lib/answers.ts`, `lib/safety.ts`) were tested by copying `lib/*.ts` to a scratch folder with `.ts` import suffixes and running with Node's type stripping. No Python on this laptop.
+
+## Known limitations
+
+- First Talk question after a long break may show the fallback locally (Qwen waking up). Tap Try again. Not an issue on Haiku.
+- Talk "Recent" shows the last 5 conversations only.
+- Off-topic detection on the device is a short word list; the model handles the rest.

@@ -19,7 +19,7 @@ During development, the Talk page calls a local model instead of the paid Claude
 
 ```mermaid
 flowchart LR
-  L[Laptop: VS Code + npm run dev] -->|http://192.168.1.6:11434| W[Windows on desktop<br/>port forward 11434]
+  L[Laptop: VS Code + npm run dev] -->|http://192.168.1.4:11434| W[Windows on desktop<br/>port forward 11434]
   W -->|172.17.x.x:11434| O[Ollama inside WSL]
   O --> M[qwen3.8-q5-65k on RTX 5090]
   D[Desktop's own tools] --> O
@@ -31,11 +31,11 @@ flowchart LR
 
 | Item | Value |
 |---|---|
-| Desktop home-wifi address | `192.168.1.6` |
+| Desktop home-wifi address | `192.168.1.4` |
 | WSL internal address (changes on reboot) | `172.17.164.243` at time of setup |
 | Ollama port | `11434` |
 | Model | `qwen3.8-q5-65k:latest` (about 21 GB) |
-| Address the laptop and the app use | `http://192.168.1.6:11434` |
+| Address the laptop and the app use | `http://192.168.1.4:11434` |
 
 ### 1.4 Desktop: Ollama settings (in WSL)
 
@@ -104,7 +104,7 @@ Use the first number shown. Plain `hostname -I` in PowerShell fails, because Win
 **Add the forward** (PowerShell as Administrator), using that number:
 
 ```powershell
-netsh interface portproxy add v4tov4 listenaddress=192.168.1.6 listenport=11434 connectaddress=172.17.164.243 connectport=11434
+netsh interface portproxy add v4tov4 listenaddress=192.168.1.4 listenport=11434 connectaddress=172.17.164.243 connectport=11434
 ```
 
 **Allow it through the firewall** (PowerShell as Administrator):
@@ -119,12 +119,12 @@ On the desktop (PowerShell):
 
 ```powershell
 netsh interface portproxy show all
-curl.exe http://192.168.1.6:11434
+curl.exe http://192.168.1.4:11434
 ```
 
-The first lists `192.168.1.6 11434 -> 172.17.164.243 11434`. The second prints "Ollama is running".
+The first lists `192.168.1.4 11434 -> 172.17.164.243 11434`. The second prints "Ollama is running".
 
-On the laptop: open `http://192.168.1.6:11434` in a browser. It should show "Ollama is running".
+On the laptop: open `http://192.168.1.4:11434` in a browser. It should show "Ollama is running".
 
 ### 1.7 Laptop: point the app at the desktop
 
@@ -132,7 +132,7 @@ In the project's `.env.local` on the laptop:
 
 ```bash
 AI_PROVIDER=ollama
-OLLAMA_BASE_URL=http://192.168.1.6:11434
+OLLAMA_BASE_URL=http://192.168.1.4:11434
 OLLAMA_MODEL=qwen3.8-q5-65k:latest
 ```
 
@@ -149,18 +149,18 @@ On Vercel, set `AI_PROVIDER=anthropic` instead and do not add `OLLAMA_BASE_URL`.
 | `echo $OLLAMA_HOST` prints nothing | Not set in this terminal | Run the `export` lines in 1.4 in the same terminal as `ollama serve` |
 | Laptop lost access after closing the terminal or restarting | `export` settings are gone | Repeat 1.4, or do the permanent option |
 | Desktop works, laptop doesn't | Firewall rule missing, or wifi marked Public | Re-run the firewall rule; set the home wifi to Private in Windows settings |
-| `192.168.1.6` no longer works | Router gave the desktop a new address | Check `ipconfig` on the desktop, update the forward and `OLLAMA_BASE_URL` |
+| `192.168.1.4` no longer works | Router gave the desktop a new address | Check `ipconfig` on the desktop, update the forward and `OLLAMA_BASE_URL` |
 | Works at home, not at college | Expected: home wifi only | Use `AI_PROVIDER=anthropic` when away from home |
 | `ollma: command not found` | Typo | It's `ollama` |
 
 **Replacing the forward after a WSL address change** (PowerShell as Administrator):
 
 ```powershell
-netsh interface portproxy delete v4tov4 listenaddress=192.168.1.6 listenport=11434
-netsh interface portproxy add v4tov4 listenaddress=192.168.1.6 listenport=11434 connectaddress=<new WSL address> connectport=11434
+netsh interface portproxy delete v4tov4 listenaddress=192.168.1.4 listenport=11434
+netsh interface portproxy add v4tov4 listenaddress=192.168.1.4 listenport=11434 connectaddress=<new WSL address> connectport=11434
 ```
 
-**Simpler long-term alternative:** run Ollama on Windows directly instead of inside WSL. It then listens on `192.168.1.6` natively and the port forward is no longer needed, so reboots stop breaking it.
+**Simpler long-term alternative:** run Ollama on Windows directly instead of inside WSL. It then listens on `192.168.1.4` natively and the port forward is no longer needed, so reboots stop breaking it.
 
 ### 1.9 Handy Ollama commands
 

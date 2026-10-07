@@ -38,7 +38,7 @@ Plus the auth screens (Sign up, Log in) that gate the app. Do not add any other 
 - **Two server routes**, the only places model keys and the Supabase service role key are used:
   - `/api/understand`: runs the emergency, length, topic and daily-cap checks, calls the brain connector, validates the answer, and records token usage.
   - `/api/delete-account`: deletes her account and every row she owns.
-- Local dev model: Ollama at `http://192.168.1.6:11434`, model `qwen3.8-q5-65k:latest`, sent with `think: false`.
+- Local dev model: Ollama at `http://192.168.1.4:11434`, model `qwen3.8-q5-65k:latest`, sent with `think: false`.
 - Demo model: Anthropic Claude API, model `claude-haiku-4-5-20251001`. Key from `ANTHROPIC_API_KEY`.
 - Deployed on Vercel from a GitHub repository.
 - No other backend, no other paid services, no extra libraries unless I approve them.
