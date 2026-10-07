@@ -65,7 +65,7 @@ export async function POST(request: Request) {
   const [{ data: profile }, { data: checkIns }] = await Promise.all([
     supabase
       .from("profiles")
-      .select("age_group, stage, top_symptoms, diet, life_context, doctor_status")
+      .select("age_group, stage, top_symptoms, diet, life_context, doctor_status, symptoms_other, diet_other, life_context_other")
       .eq("id", user.id)
       .single(),
     supabase.from("check_ins").select("feeling, sleep, energy").order("date", { ascending: false }).limit(3),
@@ -82,7 +82,10 @@ export async function POST(request: Request) {
     profile: {
       ageGroup: profile?.age_group ?? null,
       stage: profile?.stage ?? null,
-      topSymptoms: profile?.top_symptoms ?? [],
+      topSymptoms: (profile?.top_symptoms ?? []).filter((s: string) => s !== "none"),
+      otherConcern: profile?.symptoms_other ?? null,
+      dietOther: profile?.diet_other ?? null,
+      lifeOther: profile?.life_context_other ?? null,
       diet: profile?.diet ?? null,
       lifeContext: profile?.life_context ?? [],
       doctorStatus: profile?.doctor_status ?? null,

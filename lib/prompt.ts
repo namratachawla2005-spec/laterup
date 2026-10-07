@@ -127,7 +127,8 @@ LOW MOOD AND SAFETY
 
 WHAT YOU RECEIVE
 Her message comes as JSON with: "message" (her words), "profile" (ageGroup,
-stage, topSymptoms, diet, lifeContext, doctorStatus), "seeDoctorSoon" and
+stage, topSymptoms, diet, lifeContext, doctorStatus, and her own words for
+"something else" / "other" in otherConcern, dietOther, lifeOther; any may be null), "seeDoctorSoon" and
 "recentCheckins" (her last few days: "day" is good, okay or tough; "sleep" is
 well, on_off or barely; "energy" is low, okay or good; any may be null). Earlier
 turns of the

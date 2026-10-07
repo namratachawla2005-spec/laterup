@@ -6,7 +6,7 @@
 // Patterns: the plain rules behind Page 4 (docs/pages/04-patterns.md, Sections 6 and 9).
 // No AI. Everything is counted from her own check-ins on her device.
 // Always counts ("5 of 6"), never percentages. Observations, never causes.
-import { SYMPTOMS, labelFor } from "./intake";
+import { SYMPTOMS, labelFor, isRealSymptom } from "./intake";
 import { daysBetween } from "./local";
 import { SLEPT_BADLY } from "./checkin";
 
@@ -95,7 +95,7 @@ export function symptomDays(dates: string[], checkIns: CheckIn[], conversations:
 
 export function topSymptoms(map: Map<string, Set<string>>, limit = 5) {
   return [...map.entries()]
-    .filter(([s]) => s !== "something_else")
+    .filter(([s]) => isRealSymptom(s))
     .map(([symptom, days]) => ({ symptom, days: days.size }))
     .sort((a, b) => b.days - a.days)
     .slice(0, limit);
@@ -147,7 +147,7 @@ export function insights(current: Day[], previous: Day[], data: PatternsData, pe
   type Candidate = { key: string; withDays: Day[]; withoutDays: Day[] };
   const candidates: Candidate[] = [];
   for (const [symptom, daySet] of sDays) {
-    if (symptom === "something_else") continue;
+    if (!isRealSymptom(symptom)) continue;
     candidates.push({
       key: symptom,
       withDays: checked.filter((d) => daySet.has(d.date)),

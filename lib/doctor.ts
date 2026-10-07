@@ -6,7 +6,7 @@
 // Doctor Prep: the plain rules behind Page 5 (docs/pages/05-doctor-prep.md).
 // No AI. Everything is assembled from her own data with fixed templates.
 // Her stage is always shown in her own words, never as a medical label.
-import { AGE_GROUPS, DIETS, labelFor } from "./intake";
+import { AGE_GROUPS, DIETS, labelFor, isRealSymptom } from "./intake";
 import { daysBetween } from "./local";
 import {
   lastNDates, buildDays, symptomDays, topSymptoms, tryingResult, symptomName, symptomLower,
@@ -32,6 +32,8 @@ export type DoctorProfile = {
   top_symptoms: string[];
   diet: string | null;
   doctor_status: string | null;
+  symptoms_other?: string | null;
+  diet_other?: string | null;
 };
 
 export const DEFAULT_INCLUDE: Include = {
@@ -76,7 +78,7 @@ const SYMPTOM_QUESTIONS: Record<string, string> = {
 export function suggestedQuestions(symptoms: string[], soonNotes: DoctorNote[]): string[] {
   const list: string[] = [];
   if (soonNotes.length) {
-    const tag = soonNotes[0].symptom_tags.find((t) => t !== "something_else");
+    const tag = soonNotes[0].symptom_tags.find(isRealSymptom);
     list.push(tag ? `What should I do about my ${symptomLower(tag)}?` : "What should I do about what I mentioned first?");
   }
   list.push(...GENERAL_QUESTIONS);
@@ -149,9 +151,13 @@ export function aboutMeLines(p: DoctorProfile, withDiet: boolean): string[] {
   const lines: string[] = [];
   if (p.age_group) lines.push(`Age group: ${labelFor(AGE_GROUPS, p.age_group)}`);
   if (p.stage_answer) lines.push(`Periods: "${p.stage_answer}"`);
-  const concerns = p.top_symptoms.filter((s) => s !== "something_else").map(symptomName);
+  const concerns = p.top_symptoms.filter(isRealSymptom).map(symptomName);
+  if (p.symptoms_other) concerns.push(`"${p.symptoms_other}"`); // her own words
   if (concerns.length) lines.push(`Main concerns: ${sentenceCase(concerns)}`);
-  if (withDiet && p.diet && p.diet !== "prefer_not_to_say") lines.push(`Diet: ${labelFor(DIETS, p.diet)}`);
+  else if (p.top_symptoms.includes("none")) lines.push("Main concerns: none right now");
+  if (withDiet && p.diet && p.diet !== "prefer_not_to_say") {
+    lines.push(`Diet: ${p.diet === "other" && p.diet_other ? p.diet_other : labelFor(DIETS, p.diet)}`);
+  }
   return lines;
 }
 
@@ -160,7 +166,7 @@ export function experiencingLines(data: PatternsData, p: DoctorProfile, today: s
   const dates = lastNDates(today, 30);
   const days = buildDays(dates, data.checkIns).filter((d) => d.checkIn);
   if (days.length < 7) {
-    const started = p.top_symptoms.filter((s) => s !== "something_else").map(symptomName);
+    const started = p.top_symptoms.filter(isRealSymptom).map(symptomName);
     return {
       intro: "I've started tracking recently. Here's what I've noticed so far:",
       lines: started.length ? started : ["Some changes in my body and mood"],
@@ -204,7 +210,7 @@ export function triedLines(data: PatternsData): string[] {
 export function leadingSymptoms(data: PatternsData, p: DoctorProfile, today: string): string[] {
   const dates = lastNDates(today, 30);
   const fromData = topSymptoms(symptomDays(dates, data.checkIns, data.conversations)).map((s) => s.symptom);
-  return [...new Set([...fromData, ...p.top_symptoms])].filter((s) => s !== "something_else");
+  return [...new Set([...fromData, ...p.top_symptoms])].filter(isRealSymptom);
 }
 
 // ---------------- The finished summary (Show to doctor, Print, WhatsApp, Copy) ----------------

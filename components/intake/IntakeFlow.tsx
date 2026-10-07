@@ -16,7 +16,7 @@ import { FormMessage } from "@/components/AuthFields";
 import RisingSun from "./RisingSun";
 import {
   AGE_GROUPS, STAGES, SYMPTOMS, DIETS, LIFE_CONTEXT, DOCTOR_STATUS,
-  MAX_NAME_LENGTH, MAX_SYMPTOMS, labelFor, buildReflection,
+  MAX_NAME_LENGTH, MAX_SYMPTOMS, MAX_OTHER_LENGTH, labelFor, buildReflection,
   type Option, type Profile,
 } from "@/lib/intake";
 
@@ -28,6 +28,9 @@ type Answers = {
   diet: string | null;
   life_context: string[];
   doctor_status: string | null;
+  symptoms_other: string;
+  diet_other: string;
+  life_context_other: string;
 };
 
 type Question =
@@ -39,7 +42,7 @@ const QUESTIONS: Question[] = [
   { id: "name", kind: "text", title: "What would you like us to call you?" },
   { id: "age_group", kind: "single", title: "Which age group are you in?", options: AGE_GROUPS },
   { id: "stage", kind: "single", title: "Which of these sounds most like you right now?", options: STAGES },
-  { id: "top_symptoms", kind: "multi", title: "What's been bothering you most lately?", helper: "Pick up to 3", options: SYMPTOMS, max: MAX_SYMPTOMS },
+  { id: "top_symptoms", kind: "multi", title: "What's been bothering you most lately?", helper: "Pick up to 5", options: SYMPTOMS, max: MAX_SYMPTOMS, exclusive: "none" },
   { id: "diet", kind: "single", title: "How do you usually eat?", options: DIETS },
   { id: "life_context", kind: "multi", title: "What does your life look like these days?", helper: "Pick all that apply", options: LIFE_CONTEXT, exclusive: "prefer_not_to_say" },
   { id: "doctor_status", kind: "single", title: "Have you spoken to a doctor about these changes?", options: DOCTOR_STATUS },
@@ -54,10 +57,23 @@ function fieldsFor(q: Question, a: Answers) {
       return { name: a.name.trim() || null };
     case "stage":
       return { stage: a.stage, stage_answer: a.stage ? labelFor(STAGES, a.stage) : null };
+    case "top_symptoms":
+      return { top_symptoms: a.top_symptoms, symptoms_other: a.top_symptoms.includes("something_else") ? a.symptoms_other.trim() || null : null };
+    case "diet":
+      return { diet: a.diet, diet_other: a.diet === "other" ? a.diet_other.trim() || null : null };
+    case "life_context":
+      return { life_context: a.life_context, life_context_other: a.life_context.includes("other") ? a.life_context_other.trim() || null : null };
     default:
       return { [q.id]: a[q.id] };
   }
 }
+
+// The box for her own words, shown when she picks "Something else" or "Other"
+const OTHER_FIELD: Partial<Record<Question["id"], { show: (a: Answers) => boolean; key: "symptoms_other" | "diet_other" | "life_context_other"; label: string }>> = {
+  top_symptoms: { show: (a) => a.top_symptoms.includes("something_else"), key: "symptoms_other", label: "What else has been bothering you?" },
+  diet: { show: (a) => a.diet === "other", key: "diet_other", label: "How do you usually eat?" },
+  life_context: { show: (a) => a.life_context.includes("other"), key: "life_context_other", label: "Tell us a little about your life at home" },
+};
 
 function isAnswered(q: Question, a: Answers) {
   if (q.kind === "text") return a.name.trim().length > 0;
@@ -90,6 +106,9 @@ export default function IntakeFlow({
     diet: profile.diet,
     life_context: profile.life_context ?? [],
     doctor_status: profile.doctor_status,
+    symptoms_other: profile.symptoms_other ?? "",
+    diet_other: profile.diet_other ?? "",
+    life_context_other: profile.life_context_other ?? "",
   });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -304,6 +323,24 @@ export default function IntakeFlow({
               onChange={(values) => setAnswers({ ...answers, [q.id]: values })}
             />
           )}
+
+          {OTHER_FIELD[q.id]?.show(answers) && (() => {
+            const other = OTHER_FIELD[q.id]!;
+            return (
+              <div className="mt-5">
+                <label htmlFor="other-answer" className="block font-medium">{other.label}</label>
+                <input
+                  id="other-answer"
+                  type="text"
+                  maxLength={MAX_OTHER_LENGTH}
+                  placeholder="In your own words (optional)"
+                  value={answers[other.key]}
+                  onChange={(e) => setAnswers({ ...answers, [other.key]: e.target.value })}
+                  className="mt-2 w-full rounded-card-sm border-2 border-transparent bg-surface px-4 text-body placeholder:text-text-muted focus:border-primary focus:outline-none"
+                />
+              </div>
+            );
+          })()}
         </div>
 
         <div className="mt-8 space-y-4">

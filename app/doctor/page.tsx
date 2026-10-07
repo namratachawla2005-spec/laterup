@@ -19,7 +19,7 @@ export default async function DoctorPage() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("age_group, stage_answer, top_symptoms, diet, doctor_status, intake_completed")
+    .select("age_group, stage_answer, top_symptoms, diet, doctor_status, symptoms_other, diet_other, intake_completed")
     .eq("id", user.id)
     .single();
   if (!profile?.intake_completed) redirect("/");
@@ -61,6 +61,8 @@ export default async function DoctorPage() {
         top_symptoms: profile.top_symptoms ?? [],
         diet: profile.diet,
         doctor_status: profile.doctor_status,
+        symptoms_other: profile.symptoms_other,
+        diet_other: profile.diet_other,
       }}
       data={{
         checkIns: checkIns.data ?? [],

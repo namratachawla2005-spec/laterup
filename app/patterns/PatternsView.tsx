@@ -17,6 +17,7 @@ import {
 } from "@/lib/patterns";
 import { examplePatterns } from "@/lib/example";
 import { sleepWord, energyWord } from "@/lib/checkin";
+import { isRealSymptom } from "@/lib/intake";
 import BottomNav from "@/components/BottomNav";
 import WellnessNote from "@/components/WellnessNote";
 import HomeWoman from "@/components/HomeWoman";
@@ -253,8 +254,9 @@ function DotGrid({ days, showLetters }: { days: Day[]; showLetters: boolean }) {
           `${shortDate(pickedDay.date)}: ${pickedDay.checkIn ? FEELING_WORD[pickedDay.checkIn.feeling] : "No check-in"}.` +
             (pickedDay.checkIn?.sleep ? ` Slept: ${sleepWord(pickedDay.checkIn.sleep)}.` : "") +
             (pickedDay.checkIn?.energy ? ` Energy: ${energyWord(pickedDay.checkIn.energy)}.` : "") +
-            (pickedDay.checkIn?.bothering.length
-              ? ` Bothered by: ${pickedDay.checkIn.bothering.map(symptomLower).join(", ")}.`
+            (pickedDay.checkIn?.bothering.includes("none") ? " Everything was good." : "") +
+            (pickedDay.checkIn?.bothering.some(isRealSymptom)
+              ? ` Bothered by: ${pickedDay.checkIn.bothering.filter(isRealSymptom).map(symptomLower).join(", ")}.`
               : "")}
       </p>
 

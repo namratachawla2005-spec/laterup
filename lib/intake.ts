@@ -19,6 +19,9 @@ export type Profile = {
   diet: string | null;
   life_context: string[];
   doctor_status: string | null;
+  symptoms_other?: string | null; // her words for "Something else"
+  diet_other?: string | null; // her words for diet "Other"
+  life_context_other?: string | null; // her words for life "Other"
   consent_given: boolean;
   consent_date: string | null;
   intake_step: number;
@@ -26,7 +29,11 @@ export type Profile = {
 };
 
 export const MAX_NAME_LENGTH = 30;
-export const MAX_SYMPTOMS = 3;
+export const MAX_SYMPTOMS = 5;
+export const MAX_OTHER_LENGTH = 100; // typed "Something else" / "Other" answers
+
+// "Something else" and "Nothing right now" are answers, not symptoms to count or name
+export const isRealSymptom = (s: string) => s !== "something_else" && s !== "none";
 
 export const AGE_GROUPS: Option[] = [
   { value: "under_40", label: "Under 40" },
@@ -59,6 +66,7 @@ export const SYMPTOMS: Option[] = [
   { value: "hair_skin", label: "Hair or skin changes" },
   { value: "intimacy", label: "Discomfort during intimacy" },
   { value: "something_else", label: "Something else" },
+  { value: "none", label: "Nothing right now, I'm feeling good" },
 ];
 
 export const DIETS: Option[] = [
@@ -67,6 +75,7 @@ export const DIETS: Option[] = [
   { value: "non_vegetarian", label: "Non-vegetarian" },
   { value: "jain", label: "Jain" },
   { value: "vegan", label: "Vegan" },
+  { value: "other", label: "Other" },
   { value: "prefer_not_to_say", label: "Prefer not to say" },
 ];
 
@@ -75,9 +84,11 @@ export const LIFE_CONTEXT: Option[] = [
   { value: "works_from_home", label: "I work from home" },
   { value: "manages_home", label: "I manage the home full time" },
   { value: "joint_family", label: "I live in a joint family" },
+  { value: "nuclear_family", label: "I live in a nuclear family" },
   { value: "cares_for_elders", label: "I care for parents or in-laws" },
   { value: "children_at_home", label: "I have children at home" },
   { value: "lives_alone", label: "I live alone" },
+  { value: "other", label: "Other" },
   { value: "prefer_not_to_say", label: "Prefer not to say" },
 ];
 
@@ -103,14 +114,16 @@ export function buildReflection(p: Pick<Profile, "name" | "top_symptoms" | "age_
   const headline = p.name ? `Thank you, ${p.name}.` : "Thank you for sharing.";
 
   const named = p.top_symptoms
-    .filter((s) => s !== "something_else")
+    .filter(isRealSymptom)
     .map((s) => {
       const label = labelFor(SYMPTOMS, s);
       return label.charAt(0).toLowerCase() + label.slice(1);
     });
 
-  const sentences =
-    named.length > 0
+  const feelingGood = p.top_symptoms.length === 1 && p.top_symptoms[0] === "none";
+  const sentences = feelingGood
+    ? ["Lovely to hear you're feeling good.", "LaterUp is here whenever you need it, for questions big or small."]
+    : named.length > 0
       ? [
           `You mentioned ${joinWithAnd(named)}.`,
           "Many women go through this in midlife, and you're not alone in it.",

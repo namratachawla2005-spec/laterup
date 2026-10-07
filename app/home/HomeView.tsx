@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { SYMPTOMS, labelFor } from "@/lib/intake";
+import { SYMPTOMS, labelFor, isRealSymptom, MAX_OTHER_LENGTH } from "@/lib/intake";
 import { SLEEP_OPTIONS, ENERGY_OPTIONS } from "@/lib/checkin";
 import { suggestedQuestions } from "@/lib/questions";
 import {
@@ -25,7 +25,7 @@ import { FormMessage } from "@/components/AuthFields";
 import { BackIcon, GearIcon, LockIcon, SunIcon, PartSunIcon, CloudIcon } from "@/components/icons";
 
 type Feeling = "good" | "okay" | "tough";
-type CheckIn = { date: string; feeling: Feeling; bothering: string[]; sleep?: string | null; energy?: string | null };
+type CheckIn = { date: string; feeling: Feeling; bothering: string[]; bothering_other?: string | null; sleep?: string | null; energy?: string | null };
 type TryingItem = { id: string; action: string; for_symptom: string | null; started_date: string };
 type Feedback = { trying_id: string; date: string; answer: string };
 
@@ -262,21 +262,36 @@ function CheckInSection({
   const [sleep, setSleep] = useState<string | null>(existing?.sleep ?? null);
   const [energy, setEnergy] = useState<string | null>(existing?.energy ?? null);
   const [bothering, setBothering] = useState<string[]>(existing?.bothering ?? []);
+  const [botheringOther, setBotheringOther] = useState(existing?.bothering_other ?? "");
   const [stage, setStage] = useState<"pick" | "follow" | "done">(existing ? "done" : "pick");
   const [error, setError] = useState("");
 
-  // Her top symptoms first, then "More" reveals all of them
-  const mine = topSymptoms.filter((s) => s !== "something_else").slice(0, 3);
-  const others = SYMPTOMS.map((s) => s.value).filter((s) => !mine.includes(s) && s !== "something_else");
+  // "Everything is good" first, then her top symptoms, then "More" reveals all of them
+  const mine = topSymptoms.filter(isRealSymptom).slice(0, 3);
+  const others = SYMPTOMS.map((s) => s.value).filter((s) => !mine.includes(s) && isRealSymptom(s));
   const [showAll, setShowAll] = useState(() => bothering.some((b) => others.includes(b)));
-  const chipOptions = [...mine, ...(showAll ? others : []), "something_else"];
+  const chipOptions = ["none", ...mine, ...(showAll ? others : []), "something_else"];
+  const chipLabel = (s: string) => (s === "none" ? "Everything is good" : labelFor(SYMPTOMS, s));
+
+  // "Everything is good" clears the others; picking anything else clears it
+  function toggleChip(s: string, on: boolean) {
+    if (on) setBothering(bothering.filter((x) => x !== s));
+    else if (s === "none") setBothering(["none"]);
+    else setBothering([...bothering.filter((x) => x !== "none"), s]);
+  }
 
   // One check-in per day: saving again updates today's
   async function saveCheckIn(f: Feeling) {
     setError("");
     const { error } = await supabase
       .from("check_ins")
-      .upsert({ user_id: userId, date: today, feeling: f, bothering, sleep, energy }, { onConflict: "user_id,date" });
+      .upsert(
+        {
+          user_id: userId, date: today, feeling: f, bothering, sleep, energy,
+          bothering_other: bothering.includes("something_else") ? botheringOther.trim() || null : null,
+        },
+        { onConflict: "user_id,date" }
+      );
     if (error) setError(SAVE_ERROR);
     return !error;
   }
@@ -367,13 +382,13 @@ function CheckInSection({
                       key={s}
                       type="button"
                       aria-pressed={on}
-                      onClick={() => setBothering(on ? bothering.filter((x) => x !== s) : [...bothering, s])}
+                      onClick={() => toggleChip(s, on)}
                       className={`inline-flex items-center gap-2 rounded-card-sm px-4 py-2 ${
                         on ? "bg-primary text-white" : "bg-surface text-text"
                       }`}
                     >
                       {on && <span aria-hidden="true">✓</span>}
-                      {labelFor(SYMPTOMS, s)}
+                      {chipLabel(s)}
                     </button>
                   );
                 })}
@@ -387,6 +402,20 @@ function CheckInSection({
                   </button>
                 )}
               </div>
+              {bothering.includes("something_else") && (
+                <div className="mt-4">
+                  <label htmlFor="bothering-other" className="block font-medium">What else is bothering you?</label>
+                  <input
+                    id="bothering-other"
+                    type="text"
+                    maxLength={MAX_OTHER_LENGTH}
+                    placeholder="In your own words (optional)"
+                    value={botheringOther}
+                    onChange={(e) => setBotheringOther(e.target.value)}
+                    className="mt-2 w-full rounded-card-sm border-2 border-transparent bg-surface px-4 text-body placeholder:text-text-muted focus:border-primary focus:outline-none"
+                  />
+                </div>
+              )}
               </div>
               <button
                 type="button"

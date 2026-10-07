@@ -25,7 +25,7 @@ export default async function HomePage() {
   if (!profile?.intake_completed) redirect("/");
 
   const [checkIns, conversations, trying] = await Promise.all([
-    supabase.from("check_ins").select("date, feeling, bothering, sleep, energy").order("date", { ascending: false }).limit(3),
+    supabase.from("check_ins").select("date, feeling, bothering, bothering_other, sleep, energy").order("date", { ascending: false }).limit(3),
     supabase.from("conversations").select("id").limit(1),
     supabase
       .from("trying")

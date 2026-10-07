@@ -35,6 +35,7 @@ export default async function Page1() {
         profile ?? {
           id: user.id, name: null, age_group: null, stage: null, stage_answer: null,
           top_symptoms: [], diet: null, life_context: [], doctor_status: null,
+          symptoms_other: null, diet_other: null, life_context_other: null,
           consent_given: false, consent_date: null, intake_step: 0, intake_completed: false,
         }
       }
