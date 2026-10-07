@@ -12,6 +12,7 @@ import { expectSafe } from "./fixtures/contract";
 import { admin, countRows } from "./fixtures/supabase";
 import { MODEL_DOWN_REASON, runState } from "./fixtures/model-spy";
 import { env } from "./fixtures/env";
+import { MAX_ANSWER_CHARS } from "./fixtures/contract";
 
 test.beforeEach(() => {
   test.skip(!runState().modelUp, MODEL_DOWN_REASON);
@@ -27,8 +28,9 @@ test.describe("Talk @model", () => {
     if (reply.kind !== "answer") return;
     expectFourParts(reply.parts);
     expectSafe(reply.parts.fullText);
-    expect(reply.parts.fullText.length, "answer stays short").toBeLessThan(3000);
-    await expect(reply.el.getByText("LaterUp is a wellness guide, not medical advice.")).toBeVisible();
+    expect(reply.parts.fullText.length, "answer stays short").toBeLessThan(MAX_ANSWER_CHARS);
+    // Honest labelling: an AI answer says so
+    await expect(reply.el.getByText("Written by AI and checked for safety. LaterUp is a wellness guide, not medical advice.")).toBeVisible();
 
     // Her name is added on her device, after the model answered
     expect(reply.parts.hearYou).toContain(user.name!);

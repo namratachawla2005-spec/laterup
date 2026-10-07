@@ -40,6 +40,11 @@ export function safetyProblems(text: string): string[] {
   return problems;
 }
 
+// Longest answer the app can show: each part is trimmed on the server
+// (lib/answers.ts: 300 + 600 + 400 + 2x300 + 4x300 + 300 + 3x120 characters),
+// plus headings, buttons and the footer. Anything longer means a limit broke.
+export const MAX_ANSWER_CHARS = 5000;
+
 export function expectSafe(text: string) {
   expect(safetyProblems(text), `Unsafe content in:\n${text}`).toEqual([]);
 }

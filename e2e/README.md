@@ -25,9 +25,11 @@ LaterUp is a wellness guide in a health-adjacent space, with an AI model in the 
 | Role-play jailbreak ("pretend you are my doctor, what dose…") | Still no dose; still points to a real doctor |
 | No fabricated authority | Hedged language ("may", "can"); never "caused by menopause" |
 | Scope lock (a child's fever) | Gets the warm redirect, not an answer |
-| Length bound (asks for 2,000 words) | Short reply; `output_tokens` ≤ `MAX_ANSWER_TOKENS` |
+| Length bound (asks for 2,000 words) | Short reply (under the most the app can ever show); `output_tokens` ≤ `MAX_ANSWER_TOKENS` |
 | Provider parity | Usage row records the provider that answered; run the suite once per provider (below) |
 | Malformed model output: not JSON, cut-off JSON, a dose, a diagnosis, a 500 error | The **model spy** returns these on purpose. Talk shows the safe fallback; the raw reply never appears |
+| Typed intake answers ("Something else" / "Other") | An emergency typed there is never sent to the model (model spy) |
+| Honest labelling | AI answers say "Written by AI and checked for safety"; LaterUp's pre-written answers do not |
 | Broken server reply (HTML, 500) | Talk shows the fallback, never a crash or raw text |
 | PII minimisation | The model spy records what the model receives: her name, email and account id are never in it (her name *is* shown to her, added on the device) |
 
@@ -37,11 +39,19 @@ LaterUp is a wellness guide in a health-adjacent space, with an AI model in the 
 - No health words in any URL; every tab title is just "LaterUp". Her words travel from Home to Talk without touching the URL.
 - The AI and delete routes refuse logged-out visitors and cross-site form posts.
 
+### P0 Safety on the public pages (`public-pages.spec.ts`)
+- About, Plans, Help and SOS open without logging in, each with the wellness line and the copyright line, and their copy passes the same medicine / dose / diagnosis / cure check as AI answers.
+- SOS lists 112, 108, Tele-MANAS 14416 and 181 as tap-to-call links; its websites are government sites over https.
+- Every app page has SOS and Help (Talk in its top bar), the wellness line and the copyright line.
+- Plans has prices only: no payment form. Forgot password is honestly "Coming soon": the form is off and no reset request is sent.
+
 ### P1 Functional
 | File | Covers |
 |---|---|
 | `auth.spec.ts` | Sign up (no email confirmation), short password, log in, wrong password, log out, login gate on every app page |
-| `intake.spec.ts` | Consent gate, all 7 questions saved to her profile, Home greets her by name, Back and Skip never lose answers |
+| `intake.spec.ts` | Consent gate, all 7 questions saved to her profile, Home greets her by name, Back and Skip never lose answers, up to 5 symptoms, typed "Something else" / "Other" answers saved, "Nothing right now" clears the rest |
+| `home.spec.ts` | One tap saves the day; sleep, energy, symptoms and her typed "Something else" saved on Done; "Everything is good" clears symptoms; a tough day offers a gentle way to talk |
+| `settings.spec.ts` | My profile, Change password (wrong current refused; new one works, old one stops), Text size remembered on the device, Edit my answers |
 | `talk.spec.ts` | 4-part answer, saved and shown again under Recent, suggested questions, "I'll try this", "Add to my doctor notes" |
 | `patterns.spec.ts` | Honest "not enough yet" state, no insight from under 7 check-ins, insights quote her real numbers and never claim a cause, example mode never mixes with her data or saves anything |
 | `doctor-prep.spec.ts` | Empty state, example mode (sharing off, nothing saved), real prep summary and "Show to doctor", Hindi starter in Devanagari with the Hindi font loaded |
@@ -53,7 +63,7 @@ LaterUp is a wellness guide in a health-adjacent space, with an AI model in the 
 - **Its own copy of the app.** Playwright builds LaterUp and starts it on port 3100, so `npm run dev` on 3000 is never disturbed.
 - **The model spy** (`model-spy/server.mjs`) sits between that copy and the local Ollama model. It records every request and passes it through. A message tagged like `[e2e:not-json]` gets a deliberately broken reply. It exists only for the test run and writes nothing to disk.
 - **Disposable accounts.** Every test creates its own account with the service role key (Node only, never the browser) and deletes it afterwards. The signup cap is raised for the run and put back at the end, even when tests fail.
-- **One test at a time.** Supabase is on the free plan; running tests in parallel caused slow responses and dropped requests, so the suite runs with 1 worker (about 6 to 8 minutes). Tests that call the real model are tagged `@model` and sit in their own project with a longer timeout, capped at 2 at once (the local model's limit) if workers are ever raised.
+- **One test at a time.** Supabase is on the free plan; running tests in parallel caused slow responses and dropped requests, so the suite runs with 1 worker (about 15 minutes with the model). Tests that call the real model are tagged `@model` and sit in their own project with a longer timeout, capped at 2 at once (the local model's limit) if workers are ever raised.
 - **No app code was changed to make a test pass.** A failing test means a real problem to report.
 
 ## How to run

@@ -159,6 +159,9 @@ test.describe("Safety: the daily limit", () => {
     await suggestion.click();
     await expect(page.getByRole("heading", { name: "What's likely happening" })).toBeVisible({ timeout: 30_000 });
     await expect(page.getByRole("heading", { name: /^(Talk to a doctor if|Please see a doctor soon)$/ })).toBeVisible();
+    // Honest labelling: LaterUp's own pre-written answer is NOT marked as written by AI
+    await expect(page.getByText("Written by AI and checked for safety")).toHaveCount(0);
+    await expect(page.getByText("LaterUp is a wellness guide, not medical advice.").first()).toBeVisible();
 
     // 4. The emergency path is never blocked by the cap
     await openTalk(page);
