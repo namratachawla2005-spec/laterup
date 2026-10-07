@@ -32,8 +32,8 @@ const PLANS: Plan[] = [
   },
   {
     name: "LaterUp Plus",
-    price: "₹149",
-    priceNote: "per month, or ₹999 per year",
+    price: "₹299",
+    priceNote: "per month, or ₹2,499 per year",
     features: [
       "Unlimited questions on Talk",
       "4-week programmes for sleep, hot flashes and mood, built around your day",
