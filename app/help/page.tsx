@@ -11,8 +11,17 @@ import WellnessNote from "@/components/WellnessNote";
 import MotifBackground, { HeadingWaves } from "@/components/MotifBackground";
 import { BackIcon, HomeIcon, TalkIcon, PatternsIcon, DoctorIcon, GearIcon } from "@/components/icons";
 import { AlertIcon } from "@/components/FloatingButtons";
+import HomeWoman, { type Scene } from "@/components/HomeWoman";
 
 export const metadata: Metadata = { title: "LaterUp help" };
+
+// Asha through the day on Home (same times as the greeting)
+const ASHA_DAY: [Scene, string, string][] = [
+  ["chai", "Morning", "Sipping her chai"],
+  ["reading", "Afternoon", "Reading a book"],
+  ["music", "Evening", "Listening to music"],
+  ["night", "Late night", "Fast asleep"],
+];
 
 const PAGES = [
   {
@@ -93,6 +102,28 @@ export default function HelpPage() {
             doctor.
           </p>
           <p className="mt-3">It is not a doctor. It does not diagnose, and it never suggests medicines.</p>
+        </section>
+
+        {/* Meet Asha, the woman drawn across LaterUp */}
+        <section className="mt-10" aria-labelledby="asha-heading">
+          <h2 id="asha-heading" className={sectionHeading}>Meet Asha</h2>
+          <p className="mt-3">
+            The woman you see across LaterUp is Asha. Her name means hope. On Home, she changes with your day, just
+            like you.
+          </p>
+          <ul className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {ASHA_DAY.map(([scene, time, doing]) => (
+              <li key={scene} className="flex flex-col items-center rounded-card bg-surface p-3 text-center">
+                <HomeWoman scene={scene} className="h-24 w-24" />
+                <span className="mt-2 font-semibold">{time}</span>
+                <span className="text-helper text-text-muted">{doing}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4">
+            You&apos;ll find her on the other pages too: greeting you with a namaste on the first page, thinking on
+            Talk, among butterflies on Patterns, and talking with her doctor on Doctor Prep.
+          </p>
         </section>
 
         {/* How each page works */}

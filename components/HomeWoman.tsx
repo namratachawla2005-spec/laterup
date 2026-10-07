@@ -3,7 +3,8 @@
  * LaterUp: confidential and proprietary, shared for evaluation only.
  * Unauthorized use or distribution is prohibited. See COPYRIGHT_AND_LEGAL.md.
  */
-// A woman in a sari, in thin terracotta lines, beside the Home greeting (and on Talk, Patterns and Doctor Prep). Decorative only.
+// Asha ("hope"): a woman in a sari, in thin terracotta lines, beside the Home greeting (and on Welcome, Talk,
+// Patterns, Doctor Prep and Help). Decorative only.
 // What she's doing follows the time of day, like the greeting:
 // morning: a kulhad of chai; afternoon: reading; evening: listening to music;
 // late night: asleep in bed under a crescent moon.
