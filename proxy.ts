@@ -7,7 +7,7 @@ import { NextResponse, type NextRequest } from "next/server";
 // Pages that need her to be logged in
 const PROTECTED = ["/home", "/talk", "/patterns", "/doctor", "/settings"];
 // Pages a logged-in woman doesn't need
-const AUTH_ONLY = ["/login", "/signup"];
+const AUTH_ONLY = ["/login", "/signup", "/forgot-password"];
 
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });

@@ -27,7 +27,7 @@ This is a 2-day demo build for a campus placement assignment (Mosaic Wellness), 
 | | About LaterUp (public, no login) | `/about` | Added 7 Oct at the user's request: why we started, what LaterUp is and isn't, privacy promise |
 | | Plans (public, no login) | `/plans` | Added 7 Oct at the user's request: pricing only (Free, Plus, workplaces), no payments |
 
-Plus the auth screens (Sign up, Log in) that gate the app. Do not add any other pages. If something seems missing, ask me first.
+Plus the auth screens (Sign up, Log in, Forgot password, Reset password) that gate the app. Password reset was added on 7 Oct at the user's request; reset emails go through her Office 365 mailbox via Supabase custom SMTP. Do not add any other pages. If something seems missing, ask me first.
 
 ## Tech stack (do not change without asking)
 

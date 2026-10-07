@@ -37,17 +37,19 @@ export function PasswordField({
   value,
   onChange,
   isNew,
+  label = "Password",
 }: {
   value: string;
   onChange: (v: string) => void;
-  isNew: boolean; // true on Sign up, false on Log in
+  isNew: boolean; // true on Sign up and Reset password, false on Log in
+  label?: string;
 }) {
   const [show, setShow] = useState(false);
 
   return (
     <div>
       <label htmlFor="password" className="block font-medium">
-        Password
+        {label}
       </label>
       <div className="relative mt-2">
         <input

@@ -54,7 +54,12 @@ export default function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <EmailField value={email} onChange={setEmail} />
-      <PasswordField value={password} onChange={setPassword} isNew={false} />
+      <div>
+        <PasswordField value={password} onChange={setPassword} isNew={false} />
+        <Link href="/forgot-password" className="mt-1 inline-flex min-h-tap items-center px-1 text-helper font-medium text-primary underline underline-offset-4">
+          Forgot your password?
+        </Link>
+      </div>
       <FormMessage text={error} />
       <SubmitButton busy={busy} label="Log in" />
 
