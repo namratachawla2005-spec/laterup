@@ -4,11 +4,11 @@ import Wordmark from "@/components/Wordmark";
 import WellnessNote from "@/components/WellnessNote";
 import RisingSun from "./RisingSun";
 import ProtectPanel from "./ProtectPanel";
-import LeafBackground from "@/components/LeafBackground";
+import MotifBackground from "@/components/MotifBackground";
 
 export default function Welcome() {
   return (
-    <LeafBackground motif="rangoli">
+    <MotifBackground motif="rangoli">
       <main className="mx-auto flex w-full max-w-md flex-1 flex-col items-center px-5 pt-8 pb-10 text-center">
         <Wordmark />
   
@@ -58,6 +58,6 @@ export default function Welcome() {
           <WellnessNote withEmergency />
         </div>
       </main>
-    </LeafBackground>
+    </MotifBackground>
   );
 }

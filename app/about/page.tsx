@@ -1,11 +1,11 @@
 // About LaterUp: a public page, no login needed (linked from Welcome).
 // Thin-line decorations: a sunrise over the title (the LaterUp motif), jaali bands
-// between sections, and faint leaves in the background (LeafBackground).
+// between sections, and faint leaves in the background (MotifBackground).
 import type { Metadata } from "next";
 import Link from "next/link";
 import WellnessNote from "@/components/WellnessNote";
 import { BackIcon } from "@/components/icons";
-import LeafBackground from "@/components/LeafBackground";
+import MotifBackground from "@/components/MotifBackground";
 
 export const metadata: Metadata = { title: "About LaterUp" };
 
@@ -13,7 +13,7 @@ const sectionHeading = "text-xl font-semibold text-accent";
 
 export default function AboutPage() {
   return (
-    <LeafBackground>
+    <MotifBackground>
       <main className="mx-auto flex w-full max-w-xl flex-1 flex-col px-5 pt-4 pb-10">
         <Link href="/" className="-ml-2 inline-flex min-h-tap items-center gap-1 self-start rounded-card-sm px-2 font-medium text-text-muted">
           <BackIcon /> Back
@@ -60,7 +60,7 @@ export default function AboutPage() {
           <WellnessNote />
         </div>
       </main>
-    </LeafBackground>
+    </MotifBackground>
   );
 }
 

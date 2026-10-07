@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Wordmark from "./Wordmark";
 import WellnessNote from "./WellnessNote";
-import LeafBackground from "./LeafBackground";
+import MotifBackground from "./MotifBackground";
 
 export default function AuthShell({
   heading,
@@ -14,7 +14,7 @@ export default function AuthShell({
   children: React.ReactNode;
 }) {
   return (
-    <LeafBackground>
+    <MotifBackground>
       <main className="mx-auto flex w-full max-w-md flex-1 flex-col px-5 pt-8 pb-10">
         <Link href="/" className="self-start rounded-card-sm" aria-label="LaterUp, back to Welcome">
           <Wordmark />
@@ -29,6 +29,6 @@ export default function AuthShell({
           <WellnessNote />
         </div>
       </main>
-    </LeafBackground>
+    </MotifBackground>
   );
 }

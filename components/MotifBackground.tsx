@@ -1,24 +1,33 @@
 // Faint thin-line decorations behind a page, kept to the edges so the text stays easy to read.
-// "leaves" (Sign up, Log in, About) or "rangoli" corners (Welcome). Decorative only.
-export default function LeafBackground({
+// "leaves" (Sign up, Log in, About), "rangoli" corners (Welcome) or teal "waves" (Home; on phones Home shows small waves beside its headings instead). Decorative only.
+export default function MotifBackground({
   motif = "leaves",
   children,
 }: {
-  motif?: "leaves" | "rangoli";
+  motif?: "leaves" | "rangoli" | "waves";
   children: React.ReactNode;
 }) {
   return (
     <div className="relative isolate flex flex-1 flex-col overflow-hidden">
-      {motif === "leaves" ? (
+      {motif === "leaves" && (
         <>
           <LeafSprig className="absolute -top-8 -right-16 -z-10 h-48 w-36 rotate-[200deg] opacity-20 sm:right-[8%] sm:h-56 sm:w-44" />
           <LeafSprig className="absolute top-[45%] -left-14 -z-10 hidden h-64 w-48 rotate-[20deg] opacity-15 sm:left-[6%] md:block" />
           <LeafSprig className="absolute -bottom-6 -left-12 -z-10 h-52 w-40 rotate-[10deg] opacity-20 sm:left-[10%]" />
         </>
-      ) : (
+      )}
+      {motif === "rangoli" && (
         <>
           <RangoliCorner className="absolute top-0 right-0 -z-10 h-36 w-36 rotate-90 opacity-30 sm:h-56 sm:w-56" />
           <RangoliCorner className="absolute bottom-0 left-0 -z-10 h-36 w-36 -rotate-90 opacity-30 sm:h-56 sm:w-56" />
+        </>
+      )}
+      {motif === "waves" && (
+        <>
+          <Waves className="absolute top-[13%] left-[6%] -z-10 hidden w-56 opacity-25 md:block" />
+          <Waves className="absolute top-[34%] right-[6%] -z-10 hidden w-56 opacity-25 md:block" />
+          <Waves className="absolute top-[58%] left-[8%] -z-10 hidden w-56 opacity-25 md:block" />
+          <Waves className="absolute top-[84%] right-[10%] -z-10 hidden w-56 opacity-25 md:block" />
         </>
       )}
       {children}
@@ -85,6 +94,18 @@ function RangoliCorner({ className = "" }: { className?: string }) {
         const [x2, y2] = at(100, deg + 15);
         return <path key={deg} d={`M${x1} ${y1} A13.5 13.5 0 0 1 ${x2} ${y2}`} />;
       })}
+    </svg>
+  );
+}
+
+// Three gentle, parallel wavy lines, like a wave border on a textile
+export function Waves({ className = "" }: { className?: string }) {
+  const wave = (y: number) => `M0 ${y} q12.5 -9 25 0 t25 0 t25 0 t25 0 t25 0 t25 0 t25 0 t25 0`;
+  return (
+    <svg viewBox="0 0 200 48" {...lineStyle} strokeWidth="1.6" className={`text-primary ${className}`}>
+      <path d={wave(12)} />
+      <path d={wave(24)} opacity=".7" />
+      <path d={wave(36)} opacity=".45" />
     </svg>
   );
 }

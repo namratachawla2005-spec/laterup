@@ -13,6 +13,7 @@ import {
 } from "@/lib/local";
 import Wordmark from "@/components/Wordmark";
 import HomeWoman, { sceneFor } from "@/components/HomeWoman";
+import MotifBackground, { Waves } from "@/components/MotifBackground";
 import WellnessNote from "@/components/WellnessNote";
 import BottomNav from "@/components/BottomNav";
 import { FormMessage } from "@/components/AuthFields";
@@ -42,8 +43,10 @@ export default function HomeView(props: Props) {
   const isBrowser = useIsBrowser();
   return (
     <>
-      <TopBar />
-      {isBrowser ? <HomeContent {...props} /> : <main className="flex-1" />}
+      <MotifBackground motif="waves">
+        <TopBar />
+        {isBrowser ? <HomeContent {...props} /> : <main className="flex-1" />}
+      </MotifBackground>
       <BottomNav />
     </>
   );
@@ -62,6 +65,11 @@ function TopBar() {
       </Link>
     </header>
   );
+}
+
+// Small teal waves beside a heading, on phones (wider screens have waves in the side margins)
+function HeadingWaves() {
+  return <Waves className="h-7 w-24 shrink-0 opacity-45 md:hidden" />;
 }
 
 // ---------------- Greeting (Section 1) ----------------
@@ -134,9 +142,12 @@ function HomeContent({ userId, name, topSymptoms, checkIns, hasHistory, trying, 
           if (text.trim().length >= MIN_CHARS) openTalk(text);
         }}
       >
-        <label htmlFor="mind" className="text-xl font-semibold">
-          What&apos;s on your mind?
-        </label>
+        <div className="flex items-center justify-between gap-3">
+          <label htmlFor="mind" className="text-xl font-semibold">
+            What&apos;s on your mind?
+          </label>
+          <HeadingWaves />
+        </div>
         <textarea
           id="mind"
           ref={textRef}
@@ -165,9 +176,12 @@ function HomeContent({ userId, name, topSymptoms, checkIns, hasHistory, trying, 
 
       {/* Section 3: Suggested questions */}
       <section className="mt-8" aria-labelledby="suggest-heading">
-        <h2 id="suggest-heading" className="font-semibold">
-          Not sure where to start?
-        </h2>
+        <div className="flex items-center justify-between gap-3">
+          <h2 id="suggest-heading" className="font-semibold">
+            Not sure where to start?
+          </h2>
+          <HeadingWaves />
+        </div>
         <ul className="mt-3 space-y-2">
           {suggestedQuestions(topSymptoms).map((q) => (
             <li key={q}>
@@ -278,9 +292,12 @@ function CheckInSection({
 
   return (
     <section id="checkin" className="mt-10 scroll-mt-6" aria-labelledby="checkin-heading">
-      <h2 id="checkin-heading" className="text-xl font-semibold">
-        How&apos;s today?
-      </h2>
+      <div className="flex items-center justify-between gap-3">
+        <h2 id="checkin-heading" className="text-xl font-semibold">
+          How&apos;s today?
+        </h2>
+        <HeadingWaves />
+      </div>
 
       {stage === "done" ? (
         <div className="mt-3 rounded-card bg-surface p-5" aria-live="polite">
