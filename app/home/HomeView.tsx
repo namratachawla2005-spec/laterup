@@ -17,7 +17,7 @@ import MotifBackground, { Waves } from "@/components/MotifBackground";
 import WellnessNote from "@/components/WellnessNote";
 import BottomNav from "@/components/BottomNav";
 import { FormMessage } from "@/components/AuthFields";
-import { GearIcon, LockIcon, SunIcon, PartSunIcon, CloudIcon } from "@/components/icons";
+import { BackIcon, GearIcon, LockIcon, SunIcon, PartSunIcon, CloudIcon } from "@/components/icons";
 
 type Feeling = "good" | "okay" | "tough";
 type CheckIn = { date: string; feeling: Feeling; bothering: string[]; sleep?: string | null; energy?: string | null };
@@ -164,12 +164,12 @@ function HomeContent({ userId, name, topSymptoms, checkIns, hasHistory, trying, 
         <button
           type="submit"
           disabled={text.trim().length < MIN_CHARS}
-          className="mt-3 w-full rounded-card bg-primary px-6 font-semibold text-white disabled:bg-surface disabled:text-text-muted"
+          className="mt-3 w-full rounded-card border-2 border-primary bg-primary px-6 font-semibold text-white disabled:bg-transparent disabled:text-primary"
         >
           Help me understand
         </button>
         <p className="mt-2 flex items-center justify-center gap-1.5 text-helper text-text-muted">
-          <LockIcon className="h-4 w-4 text-accent" />
+          <LockIcon className="h-4 w-4 text-primary" />
           Only you can see this.
         </p>
       </form>
@@ -188,9 +188,10 @@ function HomeContent({ userId, name, topSymptoms, checkIns, hasHistory, trying, 
               <button
                 type="button"
                 onClick={() => openTalk(q)}
-                className="w-full rounded-card-sm border-2 border-surface px-4 py-2 text-left text-text"
+                className="flex w-full items-center justify-between gap-3 rounded-card-sm border-2 border-primary/30 px-4 py-2 text-left text-text"
               >
                 {q}
+                <BackIcon className="h-5 w-5 shrink-0 rotate-180 text-primary" />
               </button>
             </li>
           ))}

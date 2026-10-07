@@ -38,7 +38,7 @@ export default function HomeWoman({ scene, className = "" }: { scene: Scene; cla
   );
 }
 
-// The same woman in every scene: hair with a bun, bindi, closed smiling eyes, sari with a dotted pallu
+// The same woman in every scene: hair with a bun, bindi, closed smiling eyes, sari with a teal dotted pallu
 function Woman({ earring }: { earring: boolean }) {
   return (
     <>
@@ -54,11 +54,14 @@ function Woman({ earring }: { earring: boolean }) {
       <path d="M73 89 C55 91 40 99 34 119 L30 168" />
       <path d="M87 89 C105 91 120 99 126 119 L130 168" />
       <path d="M73 89 Q80 98 87 89" strokeWidth="1.6" />
-      <path d="M100 91 C111 96 118 106 120 122 L122 168" />
-      <path d="M105 95 C111 106 113 122 112 140 L111 168" strokeWidth="1.5" />
-      {[104, 114, 124, 134, 144, 154, 164].map((y) => (
-        <circle key={y} cx="116.5" cy={y} r="1.4" fill="currentColor" stroke="none" />
-      ))}
+      {/* the pallu in teal, with a dotted border */}
+      <g className="text-primary">
+        <path d="M100 91 C111 96 118 106 120 122 L122 168" />
+        <path d="M105 95 C111 106 113 122 112 140 L111 168" strokeWidth="1.5" />
+        {[104, 114, 124, 134, 144, 154, 164].map((y) => (
+          <circle key={y} cx="116.5" cy={y} r="1.4" fill="currentColor" stroke="none" />
+        ))}
+      </g>
     </>
   );
 }
@@ -123,10 +126,12 @@ function Asleep() {
       <path d="M49 104 q3 2.5 6 0" strokeWidth="1.4" />
       {/* blanket over her, from the shoulders down, with a dotted border like her pallu */}
       <path d="M66 112 C86 100 120 102 150 112 L152 142 H58 C59 128 61 119 66 112 Z" fill="currentColor" fillOpacity=".12" />
-      <path d="M64 120 C86 109 120 111 151 120" strokeWidth="1.4" />
-      {[[80, 113], [95, 110], [110, 110], [125, 111], [140, 114]].map(([x, y]) => (
-        <circle key={x} cx={x} cy={y} r="1.3" fill="currentColor" stroke="none" />
-      ))}
+      <g className="text-primary">
+        <path d="M64 120 C86 109 120 111 151 120" strokeWidth="1.4" />
+        {[[80, 113], [95, 110], [110, 110], [125, 111], [140, 114]].map(([x, y]) => (
+          <circle key={x} cx={x} cy={y} r="1.3" fill="currentColor" stroke="none" />
+        ))}
+      </g>
     </>
   );
 }
