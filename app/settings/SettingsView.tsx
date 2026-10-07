@@ -76,8 +76,9 @@ export default function SettingsView({ profile }: { profile: Profile }) {
       )}
 
       <div className="mt-6 space-y-3">
-        <button type="button" onClick={() => setEditing(true)} className={rowClass}>
+        <button type="button" onClick={() => setEditing(true)} className={`${rowClass} flex-col items-start py-3`}>
           Edit my answers
+          <span className="text-helper font-normal text-text-muted">Your name, age group, what&apos;s bothering you, and more</span>
         </button>
         <ChangePassword onChanged={() => setNotice("Your password has been changed.")} />
       </div>
