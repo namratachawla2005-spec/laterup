@@ -12,6 +12,7 @@ export type TryResult = "added" | "limit" | "error";
 type Props = {
   answer: Answer;
   seeDoctorSoon: boolean;
+  byAI: boolean; // false for LaterUp's pre-written answers
   animate: boolean; // only new answers fade in; reopened ones show at once
   onTry: (action: string) => Promise<TryResult>;
   onSaveNote: () => Promise<boolean>;
@@ -22,7 +23,7 @@ type Props = {
 const cardClass = "rounded-card bg-surface p-5";
 const titleClass = "text-[1.0625rem] font-semibold text-accent";
 
-export default function AnswerView({ answer, seeDoctorSoon, animate, onTry, onSaveNote, onHelpful, onFollowUp }: Props) {
+export default function AnswerView({ answer, seeDoctorSoon, byAI, animate, onTry, onSaveNote, onHelpful, onFollowUp }: Props) {
   const [showMore, setShowMore] = useState(false);
   const [tried, setTried] = useState<Record<string, TryResult>>({});
   const [noteState, setNoteState] = useState<"idle" | "saved" | "error">("idle");
@@ -175,7 +176,14 @@ export default function AnswerView({ answer, seeDoctorSoon, animate, onTry, onSa
         </div>
       )}
 
-      {answer.whatsHappening && <WellnessNote />}
+      {answer.whatsHappening &&
+        (byAI ? (
+          <p className="text-helper text-text-muted">
+            Written by AI and checked for safety. LaterUp is a wellness guide, not medical advice.
+          </p>
+        ) : (
+          <WellnessNote />
+        ))}
     </div>
   );
 }

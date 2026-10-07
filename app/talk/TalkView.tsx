@@ -38,12 +38,12 @@ type Profile = {
 
 type Item =
   | { id: string; kind: "user"; text: string; at: string }
-  | { id: string; kind: "answer"; answer: Answer; seeDoctorSoon: boolean; herWords: string; fresh: boolean }
+  | { id: string; kind: "answer"; answer: Answer; seeDoctorSoon: boolean; herWords: string; fresh: boolean; byAI: boolean }
   | { id: string; kind: "simple"; text: string }
   | { id: string; kind: "fallback"; retry: string };
 
 type Result =
-  | { kind: "answer"; answer: Answer; seeDoctorSoon: boolean }
+  | { kind: "answer"; answer: Answer; seeDoctorSoon: boolean; byAI: boolean } // byAI: false for pre-written answers
   | { kind: "simple"; text: string }
   | { kind: "emergency"; emergency: "physical" | "self_harm" }
   | { kind: "notice"; text: string }
@@ -144,8 +144,8 @@ function TalkContent({ userId, profile, recent: initialRecent }: { userId: strin
     const dropMine = () => setItems((prev) => prev.filter((i) => i.id !== userItem.id));
     switch (result.kind) {
       case "answer":
-        setItems((prev) => [...prev, { id: newId(), kind: "answer", answer: result.answer, seeDoctorSoon: result.seeDoctorSoon, herWords: text, fresh: true }]);
-        void saveExchange(text, result.answer, result.seeDoctorSoon);
+        setItems((prev) => [...prev, { id: newId(), kind: "answer", answer: result.answer, seeDoctorSoon: result.seeDoctorSoon, herWords: text, fresh: true, byAI: result.byAI }]);
+        void saveExchange(text, result.answer, result.seeDoctorSoon, result.byAI);
         return;
       case "simple":
         setItems((prev) => [...prev, { id: newId(), kind: "simple", text: result.text }]);
@@ -187,7 +187,7 @@ function TalkContent({ userId, profile, recent: initialRecent }: { userId: strin
     const pre = findPrewritten(text);
     const backup = (): Result =>
       pre
-        ? { kind: "answer", answer: withDefaults(personalisePrewritten(pre, profile, deviceSoon)), seeDoctorSoon: deviceSoon }
+        ? { kind: "answer", answer: withDefaults(personalisePrewritten(pre, profile, deviceSoon)), seeDoctorSoon: deviceSoon, byAI: false }
         : { kind: "fallback" };
 
     try {
@@ -201,7 +201,7 @@ function TalkContent({ userId, profile, recent: initialRecent }: { userId: strin
       const data = await res.json();
       switch (data.type) {
         case "answer":
-          return { kind: "answer", answer: addNameToAnswer(data.answer as Answer, profile.name), seeDoctorSoon: !!data.seeDoctorSoon };
+          return { kind: "answer", answer: addNameToAnswer(data.answer as Answer, profile.name), seeDoctorSoon: !!data.seeDoctorSoon, byAI: true };
         case "simple":
           return { kind: "simple", text: String(data.text) };
         case "redirect":
@@ -230,7 +230,7 @@ function TalkContent({ userId, profile, recent: initialRecent }: { userId: strin
   }
 
   // ---------------- Saving to her own rows ----------------
-  async function saveExchange(text: string, answer: Answer, soon: boolean) {
+  async function saveExchange(text: string, answer: Answer, soon: boolean, byAI: boolean) {
     try {
       let conv = conversation.current;
       if (!conv) {
@@ -252,7 +252,7 @@ function TalkContent({ userId, profile, recent: initialRecent }: { userId: strin
       const now = Date.now();
       await supabase.from("messages").insert([
         { conversation_id: conv.id, user_id: userId, role: "user", content: { text }, created_at: new Date(now).toISOString() },
-        { conversation_id: conv.id, user_id: userId, role: "assistant", content: { kind: "answer", answer, seeDoctorSoon: soon }, created_at: new Date(now + 1).toISOString() },
+        { conversation_id: conv.id, user_id: userId, role: "assistant", content: { kind: "answer", answer, seeDoctorSoon: soon, byAI }, created_at: new Date(now + 1).toISOString() },
       ]);
     } catch {
       // Saving failed: she still has her answer on screen. Nothing technical to show.
@@ -298,12 +298,12 @@ function TalkContent({ userId, profile, recent: initialRecent }: { userId: strin
     const loaded: Item[] = [];
     let lastText = "";
     for (const m of msgs) {
-      const c = m.content as { text?: string; answer?: Answer; seeDoctorSoon?: boolean };
+      const c = m.content as { text?: string; answer?: Answer; seeDoctorSoon?: boolean; byAI?: boolean };
       if (m.role === "user" && c.text) {
         lastText = c.text;
         loaded.push({ id: newId(), kind: "user", text: c.text, at: m.created_at });
       } else if (m.role === "assistant" && c.answer) {
-        loaded.push({ id: newId(), kind: "answer", answer: c.answer, seeDoctorSoon: !!c.seeDoctorSoon, herWords: lastText, fresh: false });
+        loaded.push({ id: newId(), kind: "answer", answer: c.answer, seeDoctorSoon: !!c.seeDoctorSoon, herWords: lastText, fresh: false, byAI: c.byAI !== false });
       }
     }
     setItems(loaded);
@@ -378,6 +378,7 @@ function TalkContent({ userId, profile, recent: initialRecent }: { userId: strin
                   key={item.id}
                   answer={item.answer}
                   seeDoctorSoon={item.seeDoctorSoon}
+                byAI={item.byAI}
                   animate={item.fresh}
                   onTry={(action) => tryThis(action, item.answer.symptomTags[0] ?? null)}
                   onSaveNote={() => saveNote(item)}

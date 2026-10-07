@@ -40,6 +40,7 @@ LaterUp is a wellness guide. It is not a doctor and not a medical device. It doe
 
 - **Model in the live app:** Claude Haiku 4.5 (Anthropic API). It writes the answers on the Talk page only. No other page uses AI; Patterns and Doctor Prep are built from the user's own data with fixed rules.
 - **Model in development:** Qwen 3.8, a 27-billion-parameter open model (27B, Q5_K_M quantised, 65K context), run locally with Ollama on the developer's own computer for free testing. It is never used by the live app.
+- **Clearly labelled:** every answer written by AI on Talk ends with "Written by AI and checked for safety. LaterUp is a wellness guide, not medical advice." Pre-written answers (used if the AI is unavailable) are not labelled as AI.
 - **Why one connector:** all AI calls go through a single server file, so safety checks, limits and usage records stay the same whichever model answers.
 - AI services are used within their providers' terms of service.
 
