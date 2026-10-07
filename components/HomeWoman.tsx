@@ -213,6 +213,22 @@ function SunBehind() {
         <circle cx="80" cy="138" r="82" stroke="var(--color-gentle)" strokeWidth="2.5" opacity=".5" />
         <circle cx="80" cy="138" r="64" fill="currentColor" fillOpacity=".16" stroke="none" />
       </g>
+      {/* sun rays fanning out, like the LaterUp logo */}
+      <g strokeWidth="2.4" opacity=".75">
+        {[30, 45, 60, 75, 90, 105, 120, 135, 150].map((deg) => {
+          const a = (deg * Math.PI) / 180;
+          const long = deg % 30 === 0; // alternate long and short rays
+          return (
+            <line
+              key={deg}
+              x1={80 + 89 * Math.cos(a)}
+              y1={138 - 89 * Math.sin(a)}
+              x2={80 + (long ? 104 : 98) * Math.cos(a)}
+              y2={138 - (long ? 104 : 98) * Math.sin(a)}
+            />
+          );
+        })}
+      </g>
       <line x1="-8" y1="169" x2="168" y2="169" stroke="var(--color-text)" strokeOpacity=".18" strokeWidth="2" />
       <g fill="var(--color-background)" stroke="none">
         <circle cx="80" cy="51" r="25" />
