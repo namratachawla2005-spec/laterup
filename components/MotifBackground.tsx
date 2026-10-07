@@ -1,5 +1,5 @@
 // Faint thin-line decorations behind a page, kept to the edges so the text stays easy to read.
-// "leaves" (Sign up, Log in, About, Plans), "rangoli" corners (Welcome), teal "waves" (Home, Talk, Patterns,
+// "leaves" (Sign up, Log in, About, Plans), "rangoli" corners plus wide-screen waves (Welcome), teal "waves" (Home, Talk, Patterns,
 // Doctor Prep, Settings, Help, SOS; on phones these pages show small HeadingWaves beside a heading instead). Decorative only.
 export default function MotifBackground({
   motif = "leaves",
@@ -22,6 +22,11 @@ export default function MotifBackground({
         <>
           <RangoliCorner className="absolute top-0 right-0 -z-10 h-36 w-36 rotate-90 opacity-30 sm:h-56 sm:w-56" />
           <RangoliCorner className="absolute bottom-0 left-0 -z-10 h-36 w-36 -rotate-90 opacity-30 sm:h-56 sm:w-56" />
+          {/* Wide screens only: a few waves in the empty side margins, away from both rangoli corners */}
+          <Waves className="absolute top-[22%] left-[6%] -z-10 hidden w-40 lg:block print:hidden" />
+          <Waves className="absolute top-[44%] right-[6%] -z-10 hidden w-40 lg:block print:hidden" />
+          <Waves className="absolute top-[60%] left-[7%] -z-10 hidden w-40 lg:block print:hidden" />
+          <Waves className="absolute top-[80%] right-[7%] -z-10 hidden w-40 lg:block print:hidden" />
         </>
       )}
       {motif === "waves" && (
