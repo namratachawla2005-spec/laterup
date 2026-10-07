@@ -98,3 +98,12 @@ Open small decisions: WhatsApp share (wa.me link vs phone share menu); About pag
 - Measured on Haiku: about 1,850 to 2,250 tokens in, about 350 to 390 out, 6 to 9 s per answer, about ₹0.40 per question.
 - Prompt rules added in `lib/prompt.ts` after the pass: helpline numbers (Tele-MANAS 14416, 112) for hopelessness / very low mood; only real, everyday Indian dishes; follow-ups must read as if she typed them ("I", "my"); no profile echo (diet rules, doctor comfort); "aap" in Hindi; family wording never says menopause causes it; plain doctor signs.
 - Re-checked live: Hinglish, low-mood, HRT, cancer worry, off-topic and follow-ups all answer correctly. Known minor: occasional over-sure phrases ("This will pass").
+
+## More choices (7 Oct evening, user request; `supabase/003-more-choices.sql` run by user)
+
+- Intake Q4: up to **5** symptoms (database limit raised); "Nothing right now, I'm feeling good" (clears others); "Something else" opens a typed box (`profiles.symptoms_other`).
+- Intake diet: "Other" with a typed box (`profiles.diet_other`). Intake life: "I live in a nuclear family" and "Other" with a typed box (`profiles.life_context_other`).
+- Daily check-in: "Everything is good" chip first (clears others); "Something else" opens a typed box (`check_ins.bothering_other`).
+- `isRealSymptom()` in `lib/intake.ts`: "something_else" and "none" are never counted or named as symptoms (Patterns, Doctor Prep, Home, reflection).
+- Talk sends her typed answers (`otherConcern`, `dietOther`, `lifeOther`) with the profile, never her name. Doctor Prep shows them in her own words.
+- Copy for these options is Claude's; the page briefs have none.
