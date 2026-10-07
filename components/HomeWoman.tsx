@@ -1,9 +1,10 @@
-// A woman in a sari, in thin terracotta lines, beside the Home greeting (and on Talk and Patterns). Decorative only.
+// A woman in a sari, in thin terracotta lines, beside the Home greeting (and on Talk, Patterns and Doctor Prep). Decorative only.
 // What she's doing follows the time of day, like the greeting:
 // morning: a kulhad of chai; afternoon: reading; evening: listening to music;
 // late night: asleep in bed under a crescent moon.
 // Talk uses "thinking": a thought bubble with a question. Patterns uses "butterflies": three teal butterflies around her.
-export type Scene = "chai" | "reading" | "music" | "night" | "thinking" | "butterflies";
+// Doctor Prep uses "doctor": she and a doctor talking.
+export type Scene = "chai" | "reading" | "music" | "night" | "thinking" | "butterflies" | "doctor";
 
 export function sceneFor(hour: number): Scene {
   if (hour >= 22 || hour < 5) return "night";
@@ -13,7 +14,7 @@ export function sceneFor(hour: number): Scene {
 }
 
 // Thinking needs room for the bubble on the right
-const VIEW_BOX: Partial<Record<Scene, string>> = { thinking: "0 0 210 170" };
+const VIEW_BOX: Partial<Record<Scene, string>> = { thinking: "0 0 210 170", doctor: "0 0 300 170" };
 
 export default function HomeWoman({ scene, className = "" }: { scene: Scene; className?: string }) {
   return (
@@ -38,6 +39,7 @@ export default function HomeWoman({ scene, className = "" }: { scene: Scene; cla
           {scene === "music" && <Music />}
           {scene === "thinking" && <Thinking />}
           {scene === "butterflies" && <Butterflies />}
+          {scene === "doctor" && <DoctorTalk />}
         </>
       )}
     </svg>
@@ -158,6 +160,42 @@ function Butterfly({ x, y, size, angle }: { x: number; y: number; size: number; 
       fillOpacity=".25"
       strokeWidth="1.5"
     />
+  );
+}
+
+// A friendly doctor on her right (hair tied back, glasses, white coat, teal stethoscope),
+// and two small speech bubbles between them
+function DoctorTalk() {
+  return (
+    <>
+      {/* doctor: hair, face, glasses, smile */}
+      <path d="M197 58 C193 30 207 20 220 20 C233 20 247 30 243 58 C241 44 234 36 220 34 C206 36 199 44 197 58 Z" fill="currentColor" fillOpacity=".45" />
+      <path d="M242 40 C252 42 254 54 246 60" fill="currentColor" fillOpacity=".45" />
+      <path d="M198 54 C198 72 208 81 220 81 C232 81 242 72 242 54" />
+      <circle cx="212" cy="56" r="5.5" strokeWidth="1.5" />
+      <circle cx="229" cy="56" r="5.5" strokeWidth="1.5" />
+      <path d="M217.5 56 H223.5" strokeWidth="1.5" />
+      <path d="M215 68 q5 4 10 0" strokeWidth="1.6" />
+      {/* neck, white coat with lapels */}
+      <path d="M213 80 V89 M227 80 V89" />
+      <path d="M213 89 C195 91 180 99 174 119 L170 168" />
+      <path d="M227 89 C245 91 260 99 266 119 L270 168" />
+      <path d="M213 89 L206 112 L220 106 L234 112 L227 89" strokeWidth="1.6" />
+      <path d="M220 106 V168" strokeWidth="1.4" opacity=".6" />
+      <rect x="240" y="130" width="14" height="10" rx="2" strokeWidth="1.4" opacity=".7" />
+      {/* stethoscope */}
+      <g className="text-primary" strokeWidth="1.8">
+        <path d="M206 92 C200 112 204 128 212 132 C220 136 228 130 230 122" />
+        <circle cx="230" cy="119" r="4" fill="currentColor" fillOpacity=".3" />
+      </g>
+      {/* her speech bubble (terracotta), then the doctor's (teal) */}
+      <path d="M130 4 H168 a8 8 0 0 1 8 8 V24 a8 8 0 0 1 -8 8 H138 L126 42 L130 32 a8 8 0 0 1 -8 -8 V12 a8 8 0 0 1 8 -8 Z" strokeWidth="1.6" />
+      <path d="M132 15 H164 M132 22 H154" strokeWidth="1.4" opacity=".6" />
+      <g className="text-primary">
+        <path d="M140 48 H178 a8 8 0 0 1 8 8 V68 a8 8 0 0 1 -8 8 H176 L186 86 L166 76 H140 a8 8 0 0 1 -8 -8 V56 a8 8 0 0 1 8 -8 Z" strokeWidth="1.6" fill="currentColor" fillOpacity=".08" />
+        <path d="M144 59 H174 M144 66 H166" strokeWidth="1.4" opacity=".6" />
+      </g>
+    </>
   );
 }
 

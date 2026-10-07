@@ -14,6 +14,7 @@ import { examplePatterns, EXAMPLE_PROFILE, exampleDoctorNotes, examplePrep } fro
 import BottomNav from "@/components/BottomNav";
 import WellnessNote from "@/components/WellnessNote";
 import HealthSummary from "@/components/doctor/HealthSummary";
+import HomeWoman from "@/components/HomeWoman";
 
 type Props = {
   userId: string;
@@ -136,6 +137,8 @@ function DoctorContent({ userId, profile: realProfile, data: realData, firstChec
           </div>
         )}
 
+        {/* the same woman as the other pages, talking with a doctor */}
+        <HomeWoman scene="doctor" className="mb-3 h-[136px] w-60" />
         <h1 className="text-[1.75rem] font-semibold leading-tight">Ready for your doctor</h1>
         <p className="mt-2">{reassurance(profile.doctor_status)}</p>
 
