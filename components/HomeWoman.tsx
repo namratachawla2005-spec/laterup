@@ -1,7 +1,7 @@
 // A woman in a sari, in thin terracotta lines, beside the Home greeting. Decorative only.
 // What she's doing follows the time of day, like the greeting:
 // morning: a kulhad of chai; afternoon: reading; evening: listening to music;
-// late night: music under a crescent moon.
+// late night: asleep in bed under a crescent moon.
 export type Scene = "chai" | "reading" | "music" | "night";
 
 export function sceneFor(hour: number): Scene {
@@ -12,7 +12,6 @@ export function sceneFor(hour: number): Scene {
 }
 
 export default function HomeWoman({ scene, className = "" }: { scene: Scene; className?: string }) {
-  const music = scene === "music" || scene === "night";
   return (
     <svg
       viewBox="0 0 160 170"
@@ -25,11 +24,16 @@ export default function HomeWoman({ scene, className = "" }: { scene: Scene; cla
       focusable="false"
       className={`text-accent ${className}`}
     >
-      <Woman earring={!music} />
-      {scene === "chai" && <Chai />}
-      {scene === "reading" && <Book />}
-      {music && <Music />}
-      {scene === "night" && <path d="M28 14 A12 12 0 1 0 40 32 A9 9 0 1 1 28 14 Z" strokeWidth="1.6" />}
+      {scene === "night" ? (
+        <Asleep />
+      ) : (
+        <>
+          <Woman earring={scene !== "music"} />
+          {scene === "chai" && <Chai />}
+          {scene === "reading" && <Book />}
+          {scene === "music" && <Music />}
+        </>
+      )}
     </svg>
   );
 }
@@ -96,6 +100,33 @@ function Music() {
         <ellipse cx="144" cy="88" rx="3.2" ry="2.4" fill="currentColor" opacity=".7" />
         <path d="M147 87 V74" opacity=".7" />
       </g>
+    </>
+  );
+}
+
+// Asleep in bed: head on a pillow, a blanket with a dotted border, a crescent moon and "z z"
+function Asleep() {
+  return (
+    <>
+      <path d="M30 20 A13 13 0 1 0 44 40 A10 10 0 1 1 30 20 Z" strokeWidth="1.6" />
+      <path d="M110 46 h11 l-11 13 h11 M130 28 h8 l-8 10 h8" strokeWidth="1.6" opacity=".7" />
+      {/* bed: headboard, mattress, legs */}
+      <rect x="8" y="86" width="9" height="66" rx="4" />
+      <path d="M17 142 H152 M24 142 V156 M146 142 V156" />
+      {/* pillow and her head, hair and bun towards the pillow */}
+      <rect x="20" y="106" width="48" height="24" rx="12" strokeWidth="1.6" />
+      <circle cx="48" cy="97" r="15" />
+      <path d="M33 99 C31 84 40 79 50 82 C43 86 39 92 39 104 Z" fill="currentColor" fillOpacity=".22" />
+      <circle cx="29" cy="90" r="7" fill="currentColor" fillOpacity=".22" />
+      <circle cx="52" cy="89" r="1.8" fill="currentColor" stroke="none" />
+      <path d="M47 96 q4 3 8 0" strokeWidth="1.6" />
+      <path d="M49 104 q3 2.5 6 0" strokeWidth="1.4" />
+      {/* blanket over her, from the shoulders down, with a dotted border like her pallu */}
+      <path d="M66 112 C86 100 120 102 150 112 L152 142 H58 C59 128 61 119 66 112 Z" fill="currentColor" fillOpacity=".12" />
+      <path d="M64 120 C86 109 120 111 151 120" strokeWidth="1.4" />
+      {[[80, 113], [95, 110], [110, 110], [125, 111], [140, 114]].map(([x, y]) => (
+        <circle key={x} cx={x} cy={y} r="1.3" fill="currentColor" stroke="none" />
+      ))}
     </>
   );
 }
