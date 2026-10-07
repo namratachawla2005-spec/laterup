@@ -1,8 +1,9 @@
-// A woman in a sari, in thin terracotta lines, beside the Home greeting. Decorative only.
+// A woman in a sari, in thin terracotta lines, beside the Home greeting (and on Talk). Decorative only.
 // What she's doing follows the time of day, like the greeting:
 // morning: a kulhad of chai; afternoon: reading; evening: listening to music;
 // late night: asleep in bed under a crescent moon.
-export type Scene = "chai" | "reading" | "music" | "night";
+// Talk uses "thinking": a thought bubble with a question.
+export type Scene = "chai" | "reading" | "music" | "night" | "thinking";
 
 export function sceneFor(hour: number): Scene {
   if (hour >= 22 || hour < 5) return "night";
@@ -14,7 +15,7 @@ export function sceneFor(hour: number): Scene {
 export default function HomeWoman({ scene, className = "" }: { scene: Scene; className?: string }) {
   return (
     <svg
-      viewBox="0 0 160 170"
+      viewBox={scene === "thinking" ? "0 0 210 170" : "0 0 160 170"}
       fill="none"
       stroke="currentColor"
       strokeWidth="2"
@@ -28,10 +29,11 @@ export default function HomeWoman({ scene, className = "" }: { scene: Scene; cla
         <Asleep />
       ) : (
         <>
-          <Woman earring={scene !== "music"} />
+          <Woman earring={scene !== "music"} thinking={scene === "thinking"} />
           {scene === "chai" && <Chai />}
           {scene === "reading" && <Book />}
           {scene === "music" && <Music />}
+          {scene === "thinking" && <Thinking />}
         </>
       )}
     </svg>
@@ -39,7 +41,7 @@ export default function HomeWoman({ scene, className = "" }: { scene: Scene; cla
 }
 
 // The same woman in every scene: hair with a bun, bindi, closed smiling eyes, sari with a teal dotted pallu
-function Woman({ earring }: { earring: boolean }) {
+function Woman({ earring, thinking = false }: { earring: boolean; thinking?: boolean }) {
   return (
     <>
       <path d="M56 60 C52 30 66 19 80 19 C94 19 108 30 104 60 C102 46 96 36 80 33 C64 36 58 46 56 60 Z" fill="currentColor" fillOpacity=".22" />
@@ -47,8 +49,20 @@ function Woman({ earring }: { earring: boolean }) {
       <circle cx="106" cy="34" r="9" fill="currentColor" fillOpacity=".22" />
       <path d="M57 54 C57 72 67 81 80 81 C93 81 103 72 103 54" />
       <circle cx="80" cy="44" r="2.2" fill="currentColor" stroke="none" />
-      <path d="M68 56 q5 4 10 0 M82 56 q5 4 10 0" strokeWidth="1.6" />
-      <path d="M75 68 q5 4 10 0" strokeWidth="1.6" />
+      {thinking ? (
+        <>
+          {/* eyes open, looking up at her thought */}
+          <circle cx="74" cy="55" r="2.3" fill="currentColor" stroke="none" />
+          <circle cx="90" cy="55" r="2.3" fill="currentColor" stroke="none" />
+          <path d="M68 49 q5 -3 10 0 M84 49 q5 -3 10 0" strokeWidth="1.4" />
+          <path d="M76 69 q4 2 8 0" strokeWidth="1.6" />
+        </>
+      ) : (
+        <>
+          <path d="M68 56 q5 4 10 0 M82 56 q5 4 10 0" strokeWidth="1.6" />
+          <path d="M75 68 q5 4 10 0" strokeWidth="1.6" />
+        </>
+      )}
       {earring && <circle cx="57" cy="65" r="2.4" strokeWidth="1.4" />}
       <path d="M73 80 V89 M87 80 V89" />
       <path d="M73 89 C55 91 40 99 34 119 L30 168" />
@@ -104,6 +118,18 @@ function Music() {
         <path d="M147 87 V74" opacity=".7" />
       </g>
     </>
+  );
+}
+
+// A teal thought bubble with a question mark
+function Thinking() {
+  return (
+    <g className="text-primary">
+      <circle cx="113" cy="52" r="2.5" />
+      <circle cx="123" cy="42" r="4" />
+      <path d="M144 50 C132 50 130 36 140 33 C138 21 154 16 160 24 C166 13 186 15 186 28 C198 29 200 46 188 49 C186 57 170 58 166 52 C160 58 148 57 144 50 Z" />
+      <text x="164" y="44" textAnchor="middle" fontSize="22" fontWeight="600" fill="currentColor" stroke="none">?</text>
+    </g>
   );
 }
 

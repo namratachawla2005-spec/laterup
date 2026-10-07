@@ -21,6 +21,7 @@ import EmergencyCard from "@/components/talk/EmergencyCard";
 import BottomNav from "@/components/BottomNav";
 import WellnessNote from "@/components/WellnessNote";
 import { BackIcon, ClockIcon, TalkIcon } from "@/components/icons";
+import HomeWoman from "@/components/HomeWoman";
 
 export type RecentConversation = { id: string; startedAt: string; firstLine: string };
 
@@ -442,9 +443,7 @@ function EmptyState({
 
   return (
     <div className="mb-8">
-      <span aria-hidden="true" className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white">
-        <TalkIcon className="h-7 w-7" />
-      </span>
+      <HomeWoman scene="thinking" className="mb-3 h-[130px] w-40" />
       <h2 className="text-[1.75rem] font-semibold leading-tight">What&apos;s on your mind?</h2>
       <p className="mt-1 text-text-muted">Say it in your own words.</p>
 
