@@ -24,6 +24,7 @@ This is a 2-day demo build for a campus placement assignment (Mosaic Wellness), 
 | 4 | Patterns | `/patterns` | `docs/pages/04-patterns.md` |
 | 5 | Doctor Prep | `/doctor` | `docs/pages/05-doctor-prep.md` |
 | | Settings | `/settings` | Described in `02-home.md` |
+| | About LaterUp (public, no login) | `/about` | Added 7 Oct at the user's request: why we started, what LaterUp is and isn't, privacy promise |
 
 Plus the auth screens (Sign up, Log in) that gate the app. Do not add any other pages. If something seems missing, ask me first.
 

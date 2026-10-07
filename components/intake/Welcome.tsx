@@ -43,6 +43,9 @@ export default function Welcome() {
         >
           I already have an account
         </Link>
+        <Link href="/about" className="inline-flex min-h-tap items-center rounded-card-sm px-2 text-text-muted underline underline-offset-4">
+          About LaterUp
+        </Link>
       </div>
 
       <div className="mt-6 w-full">
