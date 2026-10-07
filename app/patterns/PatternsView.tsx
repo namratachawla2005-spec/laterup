@@ -72,7 +72,6 @@ function PatternsContent({ data: realData }: { data: PatternsData }) {
       {example && (
         <div role="status" className="mb-6 rounded-card border-2 border-accent/40 bg-surface p-4">
           <p>
-            <span aria-hidden="true">👀 </span>
             <strong>This is an example.</strong> Your real patterns will appear as you check in.
           </p>
           <button

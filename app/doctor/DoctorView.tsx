@@ -124,7 +124,6 @@ function DoctorContent({ userId, profile: realProfile, data: realData, firstChec
         {example && (
           <div role="status" className="mb-6 rounded-card border-2 border-accent/40 bg-surface p-4">
             <p>
-              <span aria-hidden="true">👀 </span>
               <strong>This is an example.</strong> Your real summary will build as you use LaterUp.
             </p>
             <button
@@ -304,7 +303,6 @@ function MentionFirst({ notes, onRemove }: { notes: DoctorNote[]; onRemove: (id:
         {notes.map((n) => (
           <li key={n.id}>
             <p>
-              <span aria-hidden="true">📅 </span>
               {shortDate(n.date)} · &ldquo;{n.her_words}&rdquo;
             </p>
             <RemoveWithConfirm question="Are you sure? This seemed important to mention." onRemove={() => onRemove(n.id)} />
@@ -399,7 +397,6 @@ function SummaryEditor(props: {
                   <li key={n.id} className="rounded-card-sm bg-background p-3">
                     <div className="flex items-start justify-between gap-2">
                       <p className={on ? "" : "text-text-muted"}>
-                        <span aria-hidden="true">📅 </span>
                         {shortDate(n.date)} · &ldquo;{n.her_words}&rdquo;
                       </p>
                       <Toggle label={`note from ${shortDate(n.date)}`} on={on} onChange={(v) => props.onExcludeNote(n.id, !v)} />
@@ -774,7 +771,7 @@ function AfterVisit({
               </button>
             </>
           )}
-          {flash && <p role="status" className="mt-3 font-medium">Well done for going. That&apos;s not always easy. 🌿</p>}
+          {flash && <p role="status" className="mt-3 font-medium">Well done for going. That&apos;s not always easy.</p>}
           {failed && <p className="mt-3 text-helper">That didn&apos;t save just now. Please try again.</p>}
 
           <ul className="mt-4 space-y-3">
