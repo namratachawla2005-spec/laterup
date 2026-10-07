@@ -26,7 +26,8 @@ This is a 2-day demo build for a campus placement assignment (Mosaic Wellness), 
 | | Settings | `/settings` | Described in `02-home.md` |
 | | About LaterUp (public, no login) | `/about` | Added 7 Oct at the user's request: why we started, what LaterUp is and isn't, privacy promise |
 | | Plans (public, no login) | `/plans` | Added 7 Oct at the user's request: pricing only (Free, Plus, workplaces), no payments |
-| | Help (public, no login) | `/help` | Added 7 Oct at the user's request: emergency numbers and government websites first, what LaterUp is, how each page works. Floating "Help" button on every page (in Talk's top bar instead) |
+| | Help (public, no login) | `/help` | Added 7 Oct at the user's request: what LaterUp is, how each page works, tips |
+| | SOS (public, no login) | `/sos` | Added 7 Oct at the user's request: emergency numbers and government websites only. Floating SOS (terracotta) and Help (teal) buttons on every page; in Talk's top bar instead |
 
 Plus the auth screens (Sign up, Log in, Forgot password, Reset password) that gate the app. Forgot password (7 Oct, user request) shows a greyed-out form marked "Coming soon": no email service is connected. `/reset-password` is built and ready for when email is set up. Do not add any other pages. If something seems missing, ask me first.
 

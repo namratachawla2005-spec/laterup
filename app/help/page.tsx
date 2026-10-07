@@ -1,28 +1,12 @@
-// Help: a public page (no login needed) so emergency numbers are always reachable.
-// Emergency help first, then what LaterUp is, then how each page works.
-// Numbers and websites checked 7 Oct 2026 against official / reliable sources.
+// Help: a public page (no login needed): what LaterUp is, how each page works, tips.
+// Emergency numbers live on the SOS page (/sos), linked at the top.
 import type { Metadata } from "next";
 import Link from "next/link";
 import WellnessNote from "@/components/WellnessNote";
 import { BackIcon, HomeIcon, TalkIcon, PatternsIcon, DoctorIcon, GearIcon } from "@/components/icons";
+import { AlertIcon } from "@/components/FloatingButtons";
 
 export const metadata: Metadata = { title: "LaterUp help" };
-
-const PHONES = [
-  { number: "112", call: "112", name: "Any emergency", detail: "Police, ambulance or fire. Free, 24 hours." },
-  { number: "108", call: "108", name: "Ambulance", detail: "Medical emergency, in many states." },
-  { number: "14416", call: "14416", name: "Tele-MANAS", detail: "Toll-free mental health support, 24 hours, in many Indian languages. Also 1800-891-4416." },
-  { number: "181", call: "181", name: "Women Helpline", detail: "Toll-free, for women in distress, 24 hours." },
-  { number: "7827170170", call: "+917827170170", name: "National Commission for Women", detail: "Helpline for women facing violence or stress, 24 hours." },
-  { number: "14567", call: "14567", name: "Elderline", detail: "Toll-free help for parents and in-laws who are senior citizens. 8 am to 8 pm, every day." },
-];
-
-const WEBSITES = [
-  { href: "https://telemanas.mohfw.gov.in/home", name: "Tele-MANAS", detail: "Government mental health support" },
-  { href: "https://esanjeevani.mohfw.gov.in", name: "eSanjeevani", detail: "Free online doctor consultation from the Government of India, including gynaecology" },
-  { href: "https://www.ncwwomenhelpline.in", name: "NCW Women Helpline", detail: "National Commission for Women" },
-  { href: "https://112.gov.in", name: "112 India", detail: "Emergency Response Support System" },
-];
 
 const PAGES = [
   {
@@ -83,39 +67,14 @@ export default function HelpPage() {
       </Link>
 
       <h1 className="mt-4 text-[1.75rem] font-semibold">Help</h1>
-      <p className="mt-1 text-text-muted">How LaterUp works, and where to get help.</p>
+      <p className="mt-1 text-text-muted">How LaterUp works, page by page.</p>
 
-      {/* 1. Emergency help, first */}
-      <section className="mt-8 rounded-card border-l-4 border-gentle bg-background p-5 shadow-[inset_0_0_0_1px_var(--color-surface)]" aria-labelledby="urgent-heading">
-        <h2 id="urgent-heading" className={sectionHeading}>Need help right now?</h2>
-        <p className="mt-1 text-helper text-text-muted">Tap a number to call.</p>
-        <ul className="mt-4 space-y-3">
-          {PHONES.map((p) => (
-            <li key={p.number}>
-              <a href={`tel:${p.call}`} className="block rounded-card-sm bg-surface p-4">
-                <span className="block font-semibold">{p.name}</span>
-                <span className="block text-2xl font-semibold text-primary">{p.number}</span>
-                <span className="block text-helper text-text-muted">{p.detail}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
+      <Link href="/sos" className="mt-6 flex min-h-tap items-center gap-2 rounded-card border-2 border-accent px-4 py-2 font-semibold text-accent">
+        <AlertIcon className="h-6 w-6" />
+        In an emergency? See emergency numbers (SOS)
+      </Link>
 
-        <h3 className="mt-6 font-semibold">Government websites</h3>
-        <ul className="mt-2 space-y-2">
-          {WEBSITES.map((w) => (
-            <li key={w.href}>
-              <a href={w.href} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-tap flex-col justify-center">
-                <span className="font-medium text-primary underline underline-offset-4">{w.name}</span>
-                <span className="text-helper text-text-muted">{w.detail}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-        <p className="mt-4 text-helper text-text-muted">These are services run by the Government of India. LaterUp is not connected to them.</p>
-      </section>
-
-      {/* 2. What LaterUp is */}
+      {/* What LaterUp is */}
       <section className="mt-10" aria-labelledby="what-heading">
         <h2 id="what-heading" className={sectionHeading}>What is LaterUp?</h2>
         <p className="mt-3">
@@ -126,7 +85,7 @@ export default function HelpPage() {
         <p className="mt-3">It is not a doctor. It does not diagnose, and it never suggests medicines.</p>
       </section>
 
-      {/* 3. How each page works */}
+      {/* How each page works */}
       <section className="mt-10" aria-labelledby="pages-heading">
         <h2 id="pages-heading" className={sectionHeading}>How each page works</h2>
         <p className="mt-1 text-helper text-text-muted">Use the bar at the bottom of the screen to move between pages.</p>
@@ -153,7 +112,7 @@ export default function HelpPage() {
         </ul>
       </section>
 
-      {/* 4. Good to know */}
+      {/* Good to know */}
       <section className="mt-10" aria-labelledby="tips-heading">
         <h2 id="tips-heading" className={sectionHeading}>Good to know</h2>
         <ul className="mt-3 space-y-2">

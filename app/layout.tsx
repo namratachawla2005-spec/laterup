@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { DM_Sans, Noto_Sans_Devanagari } from "next/font/google";
 import "./globals.css";
 import { TEXT_SIZE_SCRIPT } from "@/lib/textSize";
-import HelpButton from "@/components/HelpButton";
+import FloatingButtons from "@/components/FloatingButtons";
 
 // Main font for the whole app
 const dmSans = DM_Sans({
@@ -41,7 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="min-h-full flex flex-col">
         {children}
-        <HelpButton />
+        <FloatingButtons />
       </body>
     </html>
   );

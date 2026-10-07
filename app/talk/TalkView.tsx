@@ -22,7 +22,7 @@ import BottomNav from "@/components/BottomNav";
 import WellnessNote from "@/components/WellnessNote";
 import { BackIcon, ClockIcon, TalkIcon } from "@/components/icons";
 import HomeWoman from "@/components/HomeWoman";
-import { HelpIcon } from "@/components/HelpButton";
+import { AlertIcon, HelpIcon } from "@/components/FloatingButtons";
 
 export type RecentConversation = { id: string; startedAt: string; firstLine: string };
 
@@ -333,7 +333,11 @@ function TalkContent({ userId, profile, recent: initialRecent }: { userId: strin
           <BackIcon className="h-6 w-6" />
         </Link>
         <h1 className="text-xl font-semibold">Talk</h1>
-        <Link href="/help" className="ml-auto -mr-2 inline-flex min-h-tap items-center gap-1.5 rounded-card-sm px-2 font-medium text-primary">
+        <Link href="/sos" aria-label="SOS: emergency numbers" className="ml-auto inline-flex min-h-tap items-center gap-1 rounded-card-sm px-2 font-bold text-accent">
+          <AlertIcon className="h-6 w-6" />
+          SOS
+        </Link>
+        <Link href="/help" className="-mr-2 inline-flex min-h-tap items-center gap-1.5 rounded-card-sm px-2 font-medium text-primary">
           <HelpIcon className="h-6 w-6" />
           Help
         </Link>
