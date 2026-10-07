@@ -16,28 +16,38 @@ export default function FloatingButtons() {
   const path = usePathname();
   if (path === "/talk") return null;
   const aboveBar = WITH_BOTTOM_BAR.includes(path);
+  // Welcome's two main buttons sit low on a phone, right where floating buttons would go,
+  // so there SOS and Help sit at the end of the page instead (they still float on wide screens).
+  const welcome = path === "/";
+
+  const buttons = (
+    <>
+      {path !== "/sos" && (
+        <Link href="/sos" aria-label="SOS: emergency numbers" className={sosClass}>
+          <AlertIcon className="h-6 w-6" />
+          SOS
+        </Link>
+      )}
+      {path !== "/help" && (
+        <Link href="/help" className={helpClass}>
+          <HelpIcon className="h-6 w-6" />
+          Help
+        </Link>
+      )}
+    </>
+  );
 
   return (
     <>
-      {/* Space at the end of the page, so the buttons never cover the last line */}
-      <div aria-hidden="true" className="h-20 shrink-0 print:hidden" />
+      {welcome && <div className="flex justify-center gap-2 pb-8 lg:hidden print:hidden">{buttons}</div>}
+      {/* Space at the end of the page, so the floating buttons never cover the last line */}
+      <div aria-hidden="true" className={`h-20 shrink-0 print:hidden ${welcome ? "hidden lg:block" : ""}`} />
       <div
-        className={`fixed right-4 z-20 flex gap-2 print:hidden ${
+        className={`fixed right-4 z-20 gap-2 print:hidden ${welcome ? "hidden lg:flex" : "flex"} ${
           aboveBar ? "bottom-[calc(5rem+env(safe-area-inset-bottom))]" : "bottom-[calc(1.25rem+env(safe-area-inset-bottom))]"
         }`}
       >
-        {path !== "/sos" && (
-          <Link href="/sos" aria-label="SOS: emergency numbers" className={sosClass}>
-            <AlertIcon className="h-6 w-6" />
-            SOS
-          </Link>
-        )}
-        {path !== "/help" && (
-          <Link href="/help" className={helpClass}>
-            <HelpIcon className="h-6 w-6" />
-            Help
-          </Link>
-        )}
+        {buttons}
       </div>
     </>
   );

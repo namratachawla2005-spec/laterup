@@ -4,7 +4,8 @@
 // late night: asleep in bed under a crescent moon.
 // Talk uses "thinking": a thought bubble with a question. Patterns uses "butterflies": three teal butterflies around her.
 // Doctor Prep uses "doctor": she and a doctor talking.
-export type Scene = "chai" | "reading" | "music" | "night" | "thinking" | "butterflies" | "doctor";
+// Welcome uses "namaste": palms together in front of a rising sun.
+export type Scene = "chai" | "reading" | "music" | "night" | "thinking" | "butterflies" | "doctor" | "namaste";
 
 export function sceneFor(hour: number): Scene {
   if (hour >= 22 || hour < 5) return "night";
@@ -14,7 +15,7 @@ export function sceneFor(hour: number): Scene {
 }
 
 // Thinking needs room for the bubble on the right
-const VIEW_BOX: Partial<Record<Scene, string>> = { thinking: "0 0 210 170", doctor: "0 0 300 170" };
+const VIEW_BOX: Partial<Record<Scene, string>> = { thinking: "0 0 210 170", doctor: "0 0 300 170", namaste: "-12 -14 184 186" };
 
 export default function HomeWoman({ scene, className = "" }: { scene: Scene; className?: string }) {
   return (
@@ -33,6 +34,7 @@ export default function HomeWoman({ scene, className = "" }: { scene: Scene; cla
         <Asleep />
       ) : (
         <>
+          {scene === "namaste" && <SunBehind />}
           <Woman earring={scene !== "music"} thinking={scene === "thinking"} />
           {scene === "chai" && <Chai />}
           {scene === "reading" && <Book />}
@@ -40,6 +42,7 @@ export default function HomeWoman({ scene, className = "" }: { scene: Scene; cla
           {scene === "thinking" && <Thinking />}
           {scene === "butterflies" && <Butterflies />}
           {scene === "doctor" && <DoctorTalk />}
+          {scene === "namaste" && <Namaste />}
         </>
       )}
     </svg>
@@ -195,6 +198,40 @@ function DoctorTalk() {
         <path d="M140 48 H178 a8 8 0 0 1 8 8 V68 a8 8 0 0 1 -8 8 H176 L186 86 L166 76 H140 a8 8 0 0 1 -8 -8 V56 a8 8 0 0 1 8 -8 Z" strokeWidth="1.6" fill="currentColor" fillOpacity=".08" />
         <path d="M144 59 H174 M144 66 H166" strokeWidth="1.4" opacity=".6" />
       </g>
+    </>
+  );
+}
+
+// A soft rising sun behind her, and a cream silhouette so the sun doesn't show through her
+function SunBehind() {
+  return (
+    <>
+      <clipPath id="namaste-above-horizon">
+        <rect x="-20" y="-20" width="200" height="189" />
+      </clipPath>
+      <g clipPath="url(#namaste-above-horizon)">
+        <circle cx="80" cy="138" r="82" stroke="var(--color-gentle)" strokeWidth="2.5" opacity=".5" />
+        <circle cx="80" cy="138" r="64" fill="currentColor" fillOpacity=".16" stroke="none" />
+      </g>
+      <line x1="-8" y1="169" x2="168" y2="169" stroke="var(--color-text)" strokeOpacity=".18" strokeWidth="2" />
+      <g fill="var(--color-background)" stroke="none">
+        <circle cx="80" cy="51" r="25" />
+        <circle cx="106" cy="34" r="9" />
+        <path d="M71 74 H89 V89 C105 91 120 99 126 119 L130 168 H30 L34 119 C40 99 55 91 71 89 Z" />
+      </g>
+    </>
+  );
+}
+
+// Namaste: palms together at her chest, elbows out
+function Namaste() {
+  return (
+    <>
+      {/* each forearm: a top and a bottom line, from her hands out to her elbow at her side */}
+      <path d="M75.5 106 C64 110 52 115 40 121 M76 117 C66 121 56 126 46 131" strokeWidth="1.8" />
+      <path d="M84.5 106 C96 110 108 115 120 121 M84 117 C94 121 104 126 114 131" strokeWidth="1.8" />
+      <path d="M80 88 C75 95 74 106 75.5 119 H84.5 C86 106 85 95 80 88 Z" fill="var(--color-background)" strokeWidth="1.8" />
+      <path d="M80 92 V118" strokeWidth="1.2" opacity=".7" />
     </>
   );
 }

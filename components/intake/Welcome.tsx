@@ -2,19 +2,20 @@
 import Link from "next/link";
 import Wordmark from "@/components/Wordmark";
 import WellnessNote from "@/components/WellnessNote";
-import RisingSun from "./RisingSun";
 import ProtectPanel from "./ProtectPanel";
 import MotifBackground from "@/components/MotifBackground";
+import HomeWoman from "@/components/HomeWoman";
 
 const quietLink = "inline-flex min-h-tap items-center rounded-card-sm px-2 text-text-muted underline underline-offset-4";
 
 export default function Welcome() {
   return (
-    <MotifBackground motif="rangoli">
+    <MotifBackground motif="waves">
       <main className="mx-auto flex w-full max-w-md flex-1 flex-col items-center px-5 pt-8 pb-10 text-center">
         <Wordmark />
   
-        <RisingSun className="mt-10 w-56 max-w-full sm:w-64" />
+        {/* The LaterUp woman, greeting her with a namaste in front of a rising sun */}
+        <HomeWoman scene="namaste" className="mt-6 h-40 w-40 max-w-full sm:h-52 sm:w-52" />
   
         <h1 className="mt-8 text-[1.75rem] font-semibold leading-tight tracking-tight text-balance sm:text-[1.875rem]">
           Midlife is a new chapter. You don&apos;t have to figure it out alone.
