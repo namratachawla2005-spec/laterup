@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { DM_Sans, Noto_Sans_Devanagari } from "next/font/google";
 import "./globals.css";
 import { TEXT_SIZE_SCRIPT } from "@/lib/textSize";
+import HelpButton from "@/components/HelpButton";
 
 // Main font for the whole app
 const dmSans = DM_Sans({
@@ -38,7 +39,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: TEXT_SIZE_SCRIPT }} />
       </head>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <HelpButton />
+      </body>
     </html>
   );
 }
