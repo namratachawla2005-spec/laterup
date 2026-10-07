@@ -10,7 +10,7 @@ import IntakeFlow from "@/components/intake/IntakeFlow";
 import ProtectPanel from "@/components/intake/ProtectPanel";
 import LogOutButton from "@/components/LogOutButton";
 import WellnessNote from "@/components/WellnessNote";
-import { FormMessage } from "@/components/AuthFields";
+import { FormMessage, PasswordField, SubmitButton } from "@/components/AuthFields";
 import { BackIcon } from "@/components/icons";
 
 const rowClass = "flex w-full items-center rounded-card-sm bg-surface px-5 text-left font-medium";
@@ -78,6 +78,7 @@ export default function SettingsView({ profile }: { profile: Profile }) {
         <button type="button" onClick={() => setEditing(true)} className={rowClass}>
           Edit my answers
         </button>
+        <ChangePassword onChanged={() => setNotice("Your password has been changed.")} />
       </div>
 
       <div className="mt-6">
@@ -127,5 +128,74 @@ export default function SettingsView({ profile }: { profile: Profile }) {
         <WellnessNote withEmergency />
       </div>
     </main>
+  );
+}
+
+// "Change password": opens in place (no pop-up). Checks her current password first.
+function ChangePassword({ onChanged }: { onChanged: () => void }) {
+  const [open, setOpen] = useState(false);
+  const [current, setCurrent] = useState("");
+  const [next, setNext] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+
+  function close() {
+    setOpen(false);
+    setCurrent("");
+    setNext("");
+    setError("");
+  }
+
+  async function save(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    if (next === current) {
+      setError("Please choose a new password that's different from your current one.");
+      return;
+    }
+    setBusy(true);
+    const supabase = createClient();
+    const { data } = await supabase.auth.getUser();
+    // Make sure it's really her: her current password must be right
+    const { error: wrong } = await supabase.auth.signInWithPassword({ email: data.user?.email ?? "", password: current });
+    if (wrong) {
+      setBusy(false);
+      setError(/fetch|network/i.test(wrong.message)
+        ? "We couldn't reach LaterUp just now. Please check your connection and try again."
+        : "That current password isn't right. Please try again.");
+      return;
+    }
+    const { error } = await supabase.auth.updateUser({ password: next });
+    setBusy(false);
+    if (error) {
+      setError(error.code === "weak_password"
+        ? "Please choose a longer password, at least 8 characters."
+        : "Something went wrong. Please try again.");
+      return;
+    }
+    close();
+    onChanged();
+    window.scrollTo(0, 0);
+  }
+
+  if (!open) {
+    return (
+      <button type="button" onClick={() => setOpen(true)} className={rowClass}>
+        Change password
+      </button>
+    );
+  }
+
+  return (
+    <form onSubmit={save} className="space-y-5 rounded-card border-2 border-surface p-5" aria-labelledby="change-password-heading">
+      <h2 id="change-password-heading" className="font-semibold">Change password</h2>
+      <PasswordField id="current-password" label="Current password" value={current} onChange={setCurrent} isNew={false} />
+      <PasswordField id="new-password" label="New password" value={next} onChange={setNext} isNew />
+      <FormMessage text={error} />
+      <SubmitButton busy={busy} label="Save new password" />
+      <button type="button" onClick={close} disabled={busy} className="w-full rounded-card border-2 border-primary px-6 font-semibold text-primary">
+        Cancel
+      </button>
+    </form>
   );
 }

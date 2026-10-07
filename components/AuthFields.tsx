@@ -38,27 +38,29 @@ export function PasswordField({
   onChange,
   isNew,
   label = "Password",
+  id = "password",
 }: {
   value: string;
   onChange: (v: string) => void;
-  isNew: boolean; // true on Sign up and Reset password, false on Log in
+  isNew: boolean; // true for a new password (Sign up, Reset, Change), false when typing the current one
   label?: string;
+  id?: string; // needed when a page has two password boxes (Settings: current + new)
 }) {
   const [show, setShow] = useState(false);
 
   return (
     <div>
-      <label htmlFor="password" className="block font-medium">
+      <label htmlFor={id} className="block font-medium">
         {label}
       </label>
       <div className="relative mt-2">
         <input
-          id="password"
+          id={id}
           type={show ? "text" : "password"}
           autoComplete={isNew ? "new-password" : "current-password"}
           required
           minLength={isNew ? 8 : undefined}
-          aria-describedby={isNew ? "password-help" : undefined}
+          aria-describedby={isNew ? `${id}-help` : undefined}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           className={`${inputClass} pr-20`}
@@ -73,7 +75,7 @@ export function PasswordField({
         </button>
       </div>
       {isNew && (
-        <p id="password-help" className="mt-2 text-helper text-text-muted">
+        <p id={`${id}-help`} className="mt-2 text-helper text-text-muted">
           At least 8 characters.
         </p>
       )}
