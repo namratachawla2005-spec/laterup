@@ -6,6 +6,8 @@ import RisingSun from "./RisingSun";
 import ProtectPanel from "./ProtectPanel";
 import MotifBackground from "@/components/MotifBackground";
 
+const quietLink = "inline-flex min-h-tap items-center rounded-card-sm px-2 text-text-muted underline underline-offset-4";
+
 export default function Welcome() {
   return (
     <MotifBackground motif="rangoli">
@@ -45,9 +47,14 @@ export default function Welcome() {
           >
             I already have an account
           </Link>
-          <Link href="/about" className="inline-flex min-h-tap items-center rounded-card-sm px-2 text-text-muted underline underline-offset-4">
-            About LaterUp
-          </Link>
+          <div className="flex justify-center gap-4">
+            <Link href="/about" className={quietLink}>
+              About LaterUp
+            </Link>
+            <Link href="/plans" className={quietLink}>
+              Plans
+            </Link>
+          </div>
         </div>
   
         <div className="mt-6 w-full">

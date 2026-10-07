@@ -1,5 +1,5 @@
 // Faint thin-line decorations behind a page, kept to the edges so the text stays easy to read.
-// "leaves" (Sign up, Log in, About), "rangoli" corners (Welcome), teal "waves" (Home; on phones Home shows
+// "leaves" (Sign up, Log in, About, Plans), "rangoli" corners (Welcome), teal "waves" (Home; on phones Home shows
 // small waves beside its headings instead). Decorative only.
 export default function MotifBackground({
   motif = "leaves",
@@ -12,9 +12,10 @@ export default function MotifBackground({
     <div className="relative isolate flex flex-1 flex-col overflow-hidden">
       {motif === "leaves" && (
         <>
-          <LeafSprig className="absolute -top-8 -right-16 -z-10 h-48 w-36 rotate-[200deg] opacity-20 sm:right-[8%] sm:h-56 sm:w-44" />
-          <LeafSprig className="absolute top-[45%] -left-14 -z-10 hidden h-64 w-48 rotate-[20deg] opacity-15 sm:left-[6%] md:block" />
-          <LeafSprig className="absolute -bottom-6 -left-12 -z-10 h-52 w-40 rotate-[10deg] opacity-20 sm:left-[10%]" />
+          {/* Tucked into the top-right corner on every screen; the other two only where the margins are empty */}
+          <LeafSprig className="absolute -top-14 -right-12 -z-10 h-36 w-28 rotate-[200deg] opacity-20 sm:-right-10 sm:h-56 sm:w-44 lg:right-[3%]" />
+          <LeafSprig className="absolute top-[45%] left-[4%] -z-10 hidden h-64 w-48 rotate-[20deg] opacity-15 xl:block" />
+          <LeafSprig className="absolute -bottom-6 left-[2%] -z-10 hidden h-52 w-40 rotate-[10deg] opacity-20 lg:block" />
         </>
       )}
       {motif === "rangoli" && (
