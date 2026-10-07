@@ -91,3 +91,10 @@ Open small decisions: WhatsApp share (wa.me link vs phone share menu); About pag
 - First Talk question after a long break may show the fallback locally (Qwen waking up). Tap Try again. Not an issue on Haiku.
 - Talk "Recent" shows the last 5 conversations only.
 - Off-topic detection on the device is a short word list; the model handles the rest.
+
+## Haiku quality pass (7 Oct, live site)
+
+- Live site runs on Claude Haiku (`claude-haiku-4-5-20251001`); usage rows confirm `anthropic`. Vercel `MAX_ANSWER_TOKENS` = **1000** (user's choice; 500 cut off a Hinglish answer). Local `.env.local` has 700 and still uses Ollama.
+- Measured on Haiku: about 1,850 to 2,250 tokens in, about 350 to 390 out, 6 to 9 s per answer, about ₹0.40 per question.
+- Prompt rules added in `lib/prompt.ts` after the pass: helpline numbers (Tele-MANAS 14416, 112) for hopelessness / very low mood; only real, everyday Indian dishes; follow-ups must read as if she typed them ("I", "my"); no profile echo (diet rules, doctor comfort); "aap" in Hindi; family wording never says menopause causes it; plain doctor signs.
+- Re-checked live: Hinglish, low-mood, HRT, cancer worry, off-topic and follow-ups all answer correctly. Known minor: occasional over-sure phrases ("This will pass").
