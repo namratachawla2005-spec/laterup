@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { clearSession, useIsBrowser } from "@/lib/local";
 import { readTextSize, saveTextSize, type TextSize } from "@/lib/textSize";
-import type { Profile } from "@/lib/intake";
+import { AGE_GROUPS, labelFor, type Profile } from "@/lib/intake";
 import IntakeFlow from "@/components/intake/IntakeFlow";
 import ProtectPanel from "@/components/intake/ProtectPanel";
 import LogOutButton from "@/components/LogOutButton";
@@ -16,7 +16,7 @@ import { BackIcon } from "@/components/icons";
 
 const rowClass = "flex w-full items-center rounded-card-sm bg-surface px-5 text-left font-medium";
 
-export default function SettingsView({ profile }: { profile: Profile }) {
+export default function SettingsView({ profile, email, memberSince }: { profile: Profile; email: string; memberSince: string }) {
   const router = useRouter();
   const [editing, setEditing] = useState(false);
   const [notice, setNotice] = useState("");
@@ -75,7 +75,25 @@ export default function SettingsView({ profile }: { profile: Profile }) {
         </p>
       )}
 
-      <div className="mt-6 space-y-3">
+      {/* My profile: only what she already gave us (no new data) */}
+      <section className="mt-6" aria-labelledby="profile-heading">
+        <h2 id="profile-heading" className="font-semibold">My profile</h2>
+        <dl className="mt-3 divide-y divide-text/10 rounded-card border-2 border-surface px-5">
+          {[
+            ["Name", profile.name || "Not set"],
+            ["Email", email],
+            ["Age group", profile.age_group ? labelFor(AGE_GROUPS, profile.age_group) : "Not set"],
+            ["Member since", new Date(memberSince).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })],
+          ].map(([label, value]) => (
+            <div key={label} className="flex flex-wrap justify-between gap-x-4 py-3">
+              <dt className="text-text-muted">{label}</dt>
+              <dd className="min-w-0 text-right font-medium [overflow-wrap:anywhere]">{value}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+      <div className="mt-3 space-y-3">
         <button type="button" onClick={() => setEditing(true)} className={`${rowClass} flex-col items-start py-3`}>
           Edit my answers
           <span className="text-helper font-normal text-text-muted">Your name, age group, what&apos;s bothering you, and more</span>

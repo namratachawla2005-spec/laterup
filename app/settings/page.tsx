@@ -18,5 +18,5 @@ export default async function SettingsPage() {
     .single<Profile>();
   if (!profile?.intake_completed) redirect("/");
 
-  return <SettingsView profile={profile} />;
+  return <SettingsView profile={profile} email={user.email ?? ""} memberSince={user.created_at} />;
 }
