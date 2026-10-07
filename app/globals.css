@@ -113,3 +113,15 @@
     }
   }
 }
+
+/* Doctor Prep "Save as PDF / Print": one A4 page, black on white */
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+  html,
+  body {
+    background: white;
+  }
+}

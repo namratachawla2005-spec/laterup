@@ -16,7 +16,7 @@ Read this with `CLAUDE.md` and `docs/BUILD-SPEC.md` before continuing.
 | Page 3: Talk (safety, AI, 15 pre-written answers) | Done | `app/talk`, `app/api/understand`, `lib/safety.ts`, `lib/answers.ts`, `lib/prompt.ts` |
 | Page 4: Patterns (with example mode) | Done | `app/patterns`, `lib/patterns.ts`, `lib/example.ts` |
 | Richer check-in (sleep, energy, all symptoms) | Done (user request) | Home + Patterns + Talk |
-| **Page 5: Doctor Prep** | **Not started: next** | `docs/pages/05-doctor-prep.md` |
+| Page 5: Doctor Prep (with example mode) | Done, 56 browser checks passed | `app/doctor`, `lib/doctor.ts`, `components/doctor/`, `lib/example.ts` |
 | Live site | Deployed, auto-deploys from `main` | https://laterup.vercel.app |
 
 GitHub: `namratachawla2005-spec/laterup` (private). Last commit: "Richer daily check-in: sleep, energy and all symptoms".
@@ -67,3 +67,14 @@ GitHub: `namratachawla2005-spec/laterup` (private). Last commit: "Richer daily c
 - First Talk question after a long break may show the fallback locally (Qwen waking up). Tap Try again. Not an issue on Haiku.
 - Talk "Recent" shows the last 5 conversations only.
 - Off-topic detection on the device is a short word list; the model handles the rest.
+
+## Day 2 decisions
+
+| Decision | Why |
+|---|---|
+| Doctor Prep saves to her `doctor_prep` row (Supabase), not the device | BUILD-SPEC: "saved on her device" means her own rows. No AI on the page. |
+| Sleep and energy lines in the summary: "Sleep: well 6, on and off 4, barely 4 (14 nights noted)" | Brief has no copy for these; plain counts a doctor can read. |
+| Meena's "mention first" example is a long, heavy period, not spotting after periods stopped | The brief's sample contradicts Meena's "irregular periods" story. |
+| Print fits one A4 page by dropping the oldest "own words" notes first | Brief section 8; mention-first and questions always kept. |
+| "Remove" on a doctor note deletes it (inline confirm); the toggle only hides it from the summary | Brief gives both a toggle and Remove. |
+| WhatsApp uses a wa.me link (summary in WhatsApp's link, only after "Share anyway") | Brief behaviour. Alternative: phone share menu. User to choose. |
