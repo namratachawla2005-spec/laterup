@@ -182,7 +182,7 @@ export default function AnswerView({ answer, seeDoctorSoon, byAI, animate, onTry
             Written by AI and checked for safety. LaterUp is a wellness guide, not medical advice.
           </p>
         ) : (
-          <WellnessNote />
+          <WellnessNote copyright={false} />
         ))}
     </div>
   );

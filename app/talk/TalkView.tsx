@@ -520,6 +520,10 @@ function EmptyState({
           </ul>
         </section>
       )}
+
+      <div className="mt-10">
+        <WellnessNote />
+      </div>
     </div>
   );
 }
