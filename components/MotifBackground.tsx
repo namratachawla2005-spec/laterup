@@ -1,10 +1,11 @@
 // Faint thin-line decorations behind a page, kept to the edges so the text stays easy to read.
-// "leaves" (Sign up, Log in, About), "rangoli" corners (Welcome) or teal "waves" (Home; on phones Home shows small waves beside its headings instead). Decorative only.
+// "leaves" (Sign up, Log in, About), "rangoli" corners (Welcome), teal "waves" (Home; on phones Home shows
+// small waves beside its headings instead) or teal kolam "dots" (Talk, before a conversation starts). Decorative only.
 export default function MotifBackground({
   motif = "leaves",
   children,
 }: {
-  motif?: "leaves" | "rangoli" | "waves";
+  motif?: "leaves" | "rangoli" | "waves" | "dots" | "none";
   children: React.ReactNode;
 }) {
   return (
@@ -20,6 +21,14 @@ export default function MotifBackground({
         <>
           <RangoliCorner className="absolute top-0 right-0 -z-10 h-36 w-36 rotate-90 opacity-30 sm:h-56 sm:w-56" />
           <RangoliCorner className="absolute bottom-0 left-0 -z-10 h-36 w-36 -rotate-90 opacity-30 sm:h-56 sm:w-56" />
+        </>
+      )}
+      {motif === "dots" && (
+        <>
+          {/* Only on wide screens, in the side margins, clear of the content */}
+          <KolamDots className="absolute top-[18%] left-[8%] -z-10 hidden w-24 lg:block" />
+          <KolamDots className="absolute top-[45%] right-[8%] -z-10 hidden w-20 lg:block" />
+          <KolamDots className="absolute top-[72%] left-[10%] -z-10 hidden w-16 lg:block" />
         </>
       )}
       {motif === "waves" && (
@@ -115,6 +124,21 @@ export function Waves({ className = "" }: { className?: string }) {
       <path d={wave(12)} opacity=".85" />
       <path d={wave(24)} opacity=".6" />
       <path d={wave(36)} opacity=".35" />
+    </svg>
+  );
+}
+
+// Teal polka dots set out in a diamond, like the dot grid a kolam is drawn on
+export function KolamDots({ className = "" }: { className?: string }) {
+  const rows = [1, 3, 5, 3, 1];
+  const dots = rows.flatMap((count, row) =>
+    Array.from({ length: count }, (_, i) => ({ x: 40 + (i - (count - 1) / 2) * 16, y: 8 + row * 16, centre: row === 2 && i === 2 }))
+  );
+  return (
+    <svg viewBox="0 0 80 80" aria-hidden="true" focusable="false" className={`text-primary ${className}`}>
+      {dots.map((d) => (
+        <circle key={`${d.x}-${d.y}`} cx={d.x} cy={d.y} r={d.centre ? 4.5 : 3} fill="currentColor" opacity={d.centre ? 0.9 : 0.55} />
+      ))}
     </svg>
   );
 }
