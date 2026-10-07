@@ -12,6 +12,7 @@ import {
   readSession, writeSession, DRAFT_KEY, HANDOVER_KEY,
 } from "@/lib/local";
 import Wordmark from "@/components/Wordmark";
+import ChaiWoman from "@/components/ChaiWoman";
 import WellnessNote from "@/components/WellnessNote";
 import BottomNav from "@/components/BottomNav";
 import { FormMessage } from "@/components/AuthFields";
@@ -116,9 +117,14 @@ function HomeContent({ userId, name, topSymptoms, checkIns, hasHistory, trying, 
 
   return (
     <main className="mx-auto w-full max-w-md flex-1 px-5 pt-6 pb-32">
-      {/* Section 1: Greeting */}
-      <h1 className="break-words text-[1.875rem] font-semibold leading-tight">{greetingFor(hour, name)}</h1>
-      <p className="mt-1 text-text-muted">{secondLine}</p>
+      {/* Section 1: Greeting, with a small illustration of a woman enjoying her chai */}
+      <div className="flex items-end gap-3">
+        <div className="min-w-0 flex-1">
+          <h1 className="break-words text-[1.875rem] font-semibold leading-tight">{greetingFor(hour, name)}</h1>
+          <p className="mt-1 text-text-muted">{secondLine}</p>
+        </div>
+        <ChaiWoman className="-mb-1 h-28 w-[6.5rem] shrink-0" />
+      </div>
 
       {/* Section 2: What's on your mind (the hero of Home) */}
       <form
@@ -278,7 +284,12 @@ function CheckInSection({
 
       {stage === "done" ? (
         <div className="mt-3 rounded-card bg-surface p-5" aria-live="polite">
-          <p>Thanks for checking in. 🌿</p>
+          <p className="flex items-center gap-2">
+            Thanks for checking in.
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" className="h-5 w-5 text-accent">
+              <path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z" fill="currentColor" />
+            </svg>
+          </p>
           {feeling === "tough" && (
             <p className="mt-2">
               Tough days happen.{" "}
