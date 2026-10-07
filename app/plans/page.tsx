@@ -26,6 +26,8 @@ const PLANS: Plan[] = [
       "Daily check-ins",
       "Emergency help, always free",
       "Patterns and Doctor Prep",
+      "Track the small things you try, and see what seems to help",
+      "Words to start the conversation with your doctor, in English or Hindi",
     ],
   },
   {
@@ -36,17 +38,20 @@ const PLANS: Plan[] = [
       "Unlimited questions on Talk",
       "4-week programmes for sleep, hot flashes and mood, built around your day",
       "Guided yoga, breathing and sleep sessions",
-      "Talk in Hindi by voice: speak your question, and hear the answer read aloud",
       "Monthly live Q&A sessions with gynaecologists",
       "Private chat with a certified menopause coach",
-      "Book a visit with a partner gynaecologist, with your Doctor Prep summary sent ahead (only if you choose)",
+      "Book a visit with a partner gynaecologist, with your Doctor Prep summary sent ahead",
     ],
     label: "Coming soon",
     highlight: true,
   },
   {
     name: "For workplaces and clinics",
-    features: ["Offer LaterUp Plus free to employees or patients"],
+    features: [
+      "Offer LaterUp Plus free to employees or patients",
+      "Menopause awareness sessions for your team, run with gynaecologists",
+      "Private by design: employers and clinics never see anyone's personal data",
+    ],
     label: "Contact us",
   },
 ];
