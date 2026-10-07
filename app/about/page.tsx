@@ -1,10 +1,11 @@
 // About LaterUp: a public page, no login needed (linked from Welcome).
 // Thin-line decorations: a sunrise over the title (the LaterUp motif), jaali bands
-// between sections, and faint leaves in the background.
+// between sections, and faint leaves in the background (LeafBackground).
 import type { Metadata } from "next";
 import Link from "next/link";
 import WellnessNote from "@/components/WellnessNote";
 import { BackIcon } from "@/components/icons";
+import LeafBackground from "@/components/LeafBackground";
 
 export const metadata: Metadata = { title: "About LaterUp" };
 
@@ -12,12 +13,7 @@ const sectionHeading = "text-xl font-semibold text-accent";
 
 export default function AboutPage() {
   return (
-    <div className="relative isolate flex flex-1 flex-col overflow-hidden">
-      {/* Faint leaves in the background, kept to the edges so text stays easy to read */}
-      <LeafSprig className="absolute -top-8 -right-16 -z-10 h-48 w-36 rotate-[200deg] sm:h-56 sm:w-44 text-primary opacity-20 sm:right-[8%]" />
-      <LeafSprig className="absolute top-[45%] -left-14 -z-10 hidden h-64 w-48 rotate-[20deg] text-primary opacity-15 sm:left-[6%] md:block" />
-      <LeafSprig className="absolute -bottom-6 -left-12 -z-10 h-52 w-40 rotate-[10deg] text-primary opacity-20 sm:left-[10%]" />
-
+    <LeafBackground>
       <main className="mx-auto flex w-full max-w-xl flex-1 flex-col px-5 pt-4 pb-10">
         <Link href="/" className="-ml-2 inline-flex min-h-tap items-center gap-1 self-start rounded-card-sm px-2 font-medium text-text-muted">
           <BackIcon /> Back
@@ -45,7 +41,7 @@ export default function AboutPage() {
           </p>
           <p>
             It is not a doctor. It does not diagnose, and it never suggests medicines. It is made for Indian women,
-            by an Indian woman. It can also help you talk to your doctor in Hindi.
+            by a 20-year-old girl who sees her mother struggle.
           </p>
         </section>
 
@@ -63,7 +59,7 @@ export default function AboutPage() {
           <WellnessNote />
         </div>
       </main>
-    </div>
+    </LeafBackground>
   );
 }
 
@@ -118,21 +114,3 @@ function Jaali() {
   );
 }
 
-// A sprig of leaves: a curved stem with leaves on alternate sides
-function LeafSprig({ className = "" }: { className?: string }) {
-  // [x, y, angle] where each leaf joins the stem
-  const leaves: [number, number, number][] = [
-    [62, 140, -50], [60, 118, 210], [63, 96, -40], [66, 74, 220], [71, 52, -30], [77, 32, 230],
-  ];
-  return (
-    <svg viewBox="0 0 120 160" {...lineStyle} strokeWidth="1.3" className={className}>
-      <path d="M60 160 C58 120 64 70 82 12" />
-      {leaves.map(([x, y, a]) => (
-        <g key={`${x}-${y}`} transform={`translate(${x} ${y}) rotate(${a})`}>
-          <path d="M0 0 C8 -10 26 -10 34 0 C26 10 8 10 0 0 Z" />
-          <line x1="2" y1="0" x2="30" y2="0" opacity=".6" />
-        </g>
-      ))}
-    </svg>
-  );
-}
