@@ -12,7 +12,7 @@ LaterUp is a private, personalized wellness companion for women going through pe
 - **Core journey:** Understand (Talk), Try ("I'll try this"), Notice (Patterns), Act (Doctor Prep).
 - **The hero:** the Talk page. She types what she feels in her own words and gets one warm, personalized, 4-part answer. If that answer feels generic, the app fails. Polish goes here first.
 
-This is a 2-day demo build for a campus placement assignment (Mosaic Wellness), due 8 October 2026. The builder is not a programmer. Favour simple, readable code over clever code. Finish one page fully before starting the next.
+This is a 2-day demo build for an evaluation assignment (Mosaic Wellness), due 8 October 2026. The builder is not a programmer. Favour simple, readable code over clever code. Finish one page fully before starting the next.
 
 ## Pages (5, plus a small Settings screen)
 
