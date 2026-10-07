@@ -25,7 +25,7 @@ const PLANS: Plan[] = [
       "Ask questions on Talk (a few each day)",
       "Daily check-ins",
       "Emergency help, always free",
-      "Example Patterns and Doctor Prep",
+      "Patterns and Doctor Prep",
     ],
   },
   {
@@ -34,12 +34,11 @@ const PLANS: Plan[] = [
     priceNote: "per month, or ₹999 per year",
     features: [
       "Unlimited questions on Talk",
-      // "seems to help": patterns are observations, never causes
-      "Your own Patterns over many months, showing what seems to help you",
-      "A full Doctor Prep report you can download and share with your doctor",
-      "A monthly summary of what seemed to help you most",
+      "4-week programmes for sleep, hot flashes and mood, built around your day",
       "Guided yoga, breathing and sleep sessions",
+      "Simple Indian recipes and cook-along videos for your diet: vegetarian, Jain and more",
       "Monthly live Q&A sessions with gynaecologists",
+      "Private chat with a certified menopause coach",
       "A simple guide to help your family understand what you are going through",
     ],
     label: "Coming soon",
