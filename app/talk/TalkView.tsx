@@ -22,7 +22,7 @@ import BottomNav from "@/components/BottomNav";
 import WellnessNote from "@/components/WellnessNote";
 import { BackIcon, ClockIcon, TalkIcon } from "@/components/icons";
 import HomeWoman from "@/components/HomeWoman";
-import MotifBackground, { KolamDots } from "@/components/MotifBackground";
+import MotifBackground, { Lotus } from "@/components/MotifBackground";
 
 export type RecentConversation = { id: string; startedAt: string; firstLine: string };
 
@@ -328,7 +328,7 @@ function TalkContent({ userId, profile, recent: initialRecent }: { userId: strin
 
   return (
     <>
-      <MotifBackground motif={empty ? "dots" : "none"}>
+      <MotifBackground motif={empty ? "lotus" : "none"}>
         <header className="mx-auto flex w-full max-w-md items-center gap-2 px-5 pt-4">
           <Link href="/home" aria-label="Back to Home" className="-ml-3 flex h-tap w-tap items-center justify-center rounded-card-sm text-text-muted">
             <BackIcon className="h-6 w-6" />
@@ -448,8 +448,8 @@ function EmptyState({
     <div className="mb-8">
       <div className="mb-3 flex items-center">
         <HomeWoman scene="thinking" className="h-[130px] w-40 shrink-0" />
-        {/* polka dots in the space beside her, on phones (wide screens have them in the margins) */}
-        <KolamDots className="mx-auto w-16 lg:hidden" />
+        {/* a lotus in the space beside her, on phones (wide screens have them in the margins) */}
+        <Lotus className="mx-auto w-20 lg:hidden" />
       </div>
       <h2 className="text-[1.75rem] font-semibold leading-tight">What&apos;s on your mind?</h2>
       <p className="mt-1 text-text-muted">No question is too small. Only you can see this.</p>

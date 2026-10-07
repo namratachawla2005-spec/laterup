@@ -1,11 +1,11 @@
 // Faint thin-line decorations behind a page, kept to the edges so the text stays easy to read.
 // "leaves" (Sign up, Log in, About), "rangoli" corners (Welcome), teal "waves" (Home; on phones Home shows
-// small waves beside its headings instead) or teal kolam "dots" (Talk, before a conversation starts). Decorative only.
+// small waves beside its headings instead) or teal "lotus" (Talk, before a conversation starts). Decorative only.
 export default function MotifBackground({
   motif = "leaves",
   children,
 }: {
-  motif?: "leaves" | "rangoli" | "waves" | "dots" | "none";
+  motif?: "leaves" | "rangoli" | "waves" | "lotus" | "none";
   children: React.ReactNode;
 }) {
   return (
@@ -23,12 +23,12 @@ export default function MotifBackground({
           <RangoliCorner className="absolute bottom-0 left-0 -z-10 h-36 w-36 -rotate-90 opacity-30 sm:h-56 sm:w-56" />
         </>
       )}
-      {motif === "dots" && (
+      {motif === "lotus" && (
         <>
           {/* Only on wide screens, in the side margins, clear of the content */}
-          <KolamDots className="absolute top-[18%] left-[8%] -z-10 hidden w-24 lg:block" />
-          <KolamDots className="absolute top-[45%] right-[8%] -z-10 hidden w-20 lg:block" />
-          <KolamDots className="absolute top-[72%] left-[10%] -z-10 hidden w-16 lg:block" />
+          <Lotus className="absolute top-[18%] left-[8%] -z-10 hidden w-28 opacity-80 lg:block" />
+          <Lotus className="absolute top-[46%] right-[8%] -z-10 hidden w-24 opacity-70 lg:block" />
+          <Lotus className="absolute top-[74%] left-[11%] -z-10 hidden w-20 opacity-60 lg:block" />
         </>
       )}
       {motif === "waves" && (
@@ -128,17 +128,15 @@ export function Waves({ className = "" }: { className?: string }) {
   );
 }
 
-// Teal polka dots set out in a diamond, like the dot grid a kolam is drawn on
-export function KolamDots({ className = "" }: { className?: string }) {
-  const rows = [1, 3, 5, 3, 1];
-  const dots = rows.flatMap((count, row) =>
-    Array.from({ length: count }, (_, i) => ({ x: 40 + (i - (count - 1) / 2) * 16, y: 8 + row * 16, centre: row === 2 && i === 2 }))
-  );
+// A teal lotus in thin lines: a centre petal, two side petals, outer petals and a waterline
+export function Lotus({ className = "" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 80 80" aria-hidden="true" focusable="false" className={`text-primary ${className}`}>
-      {dots.map((d) => (
-        <circle key={`${d.x}-${d.y}`} cx={d.x} cy={d.y} r={d.centre ? 4.5 : 3} fill="currentColor" opacity={d.centre ? 0.9 : 0.55} />
-      ))}
+    <svg viewBox="0 0 48 34" {...lineStyle} strokeWidth="1.3" className={`text-primary ${className}`}>
+      <path d="M24 4 C30 11 30 21 24 28 C18 21 18 11 24 4 Z" />
+      <path d="M24 28 C21 19 15 13 8 11 C8 20 14 27 24 28 Z" />
+      <path d="M24 28 C27 19 33 13 40 11 C40 20 34 27 24 28 Z" />
+      <path d="M24 28 C16 27 8 24 2 19 M24 28 C32 27 40 24 46 19" opacity=".6" />
+      <path d="M8 32 Q16 30 24 32 T40 32" opacity=".45" />
     </svg>
   );
 }
