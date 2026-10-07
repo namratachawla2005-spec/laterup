@@ -97,7 +97,7 @@ test.describe("Safety: emergencies typed into answer boxes", () => {
     const user = await createTestUser({ intake: false });
     try {
       await logIn(page, user, "/");
-      await page.getByLabel("I understand LaterUp is a wellness guide, not medical advice.").check();
+      await page.getByLabel("I understand LaterUp is a prototype for demo and evaluation, and a wellness guide, not medical advice. I agree to the terms of use.").check();
       await page.getByRole("button", { name: "Continue" }).click();
       const skip = () => page.getByRole("button", { name: "Skip for now" }).click();
       await skip(); // name

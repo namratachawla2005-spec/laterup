@@ -15,6 +15,16 @@ import HomeWoman, { type Scene } from "@/components/HomeWoman";
 
 export const metadata: Metadata = { title: "LaterUp help" };
 
+// Terms of use for this prototype (plain language)
+const TERMS = [
+  "LaterUp shares general wellness information. It is not a doctor, does not diagnose, and does not replace advice, diagnosis or treatment from a qualified doctor.",
+  "Answers on Talk are written by AI. They can be incomplete or wrong. Please check with a doctor before making any health decision, and never ignore or delay medical advice because of something you read here.",
+  "In an emergency, call 112. Please don't rely on LaterUp.",
+  "LaterUp is for adults aged 18 and over.",
+  "You use LaterUp at your own discretion. To the extent allowed by law, LaterUp and its maker are not responsible for any harm or loss from using it.",
+  "Features may change or stop at any time.",
+];
+
 // Asha through the day on Home (same times as the greeting)
 const ASHA_DAY: [Scene, string, string][] = [
   ["chai", "Morning", "Sipping her chai"],
@@ -170,10 +180,21 @@ export default function HelpPage() {
           </ul>
         </section>
 
-        {/* Copyright and terms of use for this evaluation build */}
-        <section className="mt-10" aria-labelledby="terms-heading">
-          <h2 id="terms-heading" className={sectionHeading}>Copyright and terms of use</h2>
-          <p className="mt-3">
+        {/* Terms of use and copyright for this prototype (linked from the consent tick) */}
+        <section id="terms" className="mt-10 scroll-mt-6" aria-labelledby="terms-heading">
+          <h2 id="terms-heading" className={sectionHeading}>Terms of use and copyright</h2>
+          <p className="mt-3 rounded-card border-2 border-accent/40 bg-surface p-4 font-medium">
+            LaterUp is a prototype, built only for demo and evaluation. It is not for real-world use.
+          </p>
+          <ul className="mt-4 space-y-2">
+            {TERMS.map((t) => (
+              <li key={t} className="flex gap-3">
+                <span aria-hidden="true" className="mt-[0.6em] h-2 w-2 shrink-0 rounded-full bg-accent" />
+                <span>{t}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4">
             LaterUp is the original work of Namrata Chawla, shared for evaluation as part of a campus placement and
             portfolio. You are welcome to try it and share feedback.
           </p>

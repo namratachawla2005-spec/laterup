@@ -4,7 +4,7 @@
 **Application:** LaterUp, a private wellness companion for women in the years before, during and after menopause
 **Live site:** https://laterup.vercel.app
 **Repository:** private GitHub repository, shared on request (see README.md)
-**Status:** Original work, shared confidentially for evaluation
+**Status:** Prototype for demo and evaluation only. Not for real-world use. Original work, shared confidentially for evaluation
 **Last updated:** 7 October 2026
 
 ---
@@ -31,6 +31,19 @@ No open-source licence (such as MIT or Apache 2.0) is granted. Viewing the code 
 - Commercial use
 - Removing or changing this notice
 - Any use beyond evaluation
+
+## Terms of use
+
+LaterUp is a prototype, built only for demo and evaluation. It is not for real-world use.
+
+- LaterUp shares general wellness information. It is not a doctor, does not diagnose, and does not replace advice, diagnosis or treatment from a qualified doctor. Using it does not create a doctor–patient relationship.
+- Answers on Talk are written by AI. They can be incomplete or wrong. Users should check with a doctor before making any health decision, and never ignore or delay medical advice because of something read here.
+- In an emergency, call 112. Do not rely on LaterUp.
+- LaterUp is for adults aged 18 and over.
+- Users use LaterUp at their own discretion. To the extent allowed by law, LaterUp and its maker are not responsible for any harm or loss from using it.
+- Features may change or stop at any time.
+
+Users agree to these terms with a required tick before the intake: "I understand LaterUp is a prototype for demo and evaluation, and a wellness guide, not medical advice. I agree to the terms of use." The terms are shown in full on the Help page.
 
 ## What LaterUp is and is not
 
@@ -84,7 +97,7 @@ For questions about usage rights or the project, contact Namrata Chawla at namra
 
 ## Where the notice appears
 
-- **Every page of the app:** "© 2026 Namrata Chawla. All rights reserved." in the footer, next to "LaterUp is a wellness guide, not medical advice."
-- **Help page:** a "Copyright and terms of use" section with the contact above.
+- **Every page of the app:** the footer says "LaterUp is a wellness guide, not medical advice.", "LaterUp is a prototype for demo and evaluation only, not for real-world use." and "© 2026 Namrata Chawla. All rights reserved."
+- **Help page:** a "Terms of use and copyright" section (the terms above, plus the contact).
 - **Source code:** every source file starts with a copyright header.
 - **README.md:** a "License and legal" section linking to this file.

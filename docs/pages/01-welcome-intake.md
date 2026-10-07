@@ -176,7 +176,7 @@ flowchart TD
 > If you ever have severe chest pain, very heavy bleeding, fainting, or thoughts of harming yourself, please contact a doctor or emergency services right away. In India, you can call 112.
 
 **Checkbox (required):**
-> ☐ I understand LaterUp is a wellness guide, not medical advice.
+> ☐ I understand LaterUp is a prototype for demo and evaluation, and a wellness guide, not medical advice. I agree to the terms of use. (7 Oct: changed at the user's request; "terms of use" links to Help)
 
 **Button:** `Continue` (stays greyed out until the box is ticked)
 

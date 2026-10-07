@@ -323,7 +323,7 @@ Full detail and exact copy are in the briefs.
 
 ### Page 1: Welcome and Intake (`/`)
 - Welcome: headline, sub line, "🔒 Private by design. Your words stay yours.", buttons **Let's begin** and **I already have an account**, link **How we protect you**.
-- Sign up (email, password), then promises step: privacy promise, honesty promise, emergency box (112), required tick "I understand LaterUp is a wellness guide, not medical advice."
+- Sign up (email, password), then promises step: privacy promise, honesty promise, emergency box (112), required tick "I understand LaterUp is a prototype for demo and evaluation, and a wellness guide, not medical advice. I agree to the terms of use."
 - 7 questions, one per screen, progress "2 of 7", Back, **Skip for now** on every question. Saves after each answer so she resumes where she stopped, on any device.
 - Thank you screen reflecting her top symptoms, then Home.
 

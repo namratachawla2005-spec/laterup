@@ -204,7 +204,14 @@ export default function IntakeFlow({
             onChange={(e) => setConsent(e.target.checked)}
             className="mt-1 h-6 w-6 shrink-0 accent-primary"
           />
-          <span>I understand LaterUp is a wellness guide, not medical advice.</span>
+          <span>
+            I understand LaterUp is a prototype for demo and evaluation, and a wellness guide, not medical advice. I agree
+            to the{" "}
+            <a href="/help#terms" target="_blank" rel="noopener noreferrer" className="font-medium text-primary underline underline-offset-4">
+              terms of use
+            </a>
+            .
+          </span>
         </label>
 
         <div className="mt-6 space-y-4">

@@ -4,6 +4,8 @@
 
 LaterUp is a private, personalized wellness companion for women in the years before, during and after menopause, built India-first. She types what she's feeling in her own words and gets a warm, practical answer; tries small things and notices what helps; and walks into a doctor's room prepared, in English or Hindi.
 
+> **Prototype for demo and evaluation only. Not for real-world use.** LaterUp is not a doctor and not medical advice. In an emergency, call 112.
+
 **Live:** https://laterup.vercel.app
 
 ## Try it in two minutes

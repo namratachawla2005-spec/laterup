@@ -23,7 +23,7 @@ test.describe("Intake", () => {
 
     const cont = page.getByRole("button", { name: "Continue" });
     await expect(cont).toBeDisabled();
-    await page.getByLabel("I understand LaterUp is a wellness guide, not medical advice.").check();
+    await page.getByLabel("I understand LaterUp is a prototype for demo and evaluation, and a wellness guide, not medical advice. I agree to the terms of use.").check();
     await expect(cont).toBeEnabled();
 
     // Nothing saved until she taps Continue
@@ -33,7 +33,7 @@ test.describe("Intake", () => {
 
   test("completing intake saves her answers and lands on Home, greeting her by name", async ({ page }) => {
     await logIn(page, newUser, "/");
-    await page.getByLabel("I understand LaterUp is a wellness guide, not medical advice.").check();
+    await page.getByLabel("I understand LaterUp is a prototype for demo and evaluation, and a wellness guide, not medical advice. I agree to the terms of use.").check();
     await page.getByRole("button", { name: "Continue" }).click();
 
     const next = () => page.getByRole("button", { name: "Next" }).click();
@@ -84,7 +84,7 @@ test.describe("Intake", () => {
 
   test("Back and Skip for now never lose or invent an answer", async ({ page }) => {
     await logIn(page, newUser, "/");
-    await page.getByLabel("I understand LaterUp is a wellness guide, not medical advice.").check();
+    await page.getByLabel("I understand LaterUp is a prototype for demo and evaluation, and a wellness guide, not medical advice. I agree to the terms of use.").check();
     await page.getByRole("button", { name: "Continue" }).click();
 
     await page.getByRole("button", { name: "Skip for now" }).click(); // skip the name
@@ -98,7 +98,7 @@ test.describe("Intake", () => {
 
   test("she can pick up to 5 symptoms, and her own words for 'Something else' and 'Other' are saved", async ({ page }) => {
     await logIn(page, newUser, "/");
-    await page.getByLabel("I understand LaterUp is a wellness guide, not medical advice.").check();
+    await page.getByLabel("I understand LaterUp is a prototype for demo and evaluation, and a wellness guide, not medical advice. I agree to the terms of use.").check();
     await page.getByRole("button", { name: "Continue" }).click();
     const next = () => page.getByRole("button", { name: "Next" }).click();
     const pick = (label: string) => page.getByRole("button", { name: label, exact: true }).click();
@@ -142,7 +142,7 @@ test.describe("Intake", () => {
 
   test("'Nothing right now, I'm feeling good' clears other symptoms and gets a warm thank-you", async ({ page }) => {
     await logIn(page, newUser, "/");
-    await page.getByLabel("I understand LaterUp is a wellness guide, not medical advice.").check();
+    await page.getByLabel("I understand LaterUp is a prototype for demo and evaluation, and a wellness guide, not medical advice. I agree to the terms of use.").check();
     await page.getByRole("button", { name: "Continue" }).click();
     const skip = () => page.getByRole("button", { name: "Skip for now" }).click();
 
