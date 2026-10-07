@@ -22,6 +22,10 @@ const LIMIT_MESSAGE =
 // What Talk gets back. Always status 200 with a "type", except 400/401.
 const reply = (body: Record<string, unknown>) => NextResponse.json(body);
 
+// Her typed "Something else" / "Other" answers go to the model only if they
+// pass the same emergency check as her messages. Emergency words never reach the model.
+const safeTyped = (text: string | null | undefined) => (text && !emergencyCheck(text) ? text : null);
+
 type HistoryItem = { role: "user" | "assistant"; content: string };
 
 export async function POST(request: Request) {
@@ -83,9 +87,9 @@ export async function POST(request: Request) {
       ageGroup: profile?.age_group ?? null,
       stage: profile?.stage ?? null,
       topSymptoms: (profile?.top_symptoms ?? []).filter((s: string) => s !== "none"),
-      otherConcern: profile?.symptoms_other ?? null,
-      dietOther: profile?.diet_other ?? null,
-      lifeOther: profile?.life_context_other ?? null,
+      otherConcern: safeTyped(profile?.symptoms_other),
+      dietOther: safeTyped(profile?.diet_other),
+      lifeOther: safeTyped(profile?.life_context_other),
       diet: profile?.diet ?? null,
       lifeContext: profile?.life_context ?? [],
       doctorStatus: profile?.doctor_status ?? null,

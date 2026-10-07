@@ -14,6 +14,8 @@ import { createClient } from "@/lib/supabase/client";
 import WellnessNote from "@/components/WellnessNote";
 import { FormMessage } from "@/components/AuthFields";
 import RisingSun from "./RisingSun";
+import EmergencyCard from "@/components/talk/EmergencyCard";
+import { emergencyCheck, type Emergency } from "@/lib/safety";
 import {
   AGE_GROUPS, STAGES, SYMPTOMS, DIETS, LIFE_CONTEXT, DOCTOR_STATUS,
   MAX_NAME_LENGTH, MAX_SYMPTOMS, MAX_OTHER_LENGTH, labelFor, buildReflection,
@@ -112,6 +114,8 @@ export default function IntakeFlow({
   });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  // Emergency words typed into a "Something else" / "Other" box: help first, nothing saved
+  const [emergency, setEmergency] = useState<Emergency>(null);
 
   // Move focus and scroll to the new heading on each step (screen readers, small phones)
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -150,6 +154,14 @@ export default function IntakeFlow({
     setError("");
     if (editing && step === 1) onExit?.(false);
     else setStep(step - 1);
+  }
+
+  if (emergency) {
+    return (
+      <Screen>
+        <EmergencyCard kind={emergency} />
+      </Screen>
+    );
   }
 
   // ---------------- Step 2: Promises ----------------
@@ -247,7 +259,18 @@ export default function IntakeFlow({
   // ---------------- Step 3: The 7 questions ----------------
   const q = QUESTIONS[step - 1];
   const answered = isAnswered(q, answers);
-  const next = () => save(fieldsFor(q, answers), step + 1);
+  const next = () => {
+    const other = OTHER_FIELD[q.id];
+    const em = other?.show(answers) ? emergencyCheck(answers[other.key]) : null;
+    if (em) {
+      // Same rule as Talk: never saved, never sent to the AI. Show help instead.
+      setAnswers({ ...answers, [other!.key]: "" });
+      setEmergency(em);
+      window.scrollTo(0, 0);
+      return;
+    }
+    return save(fieldsFor(q, answers), step + 1);
+  };
   const skip = () => save({}, step + 1); // skipping never changes saved answers
 
   return (

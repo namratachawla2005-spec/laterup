@@ -22,6 +22,8 @@ import MotifBackground, { HeadingWaves } from "@/components/MotifBackground";
 import WellnessNote from "@/components/WellnessNote";
 import BottomNav from "@/components/BottomNav";
 import { FormMessage } from "@/components/AuthFields";
+import EmergencyCard from "@/components/talk/EmergencyCard";
+import { emergencyCheck, type Emergency } from "@/lib/safety";
 import { BackIcon, GearIcon, LockIcon, SunIcon, PartSunIcon, CloudIcon } from "@/components/icons";
 
 type Feeling = "good" | "okay" | "tough";
@@ -265,6 +267,7 @@ function CheckInSection({
   const [botheringOther, setBotheringOther] = useState(existing?.bothering_other ?? "");
   const [stage, setStage] = useState<"pick" | "follow" | "done">(existing ? "done" : "pick");
   const [error, setError] = useState("");
+  const [emergency, setEmergency] = useState<Emergency>(null);
 
   // "Everything is good" first, then her top symptoms, then "More" reveals all of them
   const mine = topSymptoms.filter(isRealSymptom).slice(0, 3);
@@ -303,7 +306,29 @@ function CheckInSection({
   }
 
   async function done() {
+    // Emergency words in "What else is bothering you?": help first, the words are never saved
+    const em = bothering.includes("something_else") ? emergencyCheck(botheringOther) : null;
+    if (em) {
+      setBotheringOther("");
+      setEmergency(em);
+      return;
+    }
     if (feeling && (await saveCheckIn(feeling))) setStage("done");
+  }
+
+  if (emergency) {
+    return (
+      <section id="checkin" className="mt-10 scroll-mt-6">
+        <EmergencyCard kind={emergency} />
+        <button
+          type="button"
+          onClick={() => setEmergency(null)}
+          className="mt-3 flex min-h-tap w-full items-center justify-center rounded-card px-6 font-medium text-text-muted underline underline-offset-4"
+        >
+          Back to my check-in
+        </button>
+      </section>
+    );
   }
 
   return (

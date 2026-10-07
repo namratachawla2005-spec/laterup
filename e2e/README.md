@@ -88,9 +88,9 @@ npx playwright show-report
 
 Needs `.env.local` (the same file the app uses). Real-model tests need the model: the desktop with Ollama switched on, or Haiku (below). If the model can't be reached, those tests are **skipped with a reason**, never passed.
 
-### Run against Claude Haiku (provider parity)
+### Run against Claude Haiku (provider parity, only when deliberately wanted)
 
-PowerShell:
+The suite **always uses the local model** by default, whatever `AI_PROVIDER` says in `.env.local`, so a test run never spends paid API calls. To check Haiku on purpose, PowerShell:
 ```
 $env:E2E_AI_PROVIDER="anthropic"; npm run test:e2e
 ```

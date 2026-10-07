@@ -9,7 +9,8 @@
 import { test, expect } from "./fixtures/test";
 import type { Page } from "@playwright/test";
 import { ask, openTalk, watchUnderstand } from "./fixtures/talk";
-import { countRows, getConfig } from "./fixtures/supabase";
+import { admin, countRows, getConfig } from "./fixtures/supabase";
+import { createTestUser, deleteTestUser, logIn } from "./fixtures/test-users";
 import { seedUsage } from "./fixtures/seed";
 import { runState, spyRequests } from "./fixtures/model-spy";
 import { LENGTH_MESSAGE, OFF_TOPIC_MESSAGE } from "../lib/safety";
@@ -88,6 +89,50 @@ test.describe("Safety: emergencies", () => {
     await expectNothingSavedOrCounted(user.id);
     await expectModelNeverSaw(physical);
     await expectModelNeverSaw(selfHarm);
+  });
+});
+
+test.describe("Safety: emergencies typed into answer boxes", () => {
+  test("an emergency typed into intake's 'Something else' shows help at once and is never saved", async ({ page }) => {
+    const user = await createTestUser({ intake: false });
+    try {
+      await logIn(page, user, "/");
+      await page.getByLabel("I understand LaterUp is a wellness guide, not medical advice.").check();
+      await page.getByRole("button", { name: "Continue" }).click();
+      const skip = () => page.getByRole("button", { name: "Skip for now" }).click();
+      await skip(); // name
+      await skip(); // age
+      await skip(); // stage
+      await page.getByRole("button", { name: "Something else", exact: true }).click();
+      await page.getByLabel("What else has been bothering you?").fill("I don't want to live anymore");
+      await page.getByRole("button", { name: "Next" }).click();
+
+      await expect(page.getByRole("heading", { name: /You matter/ })).toBeVisible();
+      await expect(page.getByRole("link", { name: "Call 14416" })).toHaveAttribute("href", "tel:14416");
+      await expect(page.getByRole("link", { name: "Call 112" })).toHaveAttribute("href", "tel:112");
+
+      const { data } = await admin().from("profiles").select("symptoms_other, top_symptoms").eq("id", user.id).single();
+      expect(data, "her words are not saved").toEqual({ symptoms_other: null, top_symptoms: [] });
+    } finally {
+      await deleteTestUser(user.id);
+    }
+  });
+
+  test("an emergency typed into the check-in's 'What else is bothering you?' shows help and is never saved", async ({ herPage: page, user }) => {
+    const group = page.getByRole("group", { name: "How's today? Good, Okay or Tough" });
+    await group.getByRole("button", { name: "Tough" }).click();
+    await page.getByRole("group", { name: "Anything bothering you today? Tap any." }).getByRole("button", { name: "Something else" }).click();
+    await page.getByLabel("What else is bothering you?").fill("sudden chest pain since morning");
+    await page.getByRole("button", { name: "Done" }).click();
+
+    await expect(page.getByRole("heading", { name: "Please get help right now." })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Call 112" })).toHaveAttribute("href", "tel:112");
+    const { data } = await admin().from("check_ins").select("bothering_other").eq("user_id", user.id);
+    for (const row of data ?? []) expect(row.bothering_other, "her words are not saved").toBeNull();
+
+    // She can go back to her check-in
+    await page.getByRole("button", { name: "Back to my check-in" }).click();
+    await expect(page.getByRole("heading", { name: "How's today?" })).toBeVisible();
   });
 });
 

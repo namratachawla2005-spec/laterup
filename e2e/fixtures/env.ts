@@ -23,14 +23,14 @@ function required(name: string): string {
 // Not set = Playwright builds and starts its own copy of the app on port 3100.
 const externalBaseUrl = process.env.PLAYWRIGHT_BASE_URL;
 
-// Which AI the test server uses. Defaults to .env.local; override with E2E_AI_PROVIDER.
+// Which AI the test server uses: ALWAYS the local model (Ollama), whatever
+// .env.local says, so tests never spend paid Claude API calls. Claude Haiku is
+// used only if someone deliberately sets E2E_AI_PROVIDER=anthropic.
 const provider = externalBaseUrl
   ? "remote"
-  : process.env.E2E_AI_PROVIDER === "anthropic" || process.env.E2E_AI_PROVIDER === "ollama"
-    ? process.env.E2E_AI_PROVIDER
-    : process.env.AI_PROVIDER === "anthropic"
-      ? "anthropic"
-      : "ollama";
+  : process.env.E2E_AI_PROVIDER === "anthropic"
+    ? "anthropic"
+    : "ollama";
 
 export const env = {
   root: ROOT,
