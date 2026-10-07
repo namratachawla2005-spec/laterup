@@ -2,8 +2,8 @@
 // What she's doing follows the time of day, like the greeting:
 // morning: a kulhad of chai; afternoon: reading; evening: listening to music;
 // late night: asleep in bed under a crescent moon.
-// Talk uses "thinking": a thought bubble with a question. Patterns uses "yoga": a gentle stretch.
-export type Scene = "chai" | "reading" | "music" | "night" | "thinking" | "yoga";
+// Talk uses "thinking": a thought bubble with a question. Patterns uses "garland": a string of marigolds.
+export type Scene = "chai" | "reading" | "music" | "night" | "thinking" | "garland";
 
 export function sceneFor(hour: number): Scene {
   if (hour >= 22 || hour < 5) return "night";
@@ -12,8 +12,8 @@ export function sceneFor(hour: number): Scene {
   return "music";
 }
 
-// Thinking needs room for the bubble on the right; the stretch needs room above her head
-const VIEW_BOX: Partial<Record<Scene, string>> = { thinking: "0 0 210 170", yoga: "0 -26 160 196" };
+// Thinking needs room for the bubble on the right
+const VIEW_BOX: Partial<Record<Scene, string>> = { thinking: "0 0 210 170" };
 
 export default function HomeWoman({ scene, className = "" }: { scene: Scene; className?: string }) {
   return (
@@ -37,7 +37,7 @@ export default function HomeWoman({ scene, className = "" }: { scene: Scene; cla
           {scene === "reading" && <Book />}
           {scene === "music" && <Music />}
           {scene === "thinking" && <Thinking />}
-          {scene === "yoga" && <Stretch />}
+          {scene === "garland" && <Garland />}
         </>
       )}
     </svg>
@@ -137,15 +137,36 @@ function Thinking() {
   );
 }
 
-// Arms raised above her head, palms together, with a little teal energy around her hands
-function Stretch() {
+// A string of marigolds held in both hands, dipping between them, with teal leaves
+// and a short end hanging from each hand
+function Garland() {
+  // Points on the curve from her left hand (46,118) to her right hand (114,118)
+  const at = (t: number) => [
+    (1 - t) ** 2 * 46 + 2 * (1 - t) * t * 80 + t ** 2 * 114,
+    (1 - t) ** 2 * 118 + 2 * (1 - t) * t * 166 + t ** 2 * 118,
+  ];
+  const flowers = [0.12, 0.27, 0.42, 0.58, 0.73, 0.88].map(at);
+  const leaves = [0.345, 0.5, 0.655].map(at);
+  // the hanging ends: one flower and a leaf below each hand
+  const hanging = [[44, 134], [116, 134]];
   return (
     <>
-      {/* each arm: an outer and an inner line */}
-      <path d="M40 108 C29 76 33 36 73 -6 M52 102 C40 76 40 44 76 0" />
-      <path d="M120 108 C131 76 127 36 87 -6 M108 102 C120 76 120 44 84 0" />
-      <path d="M74 -6 C76 -16 80 -21 80 -21 C80 -21 84 -16 86 -6 C83 -2 77 -2 74 -6 Z" fill="currentColor" fillOpacity=".22" />
-      <path d="M64 -14 l-6 -4 M96 -14 l6 -4 M80 -24 v-1" className="text-primary" strokeWidth="1.6" />
+      <path d="M46 118 Q80 166 114 118 M45 120 V140 M115 120 V140" strokeWidth="1.2" opacity=".6" />
+      <g className="text-primary">
+        {leaves.map(([x, y]) => (
+          <path key={x} d={`M${x - 5} ${y + 5} q5 -9 10 -8 q-4 9 -10 8 Z`} fill="currentColor" fillOpacity=".5" strokeWidth="1.1" />
+        ))}
+        <path d="M41 148 q4 -7 8 -6 q-3 7 -8 6 Z M111 148 q4 -7 8 -6 q-3 7 -8 6 Z" fill="currentColor" fillOpacity=".5" strokeWidth="1.1" />
+      </g>
+      {[...flowers, ...hanging].map(([x, y]) => (
+        <g key={`${x}-${y}`}>
+          <circle cx={x} cy={y} r="6" fill="currentColor" fillOpacity=".3" strokeWidth="1.5" />
+          <circle cx={x} cy={y} r="1.8" fill="currentColor" stroke="none" />
+        </g>
+      ))}
+      {/* her hands, holding each end */}
+      <path d="M40 111 C34 115 35 124 43 125 C49 126 52 120 50 115 C48 112 44 110 40 111 Z" fill="var(--color-background)" strokeWidth="1.8" />
+      <path d="M120 111 C126 115 125 124 117 125 C111 126 108 120 110 115 C112 112 116 110 120 111 Z" fill="var(--color-background)" strokeWidth="1.8" />
     </>
   );
 }

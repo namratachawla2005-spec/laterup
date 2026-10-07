@@ -90,8 +90,8 @@ function PatternsContent({ data: realData }: { data: PatternsData }) {
           <h1 className="text-[1.75rem] font-semibold leading-tight">Your patterns</h1>
           <p className="mt-1 text-text-muted">Built from your check-ins. Only you can see this.</p>
         </div>
-        {/* the same woman as Home and Talk, in a gentle stretch */}
-        <HomeWoman scene="yoga" className="h-32 w-[6.5rem] shrink-0" />
+        {/* the same woman as Home and Talk, holding a marigold garland */}
+        <HomeWoman scene="garland" className="h-28 w-[6.5rem] shrink-0" />
       </div>
 
       {!isNew && (
