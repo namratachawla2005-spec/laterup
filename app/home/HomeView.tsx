@@ -67,9 +67,9 @@ function TopBar() {
   );
 }
 
-// Small teal waves beside a heading, on phones (wider screens have waves in the side margins)
+// Small teal waves beside a heading, kept clear of the words (on wide screens the waves sit in the side margins instead)
 function HeadingWaves() {
-  return <Waves className="h-7 w-24 shrink-0 opacity-45 md:hidden" />;
+  return <Waves className="ml-auto h-6 w-20 shrink-0 lg:hidden" />;
 }
 
 // ---------------- Greeting (Section 1) ----------------
@@ -142,7 +142,7 @@ function HomeContent({ userId, name, topSymptoms, checkIns, hasHistory, trying, 
           if (text.trim().length >= MIN_CHARS) openTalk(text);
         }}
       >
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-6">
           <label htmlFor="mind" className="text-xl font-semibold">
             What&apos;s on your mind?
           </label>
@@ -176,7 +176,7 @@ function HomeContent({ userId, name, topSymptoms, checkIns, hasHistory, trying, 
 
       {/* Section 3: Suggested questions */}
       <section className="mt-8" aria-labelledby="suggest-heading">
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-6">
           <h2 id="suggest-heading" className="font-semibold">
             Not sure where to start?
           </h2>
@@ -292,7 +292,7 @@ function CheckInSection({
 
   return (
     <section id="checkin" className="mt-10 scroll-mt-6" aria-labelledby="checkin-heading">
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex items-center gap-6">
         <h2 id="checkin-heading" className="text-xl font-semibold">
           How&apos;s today?
         </h2>

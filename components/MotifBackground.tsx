@@ -24,10 +24,11 @@ export default function MotifBackground({
       )}
       {motif === "waves" && (
         <>
-          <Waves className="absolute top-[13%] left-[6%] -z-10 hidden w-56 opacity-25 md:block" />
-          <Waves className="absolute top-[34%] right-[6%] -z-10 hidden w-56 opacity-25 md:block" />
-          <Waves className="absolute top-[58%] left-[8%] -z-10 hidden w-56 opacity-25 md:block" />
-          <Waves className="absolute top-[84%] right-[10%] -z-10 hidden w-56 opacity-25 md:block" />
+          {/* Only on wide screens, where the side margins are wide enough to keep them clear of the content */}
+          <Waves className="absolute top-[13%] left-[4%] -z-10 hidden w-40 lg:block" />
+          <Waves className="absolute top-[36%] right-[4%] -z-10 hidden w-40 lg:block" />
+          <Waves className="absolute top-[60%] left-[5%] -z-10 hidden w-40 lg:block" />
+          <Waves className="absolute top-[84%] right-[5%] -z-10 hidden w-40 lg:block" />
         </>
       )}
       {children}
@@ -98,14 +99,22 @@ function RangoliCorner({ className = "" }: { className?: string }) {
   );
 }
 
-// Three gentle, parallel wavy lines, like a wave border on a textile
+// Three gentle, parallel wavy lines in teal, like a wave border on a textile.
+// The ends fade out softly.
 export function Waves({ className = "" }: { className?: string }) {
   const wave = (y: number) => `M0 ${y} q12.5 -9 25 0 t25 0 t25 0 t25 0 t25 0 t25 0 t25 0 t25 0`;
+  const fade = "linear-gradient(to right, transparent, black 30%, black 70%, transparent)";
   return (
-    <svg viewBox="0 0 200 48" {...lineStyle} strokeWidth="1.6" className={`text-primary ${className}`}>
-      <path d={wave(12)} />
-      <path d={wave(24)} opacity=".7" />
-      <path d={wave(36)} opacity=".45" />
+    <svg
+      viewBox="0 0 200 48"
+      {...lineStyle}
+      strokeWidth="1.6"
+      className={`text-primary ${className}`}
+      style={{ maskImage: fade, WebkitMaskImage: fade }}
+    >
+      <path d={wave(12)} opacity=".85" />
+      <path d={wave(24)} opacity=".6" />
+      <path d={wave(36)} opacity=".35" />
     </svg>
   );
 }
