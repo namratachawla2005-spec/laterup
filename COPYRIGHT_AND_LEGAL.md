@@ -13,7 +13,7 @@
 
 © 2026 Namrata Chawla. All rights reserved.
 
-LaterUp, including its source code, design, illustrations, written content and the LaterUp name and sunrise logo, is the original work of Namrata Chawla. It was built for a campus placement assignment (Mosaic Wellness) and as a portfolio piece.
+LaterUp, including its source code, design, illustrations, written content and the LaterUp name and sunrise logo, is the original work of Namrata Chawla. It was built for evaluation and as a portfolio piece.
 
 ## No open-source licence
 
@@ -22,7 +22,7 @@ No open-source licence (such as MIT or Apache 2.0) is granted. Viewing the code 
 ### Permitted use
 
 - Review and evaluation by the people it was shared with
-- Assessment for placement or educational purposes
+- Assessment for evaluation or educational purposes
 - Feedback and constructive critique
 
 ### Not permitted without written permission
@@ -40,7 +40,7 @@ LaterUp is a prototype, built only for demo and evaluation. It is not for real-w
 - Answers on Talk are written by AI. They can be incomplete or wrong. Users should check with a doctor before making any health decision, and never ignore or delay medical advice because of something read here.
 - In an emergency, call 112. Do not rely on LaterUp.
 - LaterUp is for adults aged 18 and over.
-- Users use LaterUp at their own discretion. To the extent allowed by law, LaterUp and its maker are not responsible for any harm or loss from using it.
+- Please use LaterUp with your own judgement. As this is a prototype, its maker can't take responsibility for decisions made using it.
 - Features may change or stop at any time.
 
 Users agree to these terms with a required tick before the intake: "I understand LaterUp is a prototype for demo and evaluation, and a wellness guide, not medical advice. I agree to the terms of use." The terms are shown in full on the Help page.

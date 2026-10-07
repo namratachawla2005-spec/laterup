@@ -60,6 +60,6 @@ Database setup is in `supabase/`. Build plan and page briefs are in `docs/`.
 
 © 2026 Namrata Chawla. All rights reserved.
 
-This is original work shared for evaluation only (campus placement and portfolio). No open-source licence is granted: please don't copy, reuse, distribute or use it commercially without written permission. See [COPYRIGHT_AND_LEGAL.md](./COPYRIGHT_AND_LEGAL.md) for complete legal details, responsible AI practices and usage terms.
+This is original work shared for evaluation and as a portfolio piece. No open-source licence is granted: please don't copy, reuse, distribute or use it commercially without written permission. See [COPYRIGHT_AND_LEGAL.md](./COPYRIGHT_AND_LEGAL.md) for complete legal details, responsible AI practices and usage terms.
 
 Contact: namrata.chawla.2005@gmail.com

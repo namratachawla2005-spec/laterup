@@ -21,7 +21,7 @@ const TERMS = [
   "Answers on Talk are written by AI. They can be incomplete or wrong. Please check with a doctor before making any health decision, and never ignore or delay medical advice because of something you read here.",
   "In an emergency, call 112. Please don't rely on LaterUp.",
   "LaterUp is for adults aged 18 and over.",
-  "You use LaterUp at your own discretion. To the extent allowed by law, LaterUp and its maker are not responsible for any harm or loss from using it.",
+  "Please use LaterUp with your own judgement. As this is a prototype, its maker can't take responsibility for decisions made using it.",
   "Features may change or stop at any time.",
 ];
 
@@ -195,8 +195,8 @@ export default function HelpPage() {
             ))}
           </ul>
           <p className="mt-4">
-            LaterUp is the original work of Namrata Chawla, shared for evaluation as part of a campus placement and
-            portfolio. You are welcome to try it and share feedback.
+            LaterUp is the original work of Namrata Chawla, shared for evaluation and as part of her portfolio. You
+            are welcome to try it and share feedback.
           </p>
           <p className="mt-3">
             Please don&apos;t copy, reuse or share its design, content or code without written permission.
