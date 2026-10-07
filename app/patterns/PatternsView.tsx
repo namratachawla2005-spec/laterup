@@ -14,6 +14,7 @@ import { examplePatterns } from "@/lib/example";
 import { sleepWord, energyWord } from "@/lib/checkin";
 import BottomNav from "@/components/BottomNav";
 import WellnessNote from "@/components/WellnessNote";
+import HomeWoman from "@/components/HomeWoman";
 
 const RANGE_KEY = "laterup:patterns-range"; // her choice of 2 weeks / 30 days (no health data)
 const SUPPORT_KEY = "laterup:support-dismissed"; // date she closed the support card
@@ -84,8 +85,14 @@ function PatternsContent({ data: realData }: { data: PatternsData }) {
         </div>
       )}
 
-      <h1 className="text-[1.75rem] font-semibold leading-tight">Your patterns</h1>
-      <p className="mt-1 text-text-muted">Built from your check-ins. Only you can see this.</p>
+      <div className="flex items-end gap-3">
+        <div className="min-w-0 flex-1">
+          <h1 className="text-[1.75rem] font-semibold leading-tight">Your patterns</h1>
+          <p className="mt-1 text-text-muted">Built from your check-ins. Only you can see this.</p>
+        </div>
+        {/* the same woman as Home and Talk, in a gentle stretch */}
+        <HomeWoman scene="yoga" className="h-32 w-[6.5rem] shrink-0" />
+      </div>
 
       {!isNew && (
         <div role="group" aria-label="Time period" className="mt-5 inline-flex rounded-card bg-surface p-1">

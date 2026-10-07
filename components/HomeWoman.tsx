@@ -1,9 +1,9 @@
-// A woman in a sari, in thin terracotta lines, beside the Home greeting (and on Talk). Decorative only.
+// A woman in a sari, in thin terracotta lines, beside the Home greeting (and on Talk and Patterns). Decorative only.
 // What she's doing follows the time of day, like the greeting:
 // morning: a kulhad of chai; afternoon: reading; evening: listening to music;
 // late night: asleep in bed under a crescent moon.
-// Talk uses "thinking": a thought bubble with a question.
-export type Scene = "chai" | "reading" | "music" | "night" | "thinking";
+// Talk uses "thinking": a thought bubble with a question. Patterns uses "yoga": a gentle stretch.
+export type Scene = "chai" | "reading" | "music" | "night" | "thinking" | "yoga";
 
 export function sceneFor(hour: number): Scene {
   if (hour >= 22 || hour < 5) return "night";
@@ -12,10 +12,13 @@ export function sceneFor(hour: number): Scene {
   return "music";
 }
 
+// Thinking needs room for the bubble on the right; the stretch needs room above her head
+const VIEW_BOX: Partial<Record<Scene, string>> = { thinking: "0 0 210 170", yoga: "0 -26 160 196" };
+
 export default function HomeWoman({ scene, className = "" }: { scene: Scene; className?: string }) {
   return (
     <svg
-      viewBox={scene === "thinking" ? "0 0 210 170" : "0 0 160 170"}
+      viewBox={VIEW_BOX[scene] ?? "0 0 160 170"}
       fill="none"
       stroke="currentColor"
       strokeWidth="2"
@@ -34,6 +37,7 @@ export default function HomeWoman({ scene, className = "" }: { scene: Scene; cla
           {scene === "reading" && <Book />}
           {scene === "music" && <Music />}
           {scene === "thinking" && <Thinking />}
+          {scene === "yoga" && <Stretch />}
         </>
       )}
     </svg>
@@ -130,6 +134,19 @@ function Thinking() {
       <path d="M144 50 C132 50 130 36 140 33 C138 21 154 16 160 24 C166 13 186 15 186 28 C198 29 200 46 188 49 C186 57 170 58 166 52 C160 58 148 57 144 50 Z" />
       <text x="164" y="44" textAnchor="middle" fontSize="22" fontWeight="600" fill="currentColor" stroke="none">?</text>
     </g>
+  );
+}
+
+// Arms raised above her head, palms together, with a little teal energy around her hands
+function Stretch() {
+  return (
+    <>
+      {/* each arm: an outer and an inner line */}
+      <path d="M40 108 C29 76 33 36 73 -6 M52 102 C40 76 40 44 76 0" />
+      <path d="M120 108 C131 76 127 36 87 -6 M108 102 C120 76 120 44 84 0" />
+      <path d="M74 -6 C76 -16 80 -21 80 -21 C80 -21 84 -16 86 -6 C83 -2 77 -2 74 -6 Z" fill="currentColor" fillOpacity=".22" />
+      <path d="M64 -14 l-6 -4 M96 -14 l6 -4 M80 -24 v-1" className="text-primary" strokeWidth="1.6" />
+    </>
   );
 }
 
