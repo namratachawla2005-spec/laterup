@@ -149,6 +149,7 @@ flowchart TD
    > Midlife is a new chapter. You don't have to figure it out alone.
 4. **Sub line:**
    > LaterUp helps you understand what your body is going through, find small things that help, and know when to see a doctor.
+   > For women in the years before, during and after menopause.
 5. **Privacy line** (small, with a lock icon):
    > 🔒 Private by design. Your words stay yours.
 6. **Main button:** `Let's begin`

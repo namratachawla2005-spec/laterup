@@ -19,6 +19,7 @@ export default function Welcome() {
       <p className="mt-4 text-text-muted">
         LaterUp helps you understand what your body is going through, find small things
         that help, and know when to see a doctor.
+        <span className="mt-2 block">For women in the years before, during and after menopause.</span>
       </p>
 
       <p className="mt-6 inline-flex items-center gap-2 text-helper">
